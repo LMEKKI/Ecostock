@@ -9,7 +9,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AdminSecurityController extends AbstractController
 {
-    #[Route(path: '/login', name: 'app_login')]
+    #[Route(path: '/admin', name: 'app_admin')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
