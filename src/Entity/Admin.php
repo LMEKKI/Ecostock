@@ -5,27 +5,19 @@ namespace App\Entity;
 use App\Repository\AdminRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: AdminRepository::class)]
-class Admin
+
+class Admin implements UserInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+
     private ?int $id = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $lastName = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $firstName = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $email = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $password = null;
+    private array $roles = [];
+    private ?string $userName= null;
 
     /**
      * @var Collection<int, Restaurant>
@@ -47,6 +39,17 @@ class Admin
     {
         $this->id = $id;
 
+        return $this;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
         return $this;
     }
 
@@ -126,5 +129,28 @@ class Admin
         }
 
         return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        // Remplace getUsername() pour identifier l'utilisateur
+        return $this->username;
+    }
+
+    public function getRoles(): array
+    {
+        // Ajoute ROLE_USER par défaut
+        return array_unique(array_merge($this->roles, ['ROLE_ADMIN']));
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Méthode pour effacer des données sensibles, comme un mot de passe en clair
     }
 }

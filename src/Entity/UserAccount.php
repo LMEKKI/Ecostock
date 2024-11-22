@@ -6,19 +6,13 @@ use App\Repository\UserAccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Entity(repositoryClass: UserAccountRepository::class)]
-class UserAccount
+use Symfony\Component\Security\Core\User\UserInterface;
+class UserAccount implements UserInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+
     private ?int $id = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $userName = null;
-
-    #[ORM\Column(length: 255)]
+    private array $roles = [];
+    private ?string $username = null;
     private ?string $password = null;
 
     #[ORM\ManyToOne(inversedBy: 'userAccounts')]
@@ -47,14 +41,14 @@ class UserAccount
         return $this;
     }
 
-    public function getUserName(): ?string
+    public function getUsername(): ?string
     {
-        return $this->userName;
+        return $this->username;
     }
 
-    public function setUserName(string $userName): static
+    public function setUsername(string $username): static
     {
-        $this->userName = $userName;
+        $this->username = $username;
 
         return $this;
     }
@@ -111,5 +105,28 @@ class UserAccount
         }
 
         return $this;
+    }
+
+
+    public function getRoles(): array
+    {
+        return array_unique(array_merge($this->roles, ['ROLE_USER']));
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Méthode pour effacer les données sensibles
+    }
+
+    public function getUserIdentifier(): string
+    {
+        // Remplace getUsername() pour identifier l'utilisateur
+        return $this->username;
     }
 }
