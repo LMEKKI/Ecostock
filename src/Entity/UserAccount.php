@@ -7,12 +7,21 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+
+#[ORM\Entity(repositoryClass: UserAccountRepository::class)]
 class UserAccount implements UserInterface
 {
 
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
-    private array $roles = [];
+
+    #[ORM\Column(length: 255)]
     private ?string $username = null;
+    
+    private array $roles = [];
+    #[ORM\Column(length: 255)]
     private ?string $password = null;
 
     #[ORM\ManyToOne(inversedBy: 'userAccounts')]
