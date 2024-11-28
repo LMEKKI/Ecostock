@@ -1315,6 +1315,7 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
+
             "version": "v4.16.1",
             "source": {
                 "type": "git",
@@ -1324,8 +1325,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/e9e90f8659f9f8b508b46fe8d380ba28f6b6e498",
-                "reference": "e9e90f8659f9f8b508b46fe8d380ba28f6b6e498",
-                "shasum": ""
+                "reference": "e9e90f8659f9f8b508b46fe8d380ba28f6b6e498",                "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "^2.5",
@@ -1351,7 +1351,9 @@
                 "symfony/translation": "^5.4|^6.0|^7.0",
                 "symfony/twig-bundle": "^5.4|^6.0|^7.0",
                 "symfony/uid": "^5.4|^6.0|^7.0",
+
                 "symfony/ux-twig-component": "^2.21",
+
                 "symfony/validator": "^5.4|^6.0|^7.0"
             },
             "require-dev": {
@@ -1399,7 +1401,9 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
+
                 "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.16.1"
+
             },
             "funding": [
                 {
@@ -1407,7 +1411,9 @@
                     "type": "github"
                 }
             ],
+
             "time": "2024-11-25T18:58:01+00:00"
+
         },
         {
             "name": "egulias/email-validator",
