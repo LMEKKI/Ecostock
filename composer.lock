@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4034d7a12c57713d53cf535c1da4b593",
+    "content-hash": "9e3676d380897386f90f8a3675df5333",
     "packages": [
         {
             "name": "composer/semver",
@@ -1315,17 +1315,17 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v4.15.1",
+
+            "version": "v4.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "d0fb7e8260206d29154fbe3eddbc9cb5680a417b"
+                "reference": "e9e90f8659f9f8b508b46fe8d380ba28f6b6e498"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/d0fb7e8260206d29154fbe3eddbc9cb5680a417b",
-                "reference": "d0fb7e8260206d29154fbe3eddbc9cb5680a417b",
-                "shasum": ""
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/e9e90f8659f9f8b508b46fe8d380ba28f6b6e498",
+                "reference": "e9e90f8659f9f8b508b46fe8d380ba28f6b6e498",                "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "^2.5",
@@ -1351,6 +1351,9 @@
                 "symfony/translation": "^5.4|^6.0|^7.0",
                 "symfony/twig-bundle": "^5.4|^6.0|^7.0",
                 "symfony/uid": "^5.4|^6.0|^7.0",
+
+                "symfony/ux-twig-component": "^2.21",
+
                 "symfony/validator": "^5.4|^6.0|^7.0"
             },
             "require-dev": {
@@ -1398,7 +1401,9 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.15.1"
+
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.16.1"
+
             },
             "funding": [
                 {
@@ -1406,7 +1411,9 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-21T18:08:26+00:00"
+
+            "time": "2024-11-25T18:58:01+00:00"
+
         },
         {
             "name": "egulias/email-validator",
@@ -7191,6 +7198,89 @@
                 }
             ],
             "time": "2024-10-21T19:07:02+00:00"
+        },
+        {
+            "name": "symfony/ux-twig-component",
+            "version": "v2.21.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/ux-twig-component.git",
+                "reference": "5b60b239fffcb04fc8bdb2a5a4001d19442d575d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/ux-twig-component/zipball/5b60b239fffcb04fc8bdb2a5a4001d19442d575d",
+                "reference": "5b60b239fffcb04fc8bdb2a5a4001d19442d575d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "symfony/dependency-injection": "^5.4|^6.0|^7.0",
+                "symfony/deprecation-contracts": "^2.2|^3.0",
+                "symfony/event-dispatcher": "^5.4|^6.0|^7.0",
+                "symfony/property-access": "^5.4|^6.0|^7.0",
+                "twig/twig": "^3.8"
+            },
+            "conflict": {
+                "symfony/config": "<5.4.0"
+            },
+            "require-dev": {
+                "symfony/console": "^5.4|^6.0|^7.0",
+                "symfony/css-selector": "^5.4|^6.0|^7.0",
+                "symfony/dom-crawler": "^5.4|^6.0|^7.0",
+                "symfony/framework-bundle": "^5.4|^6.0|^7.0",
+                "symfony/phpunit-bridge": "^6.0|^7.0",
+                "symfony/stimulus-bundle": "^2.9.1",
+                "symfony/twig-bundle": "^5.4|^6.0|^7.0",
+                "symfony/webpack-encore-bundle": "^1.15"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "thanks": {
+                    "name": "symfony/ux",
+                    "url": "https://github.com/symfony/ux"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\UX\\TwigComponent\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Twig components for Symfony",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "components",
+                "symfony-ux",
+                "twig"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/ux-twig-component/tree/v2.21.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-10-05T22:11:16+00:00"
         },
         {
             "name": "symfony/validator",
