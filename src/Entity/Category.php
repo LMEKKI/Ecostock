@@ -19,7 +19,7 @@ class Category
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'categories')]
-    private ?Datasheet $datasheets = null;
+    private ?DataSheet $datasheets = null;
 
     /**
      * @var Collection<int, Service>
@@ -56,12 +56,12 @@ class Category
         return $this;
     }
 
-    public function getDatasheets(): ?Datasheet
+    public function getDataSheets(): ?DataSheet
     {
         return $this->datasheets;
     }
 
-    public function setDatasheets(?Datasheet $datasheets): static
+    public function setDataSheets(?DataSheet $datasheets): static
     {
         $this->datasheets = $datasheets;
 

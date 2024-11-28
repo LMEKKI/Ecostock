@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{chosen_restaurant.name}}
+{% endblock %}
+
+{% block body %}
+
+    <h2>{{chosen_restaurant.name}}</h2>
+    <p>adresse : {{chosen_restaurant.adresse}}</p>
+
+
+{% endblock %}
