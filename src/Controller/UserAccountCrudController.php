@@ -20,7 +20,7 @@ class UserAccountCrudController extends AbstractCrudController
     }
 
 
-    /*
+
 
     public function configureFields(string $pageName): iterable
     {
@@ -29,16 +29,12 @@ class UserAccountCrudController extends AbstractCrudController
  
             TextField::new('username', 'Nom d\'utilisateur'),
             TextField::new('password', 'Mot de passe')->setFormType(PasswordType::class)->hideOnIndex(),
-            ArrayField::new('roles', 'Roles')->setHelp('Ajouter les roles de l\'utilisateur (ex: ROLE_ADMIN, ROLE_USER)'),
             AssociationField::new('restaurant', 'Restaurant associé')->setHelp('Sélectionnez un restaurant pour cet utilisateur'),
         ];
     }
     
 
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
-    }
-    */
+
+
 
 }
