@@ -20,7 +20,11 @@ class DashboardController extends AbstractDashboardController
 
 
          $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
+
          return $this->redirect($adminUrlGenerator->setController(UserAccountCrudController::class)->generateUrl());
+
+        
+
 
 
     }
@@ -33,9 +37,13 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+
         return [
 
             yield MenuItem::linkToCrud('The Label', 'fas fa-list', UserAccount::class)->setController(UserAccountCrudController::class)
+
+        [
+
 
         ];
     }
