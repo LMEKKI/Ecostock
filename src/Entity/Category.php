@@ -19,7 +19,7 @@ class Category
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'categories')]
-    private ?Datasheet $datasheets = null;
+    private ?DataSheet $datasheets = null;
 
     /**
      * @var Collection<int, Service>

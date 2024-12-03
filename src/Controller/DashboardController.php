@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\UserAccount;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -19,7 +20,7 @@ class DashboardController extends AbstractDashboardController
 
 
          $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-         return $this->redirect($adminUrlGenerator->setController(CategoryCrudController::class)->generateUrl());
+         return $this->redirect($adminUrlGenerator->setController(AdminUrlGenerator::class)->generateUrl());
 
 
     }
@@ -32,6 +33,9 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-         yield MenuItem::linkToCrud('The Label', 'fas fa-list', Category::class);
+        [
+            yield MenuItem::linkToCrud('The Label', 'fas fa-list', UserAccount::class)
+
+        ];
     }
 }
