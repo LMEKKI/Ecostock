@@ -38,14 +38,11 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
 
-        return [
+        return 
 
-            yield MenuItem::linkToCrud('The Label', 'fas fa-list', UserAccount::class)->setController(UserAccountCrudController::class)
+            yield MenuItem::linkToCrud('The Label', 'fas fa-list', UserAccount::class)->setController(UserAccountCrudController::class);
 
-        [
-
-
-        ];
-    }
+       
     
+    }
 }
