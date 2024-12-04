@@ -31,6 +31,9 @@ class DataSheet
     #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'datasheets')]
     private Collection $categories;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -110,6 +113,18 @@ class DataSheet
                 $category->setDatasheets(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }
