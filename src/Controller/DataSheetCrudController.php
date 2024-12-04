@@ -15,7 +15,7 @@ class DataSheetCrudController extends AbstractCrudController
         return DataSheet::class;
     }
 
-    /*
+
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -24,5 +24,5 @@ class DataSheetCrudController extends AbstractCrudController
             TextEditorField::new('description'),
         ];
     }
-    */
+    
 }

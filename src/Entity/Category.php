@@ -22,9 +22,9 @@ class Category
     private ?DataSheet $datasheets = null;
 
     /**
-     * @var Collection<int, Service>
+     * @var Collection<int, SectionRestaurant>
      */
-    #[ORM\ManyToMany(targetEntity: Service::class, inversedBy: 'categories')]
+    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'categories')]
     private Collection $services;
 
     public function __construct()
@@ -69,14 +69,14 @@ class Category
     }
 
     /**
-     * @return Collection<int, Service>
+     * @return Collection<int, SectionRestaurant>
      */
     public function getServices(): Collection
     {
         return $this->services;
     }
 
-    public function addService(Service $service): static
+    public function addService(SectionRestaurant $service): static
     {
         if (!$this->services->contains($service)) {
             $this->services->add($service);
@@ -85,7 +85,7 @@ class Category
         return $this;
     }
 
-    public function removeService(Service $service): static
+    public function removeService(SectionRestaurant $service): static
     {
         $this->services->removeElement($service);
 
