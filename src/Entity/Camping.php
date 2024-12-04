@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RestaurantRepository::class)]
-class Restaurant
+class Camping
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -115,7 +115,7 @@ class Restaurant
     {
         if (!$this->userAccounts->contains($userAccount)) {
             $this->userAccounts->add($userAccount);
-            $userAccount->setRestaurant($this);
+            $userAccount->setCamping($this);
         }
 
         return $this;
@@ -125,8 +125,8 @@ class Restaurant
     {
         if ($this->userAccounts->removeElement($userAccount)) {
             // set the owning side to null (unless already changed)
-            if ($userAccount->getRestaurant() === $this) {
-                $userAccount->setRestaurant(null);
+            if ($userAccount->getCamping() === $this) {
+                $userAccount->setCamping(null);
             }
         }
 
