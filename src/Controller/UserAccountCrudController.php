@@ -28,7 +28,7 @@ class UserAccountCrudController extends AbstractCrudController
             TextField::new('username', 'Nom d\'utilisateur'),
             TextField::new('password', 'Mot de passe')->setFormType(PasswordType::class)->hideOnIndex(),
             ArrayField::new('roles', 'Rôles'),
-            AssociationField::new('restaurant', 'Restaurant associé')->setHelp('Sélectionnez un restaurant pour cet utilisateur'),
+            AssociationField::new('Camping', 'Camping associé')->setHelp('Sélectionnez un Camping pour cet utilisateur'),
         ];
     }
     

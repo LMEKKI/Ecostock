@@ -29,15 +29,15 @@ class SectionRestaurant
     private Collection $categories;
 
     /**
-     * @var Collection<int, Restaurant>
+     * @var Collection<int, Camping>
      */
-    #[ORM\ManyToMany(targetEntity: Restaurant::class, mappedBy: 'services')]
-    private Collection $restaurants;
+    #[ORM\ManyToMany(targetEntity: Camping::class, mappedBy: 'services')]
+    private Collection $camping;
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
-        $this->restaurants = new ArrayCollection();
+        $this->camping = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -104,27 +104,27 @@ class SectionRestaurant
     }
 
     /**
-     * @return Collection<int, Restaurant>
+     * @return Collection<int, Camping>
      */
-    public function getRestaurants(): Collection
+    public function getCamping(): Collection
     {
-        return $this->restaurants;
+        return $this->camping;
     }
 
-    public function addRestaurant(Restaurant $restaurant): static
+    public function addCamping(Camping $camping): static
     {
-        if (!$this->restaurants->contains($restaurant)) {
-            $this->restaurants->add($restaurant);
-            $restaurant->addService($this);
+        if (!$this->camping->contains($camping)) {
+            $this->camping->add($camping);
+            $camping->addService($this);
         }
 
         return $this;
     }
 
-    public function removeRestaurant(Restaurant $restaurant): static
+    public function removeCamping(Camping $camping): static
     {
-        if ($this->restaurants->removeElement($restaurant)) {
-            $restaurant->removeService($this);
+        if ($this->camping->removeElement($camping)) {
+            $camping->removeService($this);
         }
 
         return $this;

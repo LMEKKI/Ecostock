@@ -2,17 +2,17 @@
 
 namespace App\Controller;
 
-use App\Entity\Restaurant;
+use App\Entity\Camping;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class RestaurantCrudController extends AbstractCrudController
+class CampingCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Restaurant::class;
+        return Camping::class;
     }
 
     /*

@@ -32,7 +32,7 @@ class UserAccount implements UserInterface
     private ?string $password = null;
 
     #[ORM\ManyToOne(inversedBy: 'userAccounts')]
-    private ?Restaurant $restaurant = null;
+    private ?Camping $camping = null;
 
     #[ORM\OneToMany(targetEntity: OrderForm::class, mappedBy: 'userAccount')]
     private Collection $orderForms;
@@ -97,19 +97,19 @@ class UserAccount implements UserInterface
     }
 
     /**
-     * Récupère le restaurant associé à l'utilisateur.
+     * Récupère Camping associé à l'utilisateur.
      */
-    public function getRestaurant(): ?Restaurant
+    public function getCamping(): ?Camping
     {
-        return $this->restaurant;
+        return $this->camping;
     }
 
     /**
-     * Associe un restaurant à l'utilisateur.
+     * Associe un Camping à l'utilisateur.
      */
-    public function setRestaurant(?Restaurant $restaurant): static
+    public function setCamping(?Camping $camping): static
     {
-        $this->restaurant = $restaurant;
+        $this->camping = $camping;
         return $this;
     }
 

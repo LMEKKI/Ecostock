@@ -32,14 +32,14 @@ class Admin implements UserInterface
     private ?string $username= null;
 
     /**
-     * @var Collection<int, Restaurant>
+     * @var Collection<int, Camping>
      */
-    #[ORM\OneToMany(targetEntity: Restaurant::class, mappedBy: 'admin')]
-    private Collection $restaurants;
+    #[ORM\OneToMany(targetEntity: Camping::class, mappedBy: 'admin')]
+    private Collection $camping;
 
     public function __construct()
     {
-        $this->restaurants = new ArrayCollection();
+        $this->camping = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,29 +114,29 @@ class Admin implements UserInterface
     }
 
     /**
-     * @return Collection<int, Restaurant>
+     * @return Collection<int, Camping>
      */
-    public function getRestaurants(): Collection
+    public function getCamping(): Collection
     {
-        return $this->restaurants;
+        return $this->camping;
     }
 
-    public function addRestaurant(Restaurant $restaurant): static
+    public function addCamping(Camping $camping): static
     {
-        if (!$this->restaurants->contains($restaurant)) {
-            $this->restaurants->add($restaurant);
-            $restaurant->setAdmin($this);
+        if (!$this->camping->contains($camping)) {
+            $this->camping->add($camping);
+            $camping->setAdmin($this);
         }
 
         return $this;
     }
 
-    public function removeRestaurant(Restaurant $restaurant): static
+    public function removeCamping(Camping $camping): static
     {
-        if ($this->restaurants->removeElement($restaurant)) {
+        if ($this->camping->removeElement($camping)) {
             // set the owning side to null (unless already changed)
-            if ($restaurant->getAdmin() === $this) {
-                $restaurant->setAdmin(null);
+            if ($camping->getAdmin() === $this) {
+                $camping->setAdmin(null);
             }
         }
 
