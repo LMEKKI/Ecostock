@@ -3,7 +3,7 @@
 namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Restaurant;
-use App\Entity\Service;
+use App\Entity\SectionRestaurant;
 use App\Entity\UserAccount;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -24,7 +24,7 @@ class DashboardController extends AbstractDashboardController
 
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
 
-        return $this->redirect($adminUrlGenerator->setController(ServiceCrudController::class)->generateUrl());
+        return $this->redirect($adminUrlGenerator->setController(SectionRestaurantCrudController::class)->generateUrl());
 
 
 
@@ -40,10 +40,10 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
 
-            yield MenuItem::linkToCrud('Utilisateurs', 'fa-solid fa-user', UserAccount::class);
-            yield MenuItem::linkToCrud('Liste des restaurants', 'fa-solid fa-user', Restaurant::class);
-            yield MenuItem::linkToCrud('Les services', 'fa-solid fa-user', Service::class);
-            yield MenuItem::linkToCrud('Categories', 'fa-solid fa-user', Category::class);
+            yield MenuItem::linkToCrud('Utilisateurs', ' fa-solid fa-user', UserAccount::class);
+            yield MenuItem::linkToCrud('Liste des restaurants', ' fas fa-solid fa-user', Restaurant::class);
+            yield MenuItem::linkToCrud('Les Section', 'fas fa-solid fa-user', SectionRestaurant::class);
+            yield MenuItem::linkToCrud('Categories', 'fas fa-solid fa-user', Category::class);
 
     }
     

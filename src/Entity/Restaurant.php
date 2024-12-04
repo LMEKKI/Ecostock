@@ -23,9 +23,9 @@ class Restaurant
     private ?string $adresse = null;
 
     /**
-     * @var Collection<int, Service>
+     * @var Collection<int, SectionRestaurant>
      */
-    #[ORM\ManyToMany(targetEntity: Service::class, inversedBy: 'restaurants')]
+    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'restaurants')]
     private Collection $services;
 
     /**
@@ -80,14 +80,14 @@ class Restaurant
     }
 
     /**
-     * @return Collection<int, Service>
+     * @return Collection<int, SectionRestaurant>
      */
     public function getServices(): Collection
     {
         return $this->services;
     }
 
-    public function addService(Service $service): static
+    public function addService(SectionRestaurant $service): static
     {
         if (!$this->services->contains($service)) {
             $this->services->add($service);
@@ -96,7 +96,7 @@ class Restaurant
         return $this;
     }
 
-    public function removeService(Service $service): static
+    public function removeService(SectionRestaurant $service): static
     {
         $this->services->removeElement($service);
 
