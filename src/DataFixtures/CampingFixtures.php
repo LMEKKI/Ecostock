@@ -6,7 +6,7 @@ use App\Entity\Camping;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class CampingsFixtures extends Fixture
+class CampingFixtures extends Fixture
 {
     public const CAMPINGS_REFERENCE_TAG = 'campings-';
 
@@ -15,7 +15,7 @@ class CampingsFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
 
-        $campingsData = [
+        $campingData = [
             [
                 'campingName' => 'CroustiCamping',
                 'campingAdresse' => '14 rue du camping',
@@ -38,7 +38,7 @@ class CampingsFixtures extends Fixture
             ]
         ];
 
-        foreach ($campingsData as $i => $data) { 
+        foreach ($campingData as $i => $data) {
             $camping = new Camping();
             $camping->setName($data['campingName']);
             $camping->setAdresse($data['campingAdresse']);
