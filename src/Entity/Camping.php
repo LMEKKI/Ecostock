@@ -21,6 +21,7 @@ class Camping
     #[ORM\Column(type: Types::TEXT)]
     private ?string $adresse = null;
 
+ Formulaires_user_restau
     #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'campings')]
     private Collection $services;
 
@@ -28,6 +29,16 @@ class Camping
     private Collection $userAccounts;
 
     #[ORM\ManyToOne(targetEntity: Admin::class, inversedBy: 'campings')]
+
+    /**
+     * @var Collection<int, SectionRestaurant>
+     */
+    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'camping')]
+    private Collection $SectionRestaurant;
+
+
+    #[ORM\ManyToOne(inversedBy: 'camping')]
+
     private ?Admin $admin = null;
 
     public function __toString(): string
@@ -38,8 +49,7 @@ class Camping
 
     public function __construct()
     {
-        $this->services = new ArrayCollection();
-        $this->userAccounts = new ArrayCollection();
+        $this->SectionRestaurant = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,27 +81,35 @@ class Camping
         return $this;
     }
 
+ Formulaires_user_restau
     public function getServices(): Collection
+
+    /**
+     * @return Collection<int, SectionRestaurant>
+     */
+    public function getSectionRestaurant(): Collection
+
     {
-        return $this->services;
+        return $this->SectionRestaurant;
     }
 
-    public function addService(SectionRestaurant $service): static
+    public function addService(SectionRestaurant $sectionRestaurant): static
     {
-        if (!$this->services->contains($service)) {
-            $this->services->add($service);
+        if (!$this->SectionRestaurant->contains($sectionRestaurant)) {
+            $this->SectionRestaurant->add($sectionRestaurant);
         }
 
         return $this;
     }
 
-    public function removeService(SectionRestaurant $service): static
+    public function removeService(SectionRestaurant $sectionRestaurant): static
     {
-        $this->services->removeElement($service);
+        $this->SectionRestaurant->removeElement($sectionRestaurant);
 
         return $this;
     }
 
+  Formulaires_user_restau
     public function getUserAccounts(): Collection
     {
         return $this->userAccounts;
@@ -117,6 +135,8 @@ class Camping
 
         return $this;
     }
+
+
 
     public function getAdmin(): ?Admin
     {
