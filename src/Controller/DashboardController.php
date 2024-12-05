@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\Admin;
 use App\Entity\Category;
 use App\Entity\Camping;
 use App\Entity\DataSheet;

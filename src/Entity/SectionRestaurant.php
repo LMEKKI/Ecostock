@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ServiceRepository;
+use App\Repository\SectionRestaurantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ServiceRepository::class)]
+#[ORM\Entity(repositoryClass: SectionRestaurantRepository::class)]
 class SectionRestaurant
 {
     #[ORM\Id]
@@ -25,19 +25,26 @@ class SectionRestaurant
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'services')]
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'Category')]
     private Collection $categories;
 
     /**
      * @var Collection<int, Camping>
      */
-    #[ORM\ManyToMany(targetEntity: Camping::class, mappedBy: 'services')]
+    #[ORM\ManyToMany(targetEntity: Camping::class, mappedBy: 'Camping')]
     private Collection $camping;
+
+    /**
+     * @var Collection<int, UserAccount>
+     */
+    #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'SectionRestaurant')]
+    private Collection $userAccounts;
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->camping = new ArrayCollection();
+        $this->userAccounts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -125,6 +132,36 @@ class SectionRestaurant
     {
         if ($this->camping->removeElement($camping)) {
             $camping->removeService($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserAccount>
+     */
+    public function getUserAccounts(): Collection
+    {
+        return $this->userAccounts;
+    }
+
+    public function addUserAccount(UserAccount $userAccount): static
+    {
+        if (!$this->userAccounts->contains($userAccount)) {
+            $this->userAccounts->add($userAccount);
+            $userAccount->setSectionRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserAccount(UserAccount $userAccount): static
+    {
+        if ($this->userAccounts->removeElement($userAccount)) {
+            // set the owning side to null (unless already changed)
+            if ($userAccount->getSectionRestaurant() === $this) {
+                $userAccount->setSectionRestaurant(null);
+            }
         }
 
         return $this;
