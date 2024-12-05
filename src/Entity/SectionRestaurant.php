@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ServiceRepository;
+use App\Repository\SectionRestaurantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ServiceRepository::class)]
+#[ORM\Entity(repositoryClass: SectionRestaurantRepository::class)]
 class SectionRestaurant
 {
     #[ORM\Id]
@@ -25,14 +25,20 @@ class SectionRestaurant
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'services')]
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'Category')]
     private Collection $categories;
 
     /**
      * @var Collection<int, Camping>
      */
-    #[ORM\ManyToMany(targetEntity: Camping::class, mappedBy: 'services')]
+    #[ORM\ManyToMany(targetEntity: Camping::class, mappedBy: 'Camping')]
     private Collection $camping;
+
+    /**
+     * @var Collection<int, UserAccount>
+     */
+    #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'SectionRestaurant')]
+    private Collection $userAccounts;
 
     public function __construct()
     {
