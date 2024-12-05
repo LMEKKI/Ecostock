@@ -40,6 +40,11 @@ class SectionRestaurant
     #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'SectionRestaurant')]
     private Collection $userAccounts;
 
+    public function __toString(): string
+    {
+        return $this->name ?? 'Section Restaurant';
+    }
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -137,8 +142,5 @@ class SectionRestaurant
         return $this;
     }
 
-    public function __toString(): string
-    {
-        return $this->name ?? 'Section Restaurant';
-    }
+  
 }

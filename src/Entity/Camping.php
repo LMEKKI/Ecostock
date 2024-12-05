@@ -30,6 +30,12 @@ class Camping
     #[ORM\ManyToOne(targetEntity: Admin::class, inversedBy: 'campings')]
     private ?Admin $admin = null;
 
+    public function __toString(): string
+    {
+        // Retournez une propriété lisible comme le nom
+        return $this->name ?? 'Camping'; // Par exemple, affiche le nom du camping
+    }
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
