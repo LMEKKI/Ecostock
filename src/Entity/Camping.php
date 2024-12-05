@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\RestaurantRepository;
+use App\Repository\CampingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RestaurantRepository::class)]
+#[ORM\Entity(repositoryClass: CampingRepository::class)]
 class Camping
 {
     #[ORM\Id]
@@ -25,22 +25,16 @@ class Camping
     /**
      * @var Collection<int, SectionRestaurant>
      */
-    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'restaurants')]
-    private Collection $services;
+    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'camping')]
+    private Collection $SectionRestaurant;
 
-    /**
-     * @var Collection<int, UserAccount>
-     */
-    #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'restaurant')]
-    private Collection $userAccounts;
 
-    #[ORM\ManyToOne(inversedBy: 'restaurants')]
+    #[ORM\ManyToOne(inversedBy: 'camping')]
     private ?Admin $admin = null;
 
     public function __construct()
     {
-        $this->services = new ArrayCollection();
-        $this->userAccounts = new ArrayCollection();
+        $this->SectionRestaurant = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,56 +76,28 @@ class Camping
     /**
      * @return Collection<int, SectionRestaurant>
      */
-    public function getServices(): Collection
+    public function getSectionRestaurant(): Collection
     {
-        return $this->services;
+        return $this->SectionRestaurant;
     }
 
-    public function addService(SectionRestaurant $service): static
+    public function addService(SectionRestaurant $sectionRestaurant): static
     {
-        if (!$this->services->contains($service)) {
-            $this->services->add($service);
+        if (!$this->SectionRestaurant->contains($sectionRestaurant)) {
+            $this->SectionRestaurant->add($sectionRestaurant);
         }
 
         return $this;
     }
 
-    public function removeService(SectionRestaurant $service): static
+    public function removeService(SectionRestaurant $sectionRestaurant): static
     {
-        $this->services->removeElement($service);
+        $this->SectionRestaurant->removeElement($sectionRestaurant);
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, UserAccount>
-     */
-    public function getUserAccounts(): Collection
-    {
-        return $this->userAccounts;
-    }
 
-    public function addUserAccount(UserAccount $userAccount): static
-    {
-        if (!$this->userAccounts->contains($userAccount)) {
-            $this->userAccounts->add($userAccount);
-            $userAccount->setCamping($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserAccount(UserAccount $userAccount): static
-    {
-        if ($this->userAccounts->removeElement($userAccount)) {
-            // set the owning side to null (unless already changed)
-            if ($userAccount->getCamping() === $this) {
-                $userAccount->setCamping(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getAdmin(): ?Admin
     {
