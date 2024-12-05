@@ -34,6 +34,23 @@ class UserAccount implements UserInterface
     #[ORM\ManyToOne(inversedBy: 'userAccounts')]
     private ?Camping $camping = null;
 
+    #[ORM\ManyToOne( inversedBy: 'userAccount')]
+     //Il fallait assurer que la propriété sectionrestaurant existe dans l'entité UserAccount
+    private ?SectionRestaurant $sectionrestaurant = null;
+
+    public function getSectionrestaurant(): ?SectionRestaurant
+    {
+        return $this->sectionrestaurant;
+    }
+
+    public function setSectionrestaurant(?SectionRestaurant $sectionrestaurant): static
+    {
+        $this->sectionrestaurant = $sectionrestaurant;
+
+        return $this;
+    }
+
+
     #[ORM\OneToMany(targetEntity: OrderForm::class, mappedBy: 'userAccount')]
     private Collection $orderForms;
 

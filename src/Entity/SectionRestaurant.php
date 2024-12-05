@@ -129,4 +129,9 @@ class SectionRestaurant
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->name ?? 'Section Restaurant';
+    }
 }
