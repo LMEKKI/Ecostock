@@ -1,14 +1,13 @@
 <?php
-
 namespace App\Entity;
 
-use App\Repository\RestaurantRepository;
+use App\Repository\CampingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RestaurantRepository::class)]
+#[ORM\Entity(repositoryClass: CampingRepository::class)]
 class Camping
 {
     #[ORM\Id]
@@ -22,20 +21,20 @@ class Camping
     #[ORM\Column(type: Types::TEXT)]
     private ?string $adresse = null;
 
-    /**
-     * @var Collection<int, SectionRestaurant>
-     */
-    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'restaurants')]
+    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'campings')]
     private Collection $services;
 
-    /**
-     * @var Collection<int, UserAccount>
-     */
-    #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'restaurant')]
+    #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'camping')]
     private Collection $userAccounts;
 
-    #[ORM\ManyToOne(inversedBy: 'restaurants')]
+    #[ORM\ManyToOne(targetEntity: Admin::class, inversedBy: 'campings')]
     private ?Admin $admin = null;
+
+    public function __toString(): string
+    {
+        // Retournez une propriété lisible comme le nom
+        return $this->name ?? 'Camping'; // Par exemple, affiche le nom du camping
+    }
 
     public function __construct()
     {
@@ -46,13 +45,6 @@ class Camping
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -79,9 +71,6 @@ class Camping
         return $this;
     }
 
-    /**
-     * @return Collection<int, SectionRestaurant>
-     */
     public function getServices(): Collection
     {
         return $this->services;
@@ -103,9 +92,6 @@ class Camping
         return $this;
     }
 
-    /**
-     * @return Collection<int, UserAccount>
-     */
     public function getUserAccounts(): Collection
     {
         return $this->userAccounts;
@@ -124,7 +110,6 @@ class Camping
     public function removeUserAccount(UserAccount $userAccount): static
     {
         if ($this->userAccounts->removeElement($userAccount)) {
-            // set the owning side to null (unless already changed)
             if ($userAccount->getCamping() === $this) {
                 $userAccount->setCamping(null);
             }
