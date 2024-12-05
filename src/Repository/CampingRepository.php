@@ -21,10 +21,17 @@ class CampingRepository extends ServiceEntityRepository
     //     */
     //    public function findByExampleField($value): array
     //    {
+ Formulaires_user_restau
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('c.id', 'ASC')
+
     //        return $this->createQueryBuilder('r')
     //            ->andWhere('r.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->orderBy('r.id', 'ASC')
+
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
@@ -33,8 +40,13 @@ class CampingRepository extends ServiceEntityRepository
 
     //    public function findOneBySomeField($value): ?Camping
     //    {
+ Formulaires_user_restau
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+
     //        return $this->createQueryBuilder('r')
     //            ->andWhere('r.exampleField = :val')
+
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()

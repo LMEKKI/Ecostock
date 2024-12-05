@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\CampingRepository;
@@ -22,6 +21,15 @@ class Camping
     #[ORM\Column(type: Types::TEXT)]
     private ?string $adresse = null;
 
+ Formulaires_user_restau
+    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'campings')]
+    private Collection $services;
+
+    #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'camping')]
+    private Collection $userAccounts;
+
+    #[ORM\ManyToOne(targetEntity: Admin::class, inversedBy: 'campings')]
+
     /**
      * @var Collection<int, SectionRestaurant>
      */
@@ -30,7 +38,14 @@ class Camping
 
 
     #[ORM\ManyToOne(inversedBy: 'camping')]
+
     private ?Admin $admin = null;
+
+    public function __toString(): string
+    {
+        // Retournez une propriété lisible comme le nom
+        return $this->name ?? 'Camping'; // Par exemple, affiche le nom du camping
+    }
 
     public function __construct()
     {
@@ -40,13 +55,6 @@ class Camping
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -73,10 +81,14 @@ class Camping
         return $this;
     }
 
+ Formulaires_user_restau
+    public function getServices(): Collection
+
     /**
      * @return Collection<int, SectionRestaurant>
      */
     public function getSectionRestaurant(): Collection
+
     {
         return $this->SectionRestaurant;
     }
@@ -93,6 +105,33 @@ class Camping
     public function removeService(SectionRestaurant $sectionRestaurant): static
     {
         $this->SectionRestaurant->removeElement($sectionRestaurant);
+
+        return $this;
+    }
+
+  Formulaires_user_restau
+    public function getUserAccounts(): Collection
+    {
+        return $this->userAccounts;
+    }
+
+    public function addUserAccount(UserAccount $userAccount): static
+    {
+        if (!$this->userAccounts->contains($userAccount)) {
+            $this->userAccounts->add($userAccount);
+            $userAccount->setCamping($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserAccount(UserAccount $userAccount): static
+    {
+        if ($this->userAccounts->removeElement($userAccount)) {
+            if ($userAccount->getCamping() === $this) {
+                $userAccount->setCamping(null);
+            }
+        }
 
         return $this;
     }
