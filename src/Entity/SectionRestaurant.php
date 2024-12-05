@@ -44,6 +44,7 @@ class SectionRestaurant
     {
         $this->categories = new ArrayCollection();
         $this->camping = new ArrayCollection();
+        $this->userAccounts = new ArrayCollection();
     }
 
     public function getId(): ?int

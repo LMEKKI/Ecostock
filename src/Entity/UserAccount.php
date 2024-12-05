@@ -31,9 +31,11 @@ class UserAccount implements UserInterface
     #[Assert\Length(min: 8)]
     private ?string $password = null;
 
+    #[ORM\ManyToOne(inversedBy: 'userAccounts')]
+    private ?Camping $camping = null;
 
-    #[ORM\ManyToOne( inversedBy: 'userAccount')]
-     //Il fallait assurer que la propriété sectionrestaurant existe dans l'entité UserAccount
+    #[ORM\ManyToOne( inversedBy: 'userAccount')] 
+    //Il fallait assurer que la propriété sectionrestaurant existe dans l'entité
     private ?SectionRestaurant $sectionrestaurant = null;
 
     public function getSectionrestaurant(): ?SectionRestaurant
@@ -51,9 +53,6 @@ class UserAccount implements UserInterface
 
     #[ORM\OneToMany(targetEntity: OrderForm::class, mappedBy: 'userAccount')]
     private Collection $orderForms;
-
-    #[ORM\ManyToOne(inversedBy: 'userAccounts')]
-    private ?SectionRestaurant $SectionRestaurant = null;
 
     public function __construct()
     {
@@ -114,7 +113,22 @@ class UserAccount implements UserInterface
         return $this;
     }
 
+    /**
+     * Récupère Camping associé à l'utilisateur.
+     */
+    public function getCamping(): ?Camping
+    {
+        return $this->camping;
+    }
 
+    /**
+     * Associe un Camping à l'utilisateur.
+     */
+    public function setCamping(?Camping $camping): static
+    {
+        $this->camping = $camping;
+        return $this;
+    }
 
     /**
      * Récupère les commandes (OrderForms) associées à l'utilisateur.
@@ -176,17 +190,5 @@ class UserAccount implements UserInterface
     public function eraseCredentials(): void
     {
         // Vous pouvez nettoyer des données sensibles ici, par exemple des tokens.
-    }
-
-    public function getSectionRestaurant(): ?SectionRestaurant
-    {
-        return $this->SectionRestaurant;
-    }
-
-    public function setSectionRestaurant(?SectionRestaurant $SectionRestaurant): static
-    {
-        $this->SectionRestaurant = $SectionRestaurant;
-
-        return $this;
     }
 }
