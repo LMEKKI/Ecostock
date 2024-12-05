@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241205094622 extends AbstractMigration
+final class Version20241205131547 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -28,7 +28,7 @@ final class Version20241205094622 extends AbstractMigration
         $this->addSql('CREATE TABLE data_sheet (id INT AUTO_INCREMENT NOT NULL, ingredient LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', description LONGTEXT NOT NULL, image VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE order_form (id INT AUTO_INCREMENT NOT NULL, user_account_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', content LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', INDEX IDX_1F79C7583C0C9956 (user_account_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE section_restaurant (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, adresse LONGTEXT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE user_account (id INT AUTO_INCREMENT NOT NULL, section_restaurant_id INT DEFAULT NULL, username VARCHAR(255) NOT NULL, roles JSON NOT NULL COMMENT \'(DC2Type:json)\', password VARCHAR(255) NOT NULL, INDEX IDX_253B48AED9FA6F0B (section_restaurant_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE user_account (id INT AUTO_INCREMENT NOT NULL, camping_id INT DEFAULT NULL, sectionrestaurant_id INT DEFAULT NULL, username VARCHAR(255) NOT NULL, roles JSON NOT NULL COMMENT \'(DC2Type:json)\', password VARCHAR(255) NOT NULL, INDEX IDX_253B48AE3CC6385 (camping_id), INDEX IDX_253B48AE2B108F15 (sectionrestaurant_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE messenger_messages (id BIGINT AUTO_INCREMENT NOT NULL, body LONGTEXT NOT NULL, headers LONGTEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', available_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', delivered_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_75EA56E0FB7336F0 (queue_name), INDEX IDX_75EA56E0E3BD61CE (available_at), INDEX IDX_75EA56E016BA31DB (delivered_at), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE camping ADD CONSTRAINT FK_81A904E4642B8210 FOREIGN KEY (admin_id) REFERENCES admin (id)');
         $this->addSql('ALTER TABLE camping_section_restaurant ADD CONSTRAINT FK_C2B2F60C3CC6385 FOREIGN KEY (camping_id) REFERENCES camping (id) ON DELETE CASCADE');
@@ -37,7 +37,8 @@ final class Version20241205094622 extends AbstractMigration
         $this->addSql('ALTER TABLE category_section_restaurant ADD CONSTRAINT FK_9B77FBBA12469DE2 FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE category_section_restaurant ADD CONSTRAINT FK_9B77FBBAD9FA6F0B FOREIGN KEY (section_restaurant_id) REFERENCES section_restaurant (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE order_form ADD CONSTRAINT FK_1F79C7583C0C9956 FOREIGN KEY (user_account_id) REFERENCES user_account (id)');
-        $this->addSql('ALTER TABLE user_account ADD CONSTRAINT FK_253B48AED9FA6F0B FOREIGN KEY (section_restaurant_id) REFERENCES section_restaurant (id)');
+        $this->addSql('ALTER TABLE user_account ADD CONSTRAINT FK_253B48AE3CC6385 FOREIGN KEY (camping_id) REFERENCES camping (id)');
+        $this->addSql('ALTER TABLE user_account ADD CONSTRAINT FK_253B48AE2B108F15 FOREIGN KEY (sectionrestaurant_id) REFERENCES section_restaurant (id)');
     }
 
     public function down(Schema $schema): void
@@ -50,7 +51,8 @@ final class Version20241205094622 extends AbstractMigration
         $this->addSql('ALTER TABLE category_section_restaurant DROP FOREIGN KEY FK_9B77FBBA12469DE2');
         $this->addSql('ALTER TABLE category_section_restaurant DROP FOREIGN KEY FK_9B77FBBAD9FA6F0B');
         $this->addSql('ALTER TABLE order_form DROP FOREIGN KEY FK_1F79C7583C0C9956');
-        $this->addSql('ALTER TABLE user_account DROP FOREIGN KEY FK_253B48AED9FA6F0B');
+        $this->addSql('ALTER TABLE user_account DROP FOREIGN KEY FK_253B48AE3CC6385');
+        $this->addSql('ALTER TABLE user_account DROP FOREIGN KEY FK_253B48AE2B108F15');
         $this->addSql('DROP TABLE admin');
         $this->addSql('DROP TABLE camping');
         $this->addSql('DROP TABLE camping_section_restaurant');

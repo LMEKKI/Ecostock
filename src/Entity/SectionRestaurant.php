@@ -40,6 +40,11 @@ class SectionRestaurant
     #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'SectionRestaurant')]
     private Collection $userAccounts;
 
+    public function __toString(): string
+    {
+        return $this->name ?? 'Section Restaurant';
+    }
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -137,33 +142,5 @@ class SectionRestaurant
         return $this;
     }
 
-    /**
-     * @return Collection<int, UserAccount>
-     */
-    public function getUserAccounts(): Collection
-    {
-        return $this->userAccounts;
-    }
-
-    public function addUserAccount(UserAccount $userAccount): static
-    {
-        if (!$this->userAccounts->contains($userAccount)) {
-            $this->userAccounts->add($userAccount);
-            $userAccount->setSectionRestaurant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserAccount(UserAccount $userAccount): static
-    {
-        if ($this->userAccounts->removeElement($userAccount)) {
-            // set the owning side to null (unless already changed)
-            if ($userAccount->getSectionRestaurant() === $this) {
-                $userAccount->setSectionRestaurant(null);
-            }
-        }
-
-        return $this;
-    }
+  
 }

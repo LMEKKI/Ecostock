@@ -21,7 +21,6 @@ class Camping
     #[ORM\Column(type: Types::TEXT)]
     private ?string $adresse = null;
 
- Formulaires_user_restau
     #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'campings')]
     private Collection $services;
 
@@ -29,16 +28,6 @@ class Camping
     private Collection $userAccounts;
 
     #[ORM\ManyToOne(targetEntity: Admin::class, inversedBy: 'campings')]
-
-    /**
-     * @var Collection<int, SectionRestaurant>
-     */
-    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'camping')]
-    private Collection $SectionRestaurant;
-
-
-    #[ORM\ManyToOne(inversedBy: 'camping')]
-
     private ?Admin $admin = null;
 
     public function __toString(): string
@@ -49,7 +38,8 @@ class Camping
 
     public function __construct()
     {
-        $this->SectionRestaurant = new ArrayCollection();
+        $this->services = new ArrayCollection();
+        $this->userAccounts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -62,7 +52,7 @@ class Camping
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -74,48 +64,40 @@ class Camping
         return $this->adresse;
     }
 
-    public function setAdresse(string $adresse): static
+    public function setAdresse(string $adresse): self
     {
         $this->adresse = $adresse;
 
         return $this;
     }
 
- Formulaires_user_restau
     public function getServices(): Collection
-
-    /**
-     * @return Collection<int, SectionRestaurant>
-     */
-    public function getSectionRestaurant(): Collection
-
     {
-        return $this->SectionRestaurant;
+        return $this->services;
     }
 
-    public function addService(SectionRestaurant $sectionRestaurant): static
+    public function addService(SectionRestaurant $service): self
     {
-        if (!$this->SectionRestaurant->contains($sectionRestaurant)) {
-            $this->SectionRestaurant->add($sectionRestaurant);
+        if (!$this->services->contains($service)) {
+            $this->services->add($service);
         }
 
         return $this;
     }
 
-    public function removeService(SectionRestaurant $sectionRestaurant): static
+    public function removeService(SectionRestaurant $service): self
     {
-        $this->SectionRestaurant->removeElement($sectionRestaurant);
+        $this->services->removeElement($service);
 
         return $this;
     }
 
-  Formulaires_user_restau
     public function getUserAccounts(): Collection
     {
         return $this->userAccounts;
     }
 
-    public function addUserAccount(UserAccount $userAccount): static
+    public function addUserAccount(UserAccount $userAccount): self
     {
         if (!$this->userAccounts->contains($userAccount)) {
             $this->userAccounts->add($userAccount);
@@ -125,7 +107,7 @@ class Camping
         return $this;
     }
 
-    public function removeUserAccount(UserAccount $userAccount): static
+    public function removeUserAccount(UserAccount $userAccount): self
     {
         if ($this->userAccounts->removeElement($userAccount)) {
             if ($userAccount->getCamping() === $this) {
@@ -136,14 +118,12 @@ class Camping
         return $this;
     }
 
-
-
     public function getAdmin(): ?Admin
     {
         return $this->admin;
     }
 
-    public function setAdmin(?Admin $admin): static
+    public function setAdmin(?Admin $admin): self
     {
         $this->admin = $admin;
 
