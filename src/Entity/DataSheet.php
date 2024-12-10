@@ -16,8 +16,6 @@ class DataSheet
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $ingredient = [];
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
@@ -34,9 +32,16 @@ class DataSheet
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    /**
+     * @var Collection<int, Ingredient>
+     */
+    #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'Datasheet', cascade: ['persist', 'remove']) ]
+    private Collection $ingredients;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->ingredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -51,17 +56,6 @@ class DataSheet
         return $this;
     }
 
-    public function getIngredient(): array
-    {
-        return $this->ingredient;
-    }
-
-    public function setIngredient(array $ingredient): static
-    {
-        $this->ingredient = $ingredient;
-
-        return $this;
-    }
 
     public function getDescription(): ?string
     {
@@ -125,6 +119,33 @@ class DataSheet
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ingredient>
+     */
+    public function getIngredients(): Collection
+    {
+        return $this->ingredients;
+    }
+
+    public function addIngredient(Ingredient $ingredient): static
+    {
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients->add($ingredient);
+            $ingredient->addDatasheet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredient(Ingredient $ingredient): static
+    {
+        if ($this->ingredients->removeElement($ingredient)) {
+            $ingredient->removeDatasheet($this);
+        }
 
         return $this;
     }

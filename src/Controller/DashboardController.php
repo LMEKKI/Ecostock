@@ -5,6 +5,7 @@ use App\Entity\Admin;
 use App\Entity\Category;
 use App\Entity\Camping;
 use App\Entity\DataSheet;
+use App\Entity\Ingredient;
 use App\Entity\SectionRestaurant;
 use App\Entity\UserAccount;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -47,7 +48,8 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToCrud('Camping', ' fas fa-solid fa-user', Camping::class);
             yield MenuItem::linkToCrud('Section_Resturant', 'fas fa-solid fa-user', SectionRestaurant::class);
             yield MenuItem::linkToCrud('Categories', 'fas fa-solid fa-user', Category::class);
-            yield MenuItem::linkToCrud('Fiche Techniques', 'fas fa-solid fa-user', DataSheet::class);
+        yield MenuItem::linkToCrud('Fiche Techniques', 'fas fa-solid fa-user', DataSheet::class);
+        yield MenuItem::linkToCrud(' Techniques', 'fas fa-solid fa-user', Ingredient::class);
 
     }
 
