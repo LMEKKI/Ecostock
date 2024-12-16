@@ -32,6 +32,9 @@ class Ingredient
     #[ORM\JoinTable(name: 'datasheet_ingredient')]
     private Collection $Datasheet;
 
+    #[ORM\ManyToOne(inversedBy: 'ingredient')]
+    private ?Units $units = null;
+
     public function __construct()
     {
         $this->Datasheet = new ArrayCollection();
@@ -98,6 +101,18 @@ class Ingredient
     public function removeDatasheet(DataSheet $datasheet): static
     {
         $this->Datasheet->removeElement($datasheet);
+
+        return $this;
+    }
+
+    public function getUnits(): ?Units
+    {
+        return $this->units;
+    }
+
+    public function setUnits(?Units $units): static
+    {
+        $this->units = $units;
 
         return $this;
     }
