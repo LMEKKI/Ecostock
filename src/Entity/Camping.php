@@ -21,7 +21,7 @@ class Camping
     #[ORM\Column(type: Types::TEXT)]
     private ?string $adresse = null;
 
-    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'campings')]
+    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'camping')]
     private Collection $services;
 
     #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'camping')]

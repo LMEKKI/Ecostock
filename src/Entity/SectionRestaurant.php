@@ -7,6 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
 
 #[ORM\Entity(repositoryClass: SectionRestaurantRepository::class)]
 class SectionRestaurant
@@ -22,16 +25,21 @@ class SectionRestaurant
     #[ORM\Column(type: Types::TEXT)]
     private ?string $adresse = null;
 
+    #[ORM\Column(type: Types::ARRAY)]
+    #[Assert\Choice(choices: ['Restaurant', 'Bar', 'Snack'], multiple: true)]
+    #[Assert\NotBlank(message: 'Le type de la catégorie est obligatoire.')]
+    private array $type = [];
+
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'Category')]
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'services')]
     private Collection $categories;
 
     /**
      * @var Collection<int, Camping>
      */
-    #[ORM\ManyToMany(targetEntity: Camping::class, mappedBy: 'Camping')]
+    #[ORM\ManyToMany(targetEntity: Camping::class, mappedBy: 'services')]
     private Collection $camping;
 
     /**
@@ -87,6 +95,19 @@ class SectionRestaurant
 
         return $this;
     }
+
+    public function getType(): array
+    {
+        return $this->type;
+    }
+
+    public function setType(array $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
 
     /**
      * @return Collection<int, Category>

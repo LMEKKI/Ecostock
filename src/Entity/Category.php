@@ -6,6 +6,9 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\DBAL\Types\Types;
+
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -15,11 +18,15 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
-
+   
+    #[ORM\Column(type: Types::ARRAY)]
+    #[Assert\NotBlank(message: 'La rubrique de la catégorie est obligatoire.')]
+    private array $rubrique = [];
+ 
     #[ORM\ManyToOne(inversedBy: 'categories')]
     private ?DataSheet $datasheets = null;
+
+   
 
     /**
      * @var Collection<int, SectionRestaurant>
@@ -44,14 +51,14 @@ class Category
         return $this;
     }
 
-    public function getName(): ?string
+    public function getRubrique(): array
     {
-        return $this->name;
+        return $this->rubrique;
     }
 
-    public function setName(string $name): static
+    public function setRubrique(array $rubrique): static
     {
-        $this->name = $name;
+        $this->rubrique = $rubrique;
 
         return $this;
     }
@@ -66,6 +73,11 @@ class Category
         $this->datasheets = $datasheets;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->rubrique[0] ?? 'Rubrique';
     }
 
     /**
@@ -91,4 +103,5 @@ class Category
 
         return $this;
     }
+    
 }
