@@ -19,9 +19,6 @@ class UserAccountCrudController extends AbstractCrudController
         return UserAccount::class;
     }
 
-
-
-
     public function configureFields(string $pageName): iterable
     {
         return [
