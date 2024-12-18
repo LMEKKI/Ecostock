@@ -1,0 +1,13 @@
+{# filepath: /c:/Users/jcors/Documents/repos/Ecostock/templates/order_form/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau OrderForm{% endblock %}
+
+{% block body %}
+    <h1>Créer un nouveau OrderForm</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn">Enregistrer</button>
+    {{ form_end(form) }}
+{% endblock %}

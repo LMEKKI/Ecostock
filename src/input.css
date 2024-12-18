@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	background-color: skyblue;
+}
+
+svg {
+	width: 50px;
+	height: 50px;
+}
