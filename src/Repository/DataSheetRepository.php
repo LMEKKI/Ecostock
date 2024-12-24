@@ -31,13 +31,21 @@ class DataSheetRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?DataSheet
-    //    {
-    //        return $this->createQueryBuilder('d')
-    //            ->andWhere('d.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findOneBySomeField($value): ?DataSheet
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.exampleField = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('d')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+   <h1>mes recettes</h1>
+<ul>
+    {% for recip in datasheet %}
+        <li>
+            recipe: {{ recip.getName }} <br>
+            <label for="tentacles">quanité (1-100):</label>
+
+<input type="number" id="tentacles" name="tentacles" min="1" max="100" />
+        </li>
+    {% endfor %}
+</ul>
+</div>
+{% endblock %}
