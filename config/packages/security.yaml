@@ -27,4 +27,3 @@ security:
         # Contrôle d'accès : seuls les utilisateurs authentifiés peuvent accéder à certaines pages
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
-git 
