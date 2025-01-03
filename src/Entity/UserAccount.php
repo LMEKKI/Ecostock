@@ -8,10 +8,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert; //pour sécuriser les champs comme username et password.
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+
 
 
 #[ORM\Entity(repositoryClass: UserAccountRepository::class)]
-class UserAccount implements UserInterface
+class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -191,4 +193,5 @@ class UserAccount implements UserInterface
     {
         // Vous pouvez nettoyer des données sensibles ici, par exemple des tokens.
     }
+
 }

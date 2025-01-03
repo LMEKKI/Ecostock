@@ -29,4 +29,11 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+    #[Route(path: '/reset-password', name: 'app_reset_password')]
+    public function resetPassword(): Response
+    {
+        // Vous pouvez ajouter ici la logique pour traiter la réinitialisation du mot de passe
+        return $this->render('security/reset_password.html.twig');
+    }
 }
