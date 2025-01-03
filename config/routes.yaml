@@ -3,3 +3,9 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+    # config/routes.yaml
+app_reset_password:
+  path: /reset-password
+  controller: App\Controller\SecurityController::resetPassword
+
