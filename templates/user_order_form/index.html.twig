@@ -1,33 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}order
-{% endblock %}
+{% block title %}Order{% endblock %}
 
 {% block body %}
-	<style>
-		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
-		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
-		}
-	</style>
+<style>
+    .recipe-btn button {
+        background: #74992e;
+        padding: 2px 4px;
+        border: solid 1px red;
+    }
+</style>
 
-	<div class="example-wrapper">
-		<form action="">
-			{% for item in dataSheets %}
-				<label for="{{item.name}}{{item.id}}">
-					<img src="{{item.image}}" alt="{{item.description}}" style="height: 150px; width: 150px;">
-					<p>{{item.name}}</p>
-					<p>{{item.description}}</p>
-				</label>
-                <input id="{{item.name}}{{item.id}}" type="number">
-			{% endfor %}
-		</form>
-        <button>Commander</button>
-	</div>
+<div class="main">
+    {% for recipe in dataSheets %}
+        <div class="recipe-container">
+            <div class="recipe-img">
+                <img src="{{ asset(recipe.image) }}" alt="image de la recette">
+            </div>
+            <div class="recipe-title">
+                <h4>{{ recipe.name }}</h4>
+            </div>
+            <div class="recipe-description">
+                <p>{{ recipe.description }}</p>
+            </div>
+            <div class="recipe-input">
+                <input type="number" name="quantity" value="1" min="1" id="quantity_{{ recipe.id }}">
+            </div>
+            <div class="recipe-btn">
+                <form action="{{ path('app_shooping_cart') }}" method="post">
+                    <input type="hidden" name="recipeId" value="{{ recipe.id }}">
+                    <input type="hidden" name="quantity" id="quantity_input_{{ recipe.id }}">
+                    <button type="submit">Ajouter au panier</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<h2>Votre panier</h2>
+{% if cartItems is empty %}
+    <p>Votre panier est vide.</p>
+{% else %}
+    <ul>
+        {% for item in cartItems %}
+            <p>id = {{ item.id }}  et quantiter = {{item.quantity}}</p>
+        {% endfor %}
+    </ul>
+{% endif %}
 {% endblock %}
