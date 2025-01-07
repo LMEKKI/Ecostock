@@ -17,7 +17,7 @@ class CampingFixtures extends Fixture
 
         $campingData = [
             [
-                'campingName' => 'CroustiCamping',
+                'campingName' => 'Le Camping de Mekki',
                 'campingAdresse' => '14 rue du camping',
                 'admin' => null,
             ],
@@ -27,12 +27,12 @@ class CampingFixtures extends Fixture
                 'admin' => null,
             ],
             [
-                'campingName' => 'LE CAMPING DE LMEKKI',
+                'campingName' => 'Le Camping de Mathis',
                 'campingAdresse' => '19 rue du camping',
                 'admin' => null,
             ],
             [
-                'campingName' => 'au Buisson Campeur',
+                'campingName' => 'Le Camping de Phillippe',
                 'campingAdresse' => '5bis rue du camping',
                 'admin' => null,
             ]

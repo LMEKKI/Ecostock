@@ -19,7 +19,7 @@ class Category
     private ?int $id = null;
 
    
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: Types::JSON)]
     #[Assert\NotBlank(message: 'La rubrique de la catégorie est obligatoire.')]
     private array $rubrique = [];
  
@@ -77,8 +77,9 @@ class Category
 
     public function __toString(): string
     {
-        return $this->rubrique[0] ?? 'Rubrique';
+        return !empty($this->rubrique) ? implode(', ', $this->rubrique) : 'Aucune rubrique';
     }
+    
 
     /**
      * @return Collection<int, SectionRestaurant>

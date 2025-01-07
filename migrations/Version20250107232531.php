@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250103150111 extends AbstractMigration
+final class Version20250107232531 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -23,7 +23,7 @@ final class Version20250103150111 extends AbstractMigration
         $this->addSql('CREATE TABLE admin (id INT AUTO_INCREMENT NOT NULL, last_name VARCHAR(255) NOT NULL, first_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE camping (id INT AUTO_INCREMENT NOT NULL, admin_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, adresse LONGTEXT NOT NULL, INDEX IDX_81A904E4642B8210 (admin_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE camping_section_restaurant (camping_id INT NOT NULL, section_restaurant_id INT NOT NULL, INDEX IDX_C2B2F60C3CC6385 (camping_id), INDEX IDX_C2B2F60CD9FA6F0B (section_restaurant_id), PRIMARY KEY(camping_id, section_restaurant_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE category (id INT AUTO_INCREMENT NOT NULL, datasheets_id INT DEFAULT NULL, rubrique LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', INDEX IDX_64C19C1A55874F8 (datasheets_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE category (id INT AUTO_INCREMENT NOT NULL, datasheets_id INT DEFAULT NULL, rubrique JSON NOT NULL COMMENT \'(DC2Type:json)\', INDEX IDX_64C19C1A55874F8 (datasheets_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE category_section_restaurant (category_id INT NOT NULL, section_restaurant_id INT NOT NULL, INDEX IDX_9B77FBBA12469DE2 (category_id), INDEX IDX_9B77FBBAD9FA6F0B (section_restaurant_id), PRIMARY KEY(category_id, section_restaurant_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE data_sheet (id INT AUTO_INCREMENT NOT NULL, ingredient LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', description LONGTEXT NOT NULL, image VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE order_form (id INT AUTO_INCREMENT NOT NULL, user_account_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', content LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', INDEX IDX_1F79C7583C0C9956 (user_account_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
