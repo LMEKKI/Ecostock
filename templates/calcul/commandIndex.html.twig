@@ -13,27 +13,17 @@
             <th>aperçu</th>
         </tr>
     </thead>
+    {% set var = orders_placeholder|decode_json %}
     <tbody>
-        {% for item in orders_placeholder %}
+        {% for item in var %}
         <tr>
-            <td>
-                {{loop.index}}
-            </td>
-            <td>
-                <a href="commande_{{loop.index}}">nom resto</a>
-            </td>
-            <td>
-                date
-            </td>
-            <td>
-                address
-            </td>
-            <td>
-                aperçu commande
-            </td>
+            <td></td>
+            <td><a href="commande_{{item.id}}">nom resto</a></td>
+            <td>{{item.date | date("d/m/Y")}}</td>
+            <td>address</td>
+            <td>pizza : {{item.pizza}}, burger : {{item.burger}}, salades : {{item.salades}}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-</ol>
 {% endblock %}

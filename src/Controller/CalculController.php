@@ -20,7 +20,7 @@ class CalculController extends AbstractController
         return $this->render('calcul/commandIndex.html.twig', [
             'recipe' => $recipes,
             'orders' => $orders,
-            'orders_placeholder' => ['pizza', 'burger', 'salade'],
+            'orders_placeholder' => '[{"id":0,"pizza":3,"burger":54,"salades":6,"sectionrestaurant":1,"date":1716346478},{"id":1,"pizza":6,"burger":4,"salades":5,"sectionrestaurant":2,"date":1736345478},{"id":2,"pizza":5,"burger":4,"salades":2,"sectionrestaurant":5,"date":1736346278},{"id":3,"pizza":8,"burger":2,"salades":9,"sectionrestaurant":2,"date":1736345878}]',
         ]);
     }
     #[Route('/commande_{id}', name: 'app_calcul_{id}')]
