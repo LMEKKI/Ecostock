@@ -32,9 +32,10 @@ class SectionRestaurantCrudController extends AbstractCrudController
             ])
             ->allowMultipleChoices(true)
             ->renderExpanded(true),
-            AssociationField::new('categories', 'Catégories')->setHelp('Sélectionnez une catégorie pour cette section'),
             AssociationField::new('camping', 'Camping associé')->setHelp('Sélectionnez un Camping pour cette section'),
         ];
     }
+
+    
     
 }
