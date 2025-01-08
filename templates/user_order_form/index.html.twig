@@ -23,16 +23,15 @@
             <div class="recipe-description">
                 <p>{{ recipe.description }}</p>
             </div>
-            <div class="recipe-input">
-                <input type="number" name="quantity" value="1" min="1" id="quantity_{{ recipe.id }}">
-            </div>
-            <div class="recipe-btn">
-                <form action="{{ path('app_shooping_cart') }}" method="post">
-                    <input type="hidden" name="recipeId" value="{{ recipe.id }}">
-                    <input type="hidden" name="quantity" id="quantity_input_{{ recipe.id }}">
-                    <button type="submit">Ajouter au panier</button>
-                </form>
-            </div>
+            
+          <div class="recipe-input">
+    <!-- Input visible directement inclus dans le formulaire -->
+    <form action="{{ path('app_shooping_cart') }}" method="post">
+        <input type="number" name="quantity" value="0" min="1" id="quantity_{{ recipe.id }}">
+        <input type="hidden" name="recipeId" value="{{ recipe.id }}">
+        <button type="submit">Ajouter au panier</button>
+    </form>
+</div>
         </div>
     {% endfor %}
 </div>

@@ -27,7 +27,6 @@ class ShoopingCart extends AbstractController
         $cartItems = $cart->getCart();
 
 
-
         return $this->render('user_order_form/index.html.twig', [
             'dataSheets' => $dataSheetRepository->findAll(),
             'cartItems' => $cartItems,
