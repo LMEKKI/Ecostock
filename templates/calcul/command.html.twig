@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CalculController!{% endblock %}
+
+{% block body %}
+    {% set nbr = 4 %}
+    <pre>
+        {{ dump(recipe) }}
+    </pre>
+    <br>
+    {{recipe|length}}
+    <br>
+    {% for item in recipe %}
+        {{item.id}}: {{item.name}} <br>
+        {% for ingredient in item.ingredient %}
+            
+            {{ingredient}} {{1*(nbr)}}
+            
+        {% endfor %}
+        <br>
+    {% endfor %}
+{% endblock %}

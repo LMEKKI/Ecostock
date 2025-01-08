@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CalculController!{% endblock %}
+
+{% block body %}
+<table>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>nom du resto</th>
+            <th>date</th>
+            <th>adresse</th>
+            <th>aperçu</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in orders_placeholder %}
+        <tr>
+            <td>
+                {{loop.index}}
+            </td>
+            <td>
+                <a href="commande_{{loop.index}}">nom resto</a>
+            </td>
+            <td>
+                date
+            </td>
+            <td>
+                address
+            </td>
+            <td>
+                aperçu commande
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</ol>
+{% endblock %}

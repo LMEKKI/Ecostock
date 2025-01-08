@@ -10,14 +10,27 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CalculController extends AbstractController
 {
-    #[Route('/calcul', name: 'app_calcul')]
+    #[Route('/commandes', name: 'app_calcul')]
     public function index(OrderFormRepository $orderFormRepository, DataSheetRepository $dataSheetRepository): Response
     {
 
         $recipes = $dataSheetRepository -> findAll();
         $orders = $orderFormRepository -> findAll();
 
-        return $this->render('calcul/index.html.twig', [
+        return $this->render('calcul/commandIndex.html.twig', [
+            'recipe' => $recipes,
+            'orders' => $orders,
+            'orders_placeholder' => ['pizza', 'burger', 'salade'],
+        ]);
+    }
+    #[Route('/commande_{id}', name: 'app_calcul_{id}')]
+    public function commande(OrderFormRepository $orderFormRepository, DataSheetRepository $dataSheetRepository): Response
+    {
+
+        $recipes = $dataSheetRepository -> findAll();
+        $orders = $orderFormRepository -> findAll();
+
+        return $this->render('calcul/command.html.twig', [
             'recipe' => $recipes,
             'orders' => $orders,
         ]);
