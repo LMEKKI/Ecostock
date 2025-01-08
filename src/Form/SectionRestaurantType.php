@@ -15,7 +15,7 @@ class SectionRestaurantType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom du restaurant',
+                'label' => 'Nom de l\'Etablissement',
                 'required' => true,
             ])
             ->add('adresse', TextType::class, [

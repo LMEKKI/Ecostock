@@ -21,7 +21,7 @@ class CampingCrudController extends AbstractCrudController
             TextField::new('name', 'Nom du Camping'),
             TextField::new('adresse', 'Adresse du Camping'),
             
-            CollectionField::new('services', 'Sections Restaurants')
+            CollectionField::new('services', 'Nom de l\'Etablissement')
                 ->setEntryType(SectionRestaurantType::class) // Utilise le sous-formulaire
                 ->allowAdd() // Permet d'ajouter de nouvelles entrées
                 ->allowDelete() // Permet de supprimer des entrées

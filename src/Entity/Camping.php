@@ -21,7 +21,7 @@ class Camping
     #[ORM\Column(type: Types::TEXT)]
     private ?string $adresse = null;
 
-    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'camping')]
+    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'camping', cascade: ['persist', 'remove'])]
     private Collection $services;
 
     #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'camping')]
@@ -29,6 +29,7 @@ class Camping
 
     #[ORM\ManyToOne(targetEntity: Admin::class, inversedBy: 'campings')]
     private ?Admin $admin = null;
+
 
     public function __toString(): string
     {
