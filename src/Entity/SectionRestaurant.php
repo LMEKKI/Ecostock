@@ -2,14 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\ServiceRepository;
+use App\Repository\SectionRestaurantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: ServiceRepository::class)]
-class Service
+
+
+#[ORM\Entity(repositoryClass: SectionRestaurantRepository::class)]
+class SectionRestaurant
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,6 +25,11 @@ class Service
     #[ORM\Column(type: Types::TEXT)]
     private ?string $adresse = null;
 
+    #[ORM\Column(type: Types::ARRAY)]
+    #[Assert\Choice(choices: ['Restaurant', 'Bar', 'Snack'], multiple: true)]
+    #[Assert\NotBlank(message: 'Le type de la catégorie est obligatoire.')]
+    private array $type = [];
+
     /**
      * @var Collection<int, Category>
      */
@@ -29,15 +37,27 @@ class Service
     private Collection $categories;
 
     /**
-     * @var Collection<int, Restaurant>
+     * @var Collection<int, Camping>
      */
-    #[ORM\ManyToMany(targetEntity: Restaurant::class, mappedBy: 'services')]
-    private Collection $restaurants;
+    #[ORM\ManyToMany(targetEntity: Camping::class, mappedBy: 'services')]
+    private Collection $camping;
+
+    /**
+     * @var Collection<int, UserAccount>
+     */
+    #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'SectionRestaurant')]
+    private Collection $userAccounts;
+
+    public function __toString(): string
+    {
+        return $this->name ?? 'Section Restaurant';
+    }
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
-        $this->restaurants = new ArrayCollection();
+        $this->camping = new ArrayCollection();
+        $this->userAccounts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,6 +96,19 @@ class Service
         return $this;
     }
 
+    public function getType(): array
+    {
+        return $this->type;
+    }
+
+    public function setType(array $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+
     /**
      * @return Collection<int, Category>
      */
@@ -104,29 +137,31 @@ class Service
     }
 
     /**
-     * @return Collection<int, Restaurant>
+     * @return Collection<int, Camping>
      */
-    public function getRestaurants(): Collection
+    public function getCamping(): Collection
     {
-        return $this->restaurants;
+        return $this->camping;
     }
 
-    public function addRestaurant(Restaurant $restaurant): static
+    public function addCamping(Camping $camping): static
     {
-        if (!$this->restaurants->contains($restaurant)) {
-            $this->restaurants->add($restaurant);
-            $restaurant->addService($this);
+        if (!$this->camping->contains($camping)) {
+            $this->camping->add($camping);
+            $camping->addService($this);
         }
 
         return $this;
     }
 
-    public function removeRestaurant(Restaurant $restaurant): static
+    public function removeCamping(Camping $camping): static
     {
-        if ($this->restaurants->removeElement($restaurant)) {
-            $restaurant->removeService($this);
+        if ($this->camping->removeElement($camping)) {
+            $camping->removeService($this);
         }
 
         return $this;
     }
+
+  
 }

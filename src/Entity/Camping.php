@@ -1,15 +1,14 @@
 <?php
-
 namespace App\Entity;
 
-use App\Repository\RestaurantRepository;
+use App\Repository\CampingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RestaurantRepository::class)]
-class Restaurant
+#[ORM\Entity(repositoryClass: CampingRepository::class)]
+class Camping
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,20 +21,21 @@ class Restaurant
     #[ORM\Column(type: Types::TEXT)]
     private ?string $adresse = null;
 
-    /**
-     * @var Collection<int, Service>
-     */
-    #[ORM\ManyToMany(targetEntity: Service::class, inversedBy: 'restaurants')]
+    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'camping', cascade: ['persist', 'remove'])]
     private Collection $services;
 
-    /**
-     * @var Collection<int, UserAccount>
-     */
-    #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'restaurant')]
+    #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'camping')]
     private Collection $userAccounts;
 
-    #[ORM\ManyToOne(inversedBy: 'restaurants')]
+    #[ORM\ManyToOne(targetEntity: Admin::class, inversedBy: 'campings')]
     private ?Admin $admin = null;
+
+
+    public function __toString(): string
+    {
+        // Retournez une propriété lisible comme le nom
+        return $this->name ?? 'Camping'; // Par exemple, affiche le nom du camping
+    }
 
     public function __construct()
     {
@@ -48,19 +48,12 @@ class Restaurant
         return $this->id;
     }
 
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -72,22 +65,19 @@ class Restaurant
         return $this->adresse;
     }
 
-    public function setAdresse(string $adresse): static
+    public function setAdresse(string $adresse): self
     {
         $this->adresse = $adresse;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Service>
-     */
     public function getServices(): Collection
     {
         return $this->services;
     }
 
-    public function addService(Service $service): static
+    public function addService(SectionRestaurant $service): self
     {
         if (!$this->services->contains($service)) {
             $this->services->add($service);
@@ -96,37 +86,33 @@ class Restaurant
         return $this;
     }
 
-    public function removeService(Service $service): static
+    public function removeService(SectionRestaurant $service): self
     {
         $this->services->removeElement($service);
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, UserAccount>
-     */
     public function getUserAccounts(): Collection
     {
         return $this->userAccounts;
     }
 
-    public function addUserAccount(UserAccount $userAccount): static
+    public function addUserAccount(UserAccount $userAccount): self
     {
         if (!$this->userAccounts->contains($userAccount)) {
             $this->userAccounts->add($userAccount);
-            $userAccount->setRestaurant($this);
+            $userAccount->setCamping($this);
         }
 
         return $this;
     }
 
-    public function removeUserAccount(UserAccount $userAccount): static
+    public function removeUserAccount(UserAccount $userAccount): self
     {
         if ($this->userAccounts->removeElement($userAccount)) {
-            // set the owning side to null (unless already changed)
-            if ($userAccount->getRestaurant() === $this) {
-                $userAccount->setRestaurant(null);
+            if ($userAccount->getCamping() === $this) {
+                $userAccount->setCamping(null);
             }
         }
 
@@ -138,7 +124,7 @@ class Restaurant
         return $this->admin;
     }
 
-    public function setAdmin(?Admin $admin): static
+    public function setAdmin(?Admin $admin): self
     {
         $this->admin = $admin;
 

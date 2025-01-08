@@ -6,6 +6,9 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\DBAL\Types\Types;
+
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -15,16 +18,20 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
-
+   
+    #[ORM\Column(type: Types::JSON)]
+    #[Assert\NotBlank(message: 'La rubrique de la catégorie est obligatoire.')]
+    private array $rubrique = [];
+ 
     #[ORM\ManyToOne(inversedBy: 'categories')]
-    private ?Datasheet $datasheets = null;
+    private ?DataSheet $datasheets = null;
+
+   
 
     /**
-     * @var Collection<int, Service>
+     * @var Collection<int, SectionRestaurant>
      */
-    #[ORM\ManyToMany(targetEntity: Service::class, inversedBy: 'categories')]
+    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'categories')]
     private Collection $services;
 
     public function __construct()
@@ -44,14 +51,14 @@ class Category
         return $this;
     }
 
-    public function getName(): ?string
+    public function getRubrique(): array
     {
-        return $this->name;
+        return $this->rubrique;
     }
 
-    public function setName(string $name): static
+    public function setRubrique(array $rubrique): static
     {
-        $this->name = $name;
+        $this->rubrique = $rubrique;
 
         return $this;
     }
@@ -68,15 +75,21 @@ class Category
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return !empty($this->rubrique) ? implode(', ', $this->rubrique) : 'Aucune rubrique';
+    }
+    
+
     /**
-     * @return Collection<int, Service>
+     * @return Collection<int, SectionRestaurant>
      */
     public function getServices(): Collection
     {
         return $this->services;
     }
 
-    public function addService(Service $service): static
+    public function addService(SectionRestaurant $service): static
     {
         if (!$this->services->contains($service)) {
             $this->services->add($service);
@@ -85,10 +98,11 @@ class Category
         return $this;
     }
 
-    public function removeService(Service $service): static
+    public function removeService(SectionRestaurant $service): static
     {
         $this->services->removeElement($service);
 
         return $this;
     }
+    
 }

@@ -5,10 +5,11 @@ namespace App\Entity;
 use App\Repository\AdminRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AdminRepository::class)]
-class Admin
+class Admin implements UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,15 +28,18 @@ class Admin
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    private array $roles = [];
+    private ?string $username= null;
+
     /**
-     * @var Collection<int, Restaurant>
+     * @var Collection<int, Camping>
      */
-    #[ORM\OneToMany(targetEntity: Restaurant::class, mappedBy: 'admin')]
-    private Collection $restaurants;
+    #[ORM\OneToMany(targetEntity: Camping::class, mappedBy: 'admin')]
+    private Collection $camping;
 
     public function __construct()
     {
-        $this->restaurants = new ArrayCollection();
+        $this->camping = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,6 +51,17 @@ class Admin
     {
         $this->id = $id;
 
+        return $this;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
         return $this;
     }
 
@@ -99,32 +114,55 @@ class Admin
     }
 
     /**
-     * @return Collection<int, Restaurant>
+     * @return Collection<int, Camping>
      */
-    public function getRestaurants(): Collection
+    public function getCamping(): Collection
     {
-        return $this->restaurants;
+        return $this->camping;
     }
 
-    public function addRestaurant(Restaurant $restaurant): static
+    public function addCamping(Camping $camping): static
     {
-        if (!$this->restaurants->contains($restaurant)) {
-            $this->restaurants->add($restaurant);
-            $restaurant->setAdmin($this);
+        if (!$this->camping->contains($camping)) {
+            $this->camping->add($camping);
+            $camping->setAdmin($this);
         }
 
         return $this;
     }
 
-    public function removeRestaurant(Restaurant $restaurant): static
+    public function removeCamping(Camping $camping): static
     {
-        if ($this->restaurants->removeElement($restaurant)) {
+        if ($this->camping->removeElement($camping)) {
             // set the owning side to null (unless already changed)
-            if ($restaurant->getAdmin() === $this) {
-                $restaurant->setAdmin(null);
+            if ($camping->getAdmin() === $this) {
+                $camping->setAdmin(null);
             }
         }
 
         return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        // Remplace getUsername() pour identifier l'utilisateur
+        return $this->username;
+    }
+
+    public function getRoles(): array
+    {
+        // Ajoute ROLE_USER par défaut
+        return array_unique(array_merge($this->roles, ['ROLE_ADMIN']));
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Méthode pour effacer des données sensibles, comme un mot de passe en clair
     }
 }
