@@ -4,19 +4,55 @@
 
 {% block body %}
     {% set nbr = 4 %}
-    <pre>
-        {{ dump(recipe) }}
-    </pre>
-    <br>
-    {{recipe|length}}
-    <br>
-    {% for item in recipe %}
-        {{item.id}}: {{item.name}} <br>
-        {% for ingredient in item.ingredient %}
-            
-            {{ingredient}} {{1*(nbr)}}
-            
+    {% set commande = order_placeholder |decode_json %}
+    {# <pre>
+        {{ dump(order_placeholder |decode_json) }}
+    </pre> #}
+    <p>commande numéro {{commande.0.id + 1}}</p>
+    <p>
+        {# {{commande.0.recipes.pizza.nombre}} {{commande.0.recipes.pizza|key}} #}
+        {% for item in commande.0.recipes %}
+            {{item.nombre}} {{item.nom | capitalize}}s, 
         {% endfor %}
-        <br>
-    {% endfor %}
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>ingrédient</th>
+                <th>quantité</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set liste = {} %}
+            {% set ingredientsArray = [] %}
+
+            {% for recipe in commande.0.recipes %}
+                {% for ingredient in recipe.ingredients %}
+                    {% if ingredient.name not in ingredientsArray %}
+                        {% set ingredientsArray = ingredientsArray|merge([ingredient.name]) %}
+                        {# <tr>
+                            <td>{{ingredient.name}}</td>
+                            <td>{{ingredient.name}}quantity</td>
+                        </tr> #}
+                    {# {% else %}
+                        <tr>
+                            <td>{{ingredient.name}}</td>
+                            <td>{{ingredient.quantity}}</td>
+                        </tr> #}
+                        {% set {{ _context['name' ~ id_point] }} =' value' %}
+                    {% endif %}
+                        
+                {% endfor %}
+            {% endfor %}
+            <pre>
+                {{ dump(ingredientsArray) }}
+            </pre>
+        </tbody>
+    </table>
+    <pre>
+        {{ dump(commande.0.recipes) }}
+    </pre>
+
+    
+    
 {% endblock %}

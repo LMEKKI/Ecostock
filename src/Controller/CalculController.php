@@ -14,8 +14,8 @@ class CalculController extends AbstractController
     public function index(OrderFormRepository $orderFormRepository, DataSheetRepository $dataSheetRepository): Response
     {
 
-        $recipes = $dataSheetRepository -> findAll();
-        $orders = $orderFormRepository -> findAll();
+        $recipes = $dataSheetRepository->findAll();
+        $orders = $orderFormRepository->findAll();
 
         return $this->render('calcul/commandIndex.html.twig', [
             'recipe' => $recipes,
@@ -27,12 +27,49 @@ class CalculController extends AbstractController
     public function commande(OrderFormRepository $orderFormRepository, DataSheetRepository $dataSheetRepository): Response
     {
 
-        $recipes = $dataSheetRepository -> findAll();
-        $orders = $orderFormRepository -> findAll();
+        $recipes = $dataSheetRepository->findAll();
+        $orders = $orderFormRepository->findAll();
 
         return $this->render('calcul/command.html.twig', [
             'recipe' => $recipes,
             'orders' => $orders,
+            'order_placeholder' => '[
+  {
+    "id": 0,
+    "recipes": [
+      {
+        "nombre": 5,
+        "nom": "pizza",
+        "ingredients": [
+        {"name":"tomate", "quantity":8},
+        {"name":"pâte à pizza", "quantity":1},
+        {"name":"fromage", "quantity":50}
+        ]
+      },
+      {
+        "nombre": 2,
+        "nom": "burger",
+        "ingredients": [
+        {"name":"pain burger", "quantity":1},
+        {"name":"tomate", "quantity":1},
+        {"name":"steak", "quantity":1},
+        {"name":"fromage burger", "quantity":2} 
+        ]
+      },
+      {
+        "nombre": 3,
+        "nom": "salade",
+        "ingredients": [
+        {"name":"tomate", "quantity":3},
+        {"name":"salade", "quantity":1},
+        {"name":"croutons", "quantity":10}
+        ]
+      }
+    ],
+    "sectionrestaurant": 1,
+    "date": 1716346478
+  }
+]',
         ]);
     }
 }
