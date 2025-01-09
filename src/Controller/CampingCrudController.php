@@ -3,13 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Camping;
-use App\Entity\SectionRestaurant;
+
+use App\Form\SectionRestaurantType;
 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 
 class CampingCrudController extends AbstractCrudController
 {
@@ -18,14 +17,19 @@ class CampingCrudController extends AbstractCrudController
         return Camping::class;
     }
 
-    /*
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            TextField::new('name', 'Nom du Camping'),
+            TextField::new('adresse', 'Adresse du Camping'),
+            
+            CollectionField::new('services', 'Nom de l\'Etablissement')
+                ->setEntryType(SectionRestaurantType::class)
+                ->allowAdd() // Permet d'ajouter de nouvelles entrées
+                ->allowDelete() // Permet de supprimer des entrées
+                ->setFormTypeOptions([
+                    'by_reference' => false, // Important pour les relations ManyToMany
+                ]),
         ];
     }
-    */
 }
