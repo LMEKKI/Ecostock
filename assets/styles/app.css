@@ -1,13 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-    background-color: skyblue;
+button {
+    background-color: rgb(56, 231, 56);
+    padding: 4px 4px;
 }
 
+.main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 
-svg  {
-    width: 50px;
-    height: 50px;
+body {
+    text-wrap: wrap;
 }
