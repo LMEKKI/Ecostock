@@ -32,7 +32,7 @@ class CalculController extends AbstractController
     $commande_placeholder = (object) array(
       "id"=> 0,
       "recipes" => 
-        array(
+        array( array(
           "nombre"=> 5,
           "nom"=> "pizza",
           "ingredients"=> array("name"=>"tomate", "quantity"=>8),
@@ -54,7 +54,7 @@ class CalculController extends AbstractController
           array("name"=>"tomate", "quantity"=>3),
           array("name"=>"salade", "quantity"=>1),
           array("name"=>"croutons", "quantity"=>10)
-        ),
+        )),
       "sectionrestaurant"=> 1,
       "date"=> 1716346478
     );

@@ -16,10 +16,7 @@
     <p>commande numéro {{commande.id + 1}}</p>
     <p>
         {% for item in commande.recipes %}
-        <pre>
-            {{ dump(item) }}
-        </pre>
-            {# {{item.nombre}} {{item.nom | capitalize}}s,  #}
+            {{item.nombre}} {{item.nom | capitalize}}s, 
         {% endfor %}
     </p>
 
