@@ -35,26 +35,28 @@ class CalculController extends AbstractController
         array( array(
           "nombre"=> 5,
           "nom"=> "pizza",
-          "ingredients"=> array("name"=>"tomate", "quantity"=>8),
-          array("name"=>"pâte à pizza", "quantity"=>1),
-          array("name"=>"fromage", "quantity"=>50)
-        ),
+          "ingredients"=> array(
+            array("name"=>"tomate", "quantity"=>8),
+            array("name"=>"pâte à pizza", "quantity"=>1),
+            array("name"=>"fromage", "quantity"=>50)
+        )),
         array(
           "nombre"=> 2,
           "nom"=> "burger",
-          "ingredients"=> array("name"=>"pain burger", "quantity"=>1),
-          array("name"=>"tomate", "quantity"=>1),
-          array("name"=>"steak", "quantity"=>1),
-          array("name"=>"fromage burger", "quantity"=>2) 
-        ),
+          "ingredients"=> array(
+            array("name"=>"pain burger", "quantity"=>1),
+            array("name"=>"tomate", "quantity"=>1),
+            array("name"=>"steak", "quantity"=>1),
+            array("name"=>"fromage burger", "quantity"=>2) 
+        )),
         array(
           "nombre"=> 3,
           "nom"=> "salade",
-          "ingredients"=> 
-          array("name"=>"tomate", "quantity"=>3),
-          array("name"=>"salade", "quantity"=>1),
-          array("name"=>"croutons", "quantity"=>10)
-        )),
+          "ingredients"=> array(
+            array("name"=>"tomate", "quantity"=>3),
+            array("name"=>"salade", "quantity"=>1),
+            array("name"=>"croutons", "quantity"=>10)
+        ))),
       "sectionrestaurant"=> 1,
       "date"=> 1716346478
     );
