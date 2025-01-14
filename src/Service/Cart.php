@@ -38,4 +38,9 @@ class Cart
   {
     return $this->session->get(self::SESSION_KEY, []);
   }
+
+  public function resetCart()
+  {
+    return $this->session->clear(self::SESSION_KEY, []);
+  }
 }
