@@ -19,12 +19,13 @@ class Calcul
 
                 } else {
                     $newItem = [];
-                    $newItem += [$ingredient['name'], ($ingredient['quantity'] * $orderItem['nombre'])];
+                    $newItem += ["name" => $ingredient['name'], "quantity" => ($ingredient['quantity'] * $orderItem['nombre'])];
                     $sortedOrder += $newItem;
                 }
             }
+            unset($ingredient);
         }
-
+        unset($orderItem);
         return $sortedOrder;
     }
 }
