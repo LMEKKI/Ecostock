@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\DataSheetRepository;
 use App\Repository\OrderFormRepository;
+use App\Service\Calcul;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,9 +26,8 @@ class CalculController extends AbstractController
   }
 
   #[Route('/commande_{id}', name: 'app_calcul_{id}')]
-  public function commande(OrderFormRepository $orderFormRepository, DataSheetRepository $dataSheetRepository): Response
+  public function commande(OrderFormRepository $orderFormRepository, DataSheetRepository $dataSheetRepository, Calcul $calcul): Response
   {
-
 
     $commande_placeholder = (object) array(
       "id"=> 0,
@@ -38,7 +38,7 @@ class CalculController extends AbstractController
           "ingredients"=> array(
             array("name"=>"tomate", "quantity"=>8),
             array("name"=>"pâte à pizza", "quantity"=>1),
-            array("name"=>"fromage", "quantity"=>50)
+            array("name"=>"farine", "quantity"=>50, "mesure"=>"gramme")
         )),
         array(
           "nombre"=> 2,
@@ -48,7 +48,8 @@ class CalculController extends AbstractController
             array("name"=>"tomate", "quantity"=>1),
             array("name"=>"steak", "quantity"=>1),
             array("name"=>"fromage burger", "quantity"=>2) 
-        )),
+          )
+        ),
         array(
           "nombre"=> 3,
           "nom"=> "salade",
@@ -56,10 +57,13 @@ class CalculController extends AbstractController
             array("name"=>"tomate", "quantity"=>3),
             array("name"=>"salade", "quantity"=>1),
             array("name"=>"croutons", "quantity"=>10)
-        ))),
+          )
+        )),
       "sectionrestaurant"=> 1,
       "date"=> 1716346478
     );
+
+    $sortedOrder = $calcul->sortOrder($commande_placeholder);
 
     $recipes = $dataSheetRepository->findAll();
     $orders = $orderFormRepository->findAll();
@@ -67,7 +71,8 @@ class CalculController extends AbstractController
     return $this->render('calcul/command.html.twig', [
       'recipe' => $recipes,
       'orders' => $orders,
-      'order_placeholder' => $commande_placeholder
+      'order_placeholder' => $commande_placeholder,
+      'sortedOrder' => $sortedOrder,
     ]);
   }
 }
