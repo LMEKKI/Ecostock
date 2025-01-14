@@ -1,7 +1,7 @@
 
 ###> symfony/framework-bundle ###
+.env
 .env.local
-/.env
 .env.local.php
 .env.*.local
 /config/secrets/prod/prod.decrypt.private.php
@@ -26,3 +26,7 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+*.env
+*.env.example
+*.env.local
+*.env.staging
