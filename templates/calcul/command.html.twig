@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CalculController!{% endblock %}
+
+{% block body %}
+    {% set nbr = 4 %}
+    {% set commande = order_placeholder %}
+    <pre>
+        {{ dump(order_placeholder) }}
+    </pre>
+   
+    <p>commande numéro {{commande.id + 1}} :</p>
+    <p>
+        {% for item in commande.recipes %}
+            {{item.nombre}} {{item.nom | capitalize}}s, 
+        {% endfor %}
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ingrédient</th>
+                <th>quantité</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% set alreadyShownArray = [] %}
+
+            {% for recipe in commande.recipes %}
+                {% for ingredient in recipe.ingredients %}
+                    {% if ingredient.name not in alreadyShownArray %}
+                        {# appel de fonction si l'ingrédient n'a pas déjà été affiché :
+                            - ajout de l'ingrédient dans l'array already shown
+                            - ajout de sa quantité
+                        #}
+                        {% set alreadyShownArray = alreadyShownArray|merge([ingredient.name]) %}
+
+                        <tr>
+                            <td>{{ingredient.name}}</td>
+                            <td>{{ingredient.quantity}}</td>
+                        </tr>
+                    {% else %}
+                        {# appel de fonction si l'ingrédient n'a pas déjà été affiché :
+                            - récupération de la quantité déjà ajoutée
+                            - ajout de la nouvelle quantité
+                            - update de la variable
+                        #}
+                        <tr>
+                            <td>{{ingredient.name}}</td>
+                            <td>{{ingredient.quantity}}</td>
+                        </tr> 
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    
+    
+{% endblock %}
