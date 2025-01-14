@@ -4,8 +4,6 @@ namespace App\Service;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-namespace App\Service;
-
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class Cart
