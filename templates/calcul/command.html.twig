@@ -5,9 +5,9 @@
 {% block body %}
     {% set nbr = 4 %}
     {% set commande = order_placeholder %}
-    <pre>
+    {# <pre>
         {{ dump(order_placeholder) }}
-    </pre>
+    </pre> #}
    
     <p>commande numéro {{commande.id + 1}} :</p>
     <p>
@@ -56,6 +56,8 @@
         </tbody>
     </table>
 
-    
+    <pre>
+        {{ dump(sortedOrder) }}
+    </pre>
     
 {% endblock %}

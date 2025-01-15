@@ -29,7 +29,7 @@ class CalculController extends AbstractController
   public function commande(OrderFormRepository $orderFormRepository, DataSheetRepository $dataSheetRepository, Calcul $calcul): Response
   {
 
-    $commande_placeholder = (object) array(
+    $commande_placeholder = array(
       "id"=> 0,
       "recipes" => 
         array( array(
@@ -63,7 +63,36 @@ class CalculController extends AbstractController
       "date"=> 1716346478
     );
 
-    $sortedOrder = $calcul->sortOrder($commande_placeholder);
+    $commande_placeholder_2 = array(array(
+          "nombre"=> 5,
+          "nom"=> "pizza",
+          "ingredients"=> array(
+            array("name"=>"tomate", "quantity"=>8),
+            array("name"=>"pâte à pizza", "quantity"=>1),
+            array("name"=>"farine", "quantity"=>50, "mesure"=>"gramme")
+        )),
+        array(
+          "nombre"=> 2,
+          "nom"=> "burger",
+          "ingredients" => array(
+            array("name"=>"pain burger", "quantity"=>1),
+            array("name"=>"tomate", "quantity"=>1),
+            array("name"=>"steak", "quantity"=>1),
+            array("name"=>"fromage burger", "quantity"=>2) 
+          )
+        ),
+        array(
+          "nombre"=> 3,
+          "nom"=> "salade",
+          "ingredients"=> array(
+            array("name"=>"tomate", "quantity"=>3),
+            array("name"=>"salade", "quantity"=>1),
+            array("name"=>"croutons", "quantity"=>10)
+          )
+        )
+    );
+
+    $orderIngredients = $calcul->sortOrder($commande_placeholder_2, $calcul);
 
     $recipes = $dataSheetRepository->findAll();
     $orders = $orderFormRepository->findAll();
@@ -72,7 +101,7 @@ class CalculController extends AbstractController
       'recipe' => $recipes,
       'orders' => $orders,
       'order_placeholder' => $commande_placeholder,
-      'sortedOrder' => $sortedOrder,
+      'sortedOrder' => $orderIngredients,
     ]);
   }
 }
