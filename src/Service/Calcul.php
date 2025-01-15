@@ -40,27 +40,31 @@ class Calcul
      * does not work
      * @return array
      */
-    function unique_multidim_array(array $ingredientsArray, string $keyName) {
+    function unique_multidim_array(array $ingredientsArray) {
 
         $temp_array = array();
-    
         $i = 0;
-    
         $name_array = array();
     
-        foreach($ingredientsArray as $val) {
-    
-            if (!in_array($val[$keyName], $name_array)) {
-    
-                $name_array[$i] = $val[$keyName];
-    
+        foreach($ingredientsArray as $key => $val) {
+            
+            if (!in_array($val["name"], $name_array)) {
+                $name_array[$key] = $val["name"];
+                
                 $temp_array[$i] = $val;
-    
+                $i++;
+            } elseif (in_array($val["name"], $name_array)) {
+                $curName = $val["name"];
+
+                $found_key = array_search($curName, array_column($temp_array, "name"));
+                
+                $temp_array[$found_key]["quantity"] = $temp_array[$found_key]["quantity"] + $val["quantity"];
+
             }
-    
-            $i++;
-    
+            unset($val);
+                  
         }
+
     
         return $temp_array;
     
