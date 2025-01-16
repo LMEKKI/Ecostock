@@ -43,10 +43,17 @@
     <ul>
         {% for item in cartItems %}
             <p>id = {{ item.id }}  et quantiter = {{item.quantity}}</p>
+            
+
+
+            <form action="{{ path('call_RemoveElementInCart') }}" method="POST">
+    <button type="submit" class="RemoveElementInCart">supprimer la recette </button>
+</form>
+
         {% endfor %}
     </ul>
 
-     <form action="{{ path('app_shooping_cart') }}" method="Get">
+     <form action="{{ path('app_shooping_cart') }}" method="POST">
         <button type="submit">envoyer en bdd </button>
     </form>
 {% endif %}

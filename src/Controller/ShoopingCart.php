@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class ShoopingCart extends AbstractController
 {
     #[Route('/shooping', name: 'app_shooping_cart', methods: ['GET', 'POST'])]
-    public function updateCart(DataSheetRepository $dataSheetRepository, Request $request, Cart $cart, Order $order): Response
+    public function CreateCart(DataSheetRepository $dataSheetRepository, Request $request, Cart $cart, Order $order): Response
     {
         // Si la requête est POST, traiter l'ajout au panier
         if ($request->isMethod('POST')) {
@@ -43,5 +43,17 @@ class ShoopingCart extends AbstractController
             'dataSheets' => $dataSheetRepository->findAll(),
             'cartItems' => $cartItems,
         ]);
+    }
+
+    #[Route('/removeElement', name: 'call_RemoveElementInCart', methods: ['POST'])]
+    public function RemoveElementInCart(Cart $cart, Request $request): Response
+    {
+
+        $cartItems = $cart->getCart();
+        $recipeId = $request->request->get('recipeId');
+
+        $cartItems = $cart->RemoveElementInCart(['id' => $recipeId]);
+
+        return $this->redirectToRoute('app_shooping_cart');
     }
 }
