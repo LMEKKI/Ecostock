@@ -22,7 +22,7 @@ class SectionRestaurantCrudController extends AbstractCrudController
             TextField::new('adresse'), 
             
             AssociationField::new('camping', 'Camping associé')->setHelp('Sélectionnez un Camping pour cette section')
-            ->setFormTypeOptions(['required' => true]),
+            ->setFormTypeOptions(['required' => true ]),
             AssociationField::new('types', 'Types associés')
             ->setFormTypeOptions(['expanded' => true, 'multiple' => true, 'required' => true]) // Afficher en cases à cocher
             ->setHelp('Sélectionnez les types associés à cette section'),

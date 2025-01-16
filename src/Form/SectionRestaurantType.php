@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Type;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Camping;
 
 
 
@@ -25,9 +26,16 @@ class SectionRestaurantType extends AbstractType
                 'label' => 'Adresse',
                 'required' => true,
             ])
-            ->add('name')
           
-            ;
+            ->add('types', EntityType::class, [
+                'class' => Type::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
+                'required' => true,
+            ]);
+          
+            
     }
 
     public function configureOptions(OptionsResolver $resolver): void
