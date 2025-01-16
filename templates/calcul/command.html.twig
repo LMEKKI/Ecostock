@@ -5,11 +5,12 @@
 {% block body %}
    
     <p>commande numéro {{order.id}} :</p>
-    <p>fait le {{order.createdAt | date}} par {{order.createdBy}}</p>
+    <p>fait le {{order.createdAt | date("d/m/Y")}} par {{order.createdBy | capitalize}}.</p>
+     <p>Adresse de livraison : {# {{order.userAccount.address}} #}</p>
+    
     <p>
-        {% for item in orderDetails %}
-            {{item.nombre}} {{item.nom | capitalize}}s, 
-        {% endfor %}
+        Contenu de la commande : 
+        {% for item in orderDetails %}{% if loop.index > 1 %},{% endif %} {{item.nombre}} {{item.nom | capitalize}}s{% endfor %}.
     </p>
 
     <table>
@@ -23,9 +24,9 @@
         <tbody>
             {% for item in sortedOrder %} 
                 <tr>
-                    <td>{{item.name}}</td>
+                    <td>{{item.name | capitalize}}</td>
                     <td>{{item.quantity}}</td>
-                    <td>{{item.mesure}}</td>
+                    <td>{{item.mesure | replace({"unité": "", "gr":"grammes", "cl":"centilitres"}) | capitalize}}</td>
                 </tr> 
             {% endfor %}
         </tbody>
