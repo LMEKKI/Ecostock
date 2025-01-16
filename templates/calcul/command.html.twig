@@ -4,9 +4,10 @@
 
 {% block body %}
    
-    <p>commande numéro {{order_placeholder.id + 1}} :</p>
+    <p>commande numéro {{order.id + 1}} :</p>
+    <p>fait le {{order.createdAt | date}} par {{order.createdBy}}</p>
     <p>
-        {% for item in order_placeholder.recipes %}
+        {% for item in orderDetails %}
             {{item.nombre}} {{item.nom | capitalize}}s, 
         {% endfor %}
     </p>
@@ -14,8 +15,8 @@
     <table>
         <thead>
             <tr>
-                <th>ingrédient</th>
-                <th>quantité</th>
+                <th scope="ingredients">Ingrédients</th>
+                <th scope="quantities">Quantité</th>
             </tr>
         </thead>
         <tbody>
@@ -27,9 +28,5 @@
             {% endfor %}
         </tbody>
     </table>
-
-    {# <pre>
-        {{ dump(sortedOrder) }}
-    </pre> #}
     
 {% endblock %}

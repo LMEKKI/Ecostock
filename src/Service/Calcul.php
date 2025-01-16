@@ -31,7 +31,7 @@ class Calcul
      */
     public function sortOrder(array $order, Calcul $calcul){
         $orderIngredients = $calcul->getOrderIngredients($order);
-        $sortedOrder = $calcul->unique_multidim_array($orderIngredients, "name");
+        $sortedOrder = $calcul->cleanArray($orderIngredients, "name");
         return $sortedOrder;
     }
 
@@ -40,7 +40,7 @@ class Calcul
      * does not work
      * @return array
      */
-    function unique_multidim_array(array $ingredientsArray) {
+    function cleanArray(array $ingredientsArray) {
 
         $temp_array = array();
         $i = 0;
