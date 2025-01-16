@@ -4,7 +4,7 @@
 
 {% block body %}
    
-    <p>commande numéro {{order.id + 1}} :</p>
+    <p>commande numéro {{order.id}} :</p>
     <p>fait le {{order.createdAt | date}} par {{order.createdBy}}</p>
     <p>
         {% for item in orderDetails %}
@@ -17,6 +17,7 @@
             <tr>
                 <th scope="ingredients">Ingrédients</th>
                 <th scope="quantities">Quantité</th>
+                <th scope="units">Unité</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,7 @@
                 <tr>
                     <td>{{item.name}}</td>
                     <td>{{item.quantity}}</td>
+                    <td>{{item.mesure}}</td>
                 </tr> 
             {% endfor %}
         </tbody>
