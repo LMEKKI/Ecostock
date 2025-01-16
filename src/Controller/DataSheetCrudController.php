@@ -21,7 +21,8 @@ class DataSheetCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('Name', 'Nom'),
+            TextField::new('Name', 'Nom')
+            ->setFormTypeOptions(['required' => true]),
             TextField::new('description'),
             ArrayField::new('ingredient', 'Ingrédients'),
             ImageField::new('image', 'Visuel')
