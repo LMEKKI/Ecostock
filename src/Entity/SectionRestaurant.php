@@ -36,7 +36,7 @@ class SectionRestaurant
     /**
      * @var Collection<int, Camping>
      */
-    #[ORM\ManyToMany(targetEntity: Camping::class, mappedBy: 'services')]
+    #[ORM\ManyToMany(targetEntity: Camping::class, mappedBy: 'services', cascade: ['persist', 'remove'])]
     private Collection $camping;
 
     /**
