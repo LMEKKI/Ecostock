@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 class CategoryCrudController extends AbstractCrudController
 
@@ -30,6 +31,8 @@ class CategoryCrudController extends AbstractCrudController
                 ])
                 ->allowMultipleChoices(true) // Permet de sélectionner plusieurs rubriques
                 ->renderExpanded(true), // Affiche sous forme de cases à cocher
+
+              
         ];
     }
   
