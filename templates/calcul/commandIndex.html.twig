@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CalculController!{% endblock %}
+
+{% block body %}
+<table>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>nom du resto</th>
+            <th>date</th>
+            <th>adresse</th>
+            <th>aperçu</th>
+        </tr>
+    </thead>
+    {% set var = orders_placeholder|decode_json %}
+    <tbody>
+        {% for item in var %}
+        <tr>
+            <td></td>
+            <td><a href="commande_{{item.id}}">nom resto</a></td>
+            <td>{{item.date | date("d/m/Y")}}</td>
+            <td>address</td>
+            <td>pizza : {{item.pizza}}, burger : {{item.burger}}, salades : {{item.salades}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

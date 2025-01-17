@@ -15,12 +15,12 @@ class OrderForm
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $createdBy = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: "json")]
     private array $content = [];
 
     #[ORM\ManyToOne(inversedBy: 'orderForms')]
@@ -38,14 +38,14 @@ class OrderForm
         return $this;
     }
 
-    public function getName(): ?string
+    public function getcreatedBy(): ?string
     {
-        return $this->name;
+        return $this->createdBy;
     }
 
-    public function setName(string $name): static
+    public function setcreatedBy(string $createdBy): static
     {
-        $this->name = $name;
+        $this->createdBy = $createdBy;
 
         return $this;
     }
