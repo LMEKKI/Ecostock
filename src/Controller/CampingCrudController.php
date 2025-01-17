@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Camping;
-
 use App\Form\SectionRestaurantType;
-
+use App\Form\Type;
+use App\Form\TypeType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
@@ -30,6 +30,7 @@ class CampingCrudController extends AbstractCrudController
                 ->setFormTypeOptions([
                     'by_reference' => false, // Important pour les relations ManyToMany
                 ]),
+
         ];
     }
 }

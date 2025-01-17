@@ -25,10 +25,7 @@ class SectionRestaurant
     #[ORM\Column(type: Types::TEXT)]
     private ?string $adresse = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    #[Assert\Choice(choices: ['Restaurant', 'Bar', 'Snack'], multiple: true)]
-    #[Assert\NotBlank(message: 'Le type de la catégorie est obligatoire.')]
-    private array $type = [];
+   
 
     /**
      * @var Collection<int, Category>
@@ -48,6 +45,14 @@ class SectionRestaurant
     #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'SectionRestaurant')]
     private Collection $userAccounts;
 
+    /**
+     * @var Collection<int, Type>
+     */
+    #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'sectionRestaurants')]
+    #[ORM\JoinTable(name: 'section_restaurant_type')]
+    
+    private Collection $types;
+
     public function __toString(): string
     {
         return $this->name ?? 'Section Restaurant';
@@ -58,6 +63,7 @@ class SectionRestaurant
         $this->categories = new ArrayCollection();
         $this->camping = new ArrayCollection();
         $this->userAccounts = new ArrayCollection();
+        $this->types = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,17 +102,7 @@ class SectionRestaurant
         return $this;
     }
 
-    public function getType(): array
-    {
-        return $this->type;
-    }
-
-    public function setType(array $type): static
-    {
-        $this->type = $type;
-
-        return $this;
-    }
+  
 
 
     /**
@@ -163,5 +159,31 @@ class SectionRestaurant
         return $this;
     }
 
+    /**
+     * @return Collection<int, Type>
+     */
+    public function getTypes(): Collection
+    {
+        return $this->types;
+    }
+    public function addType(Type $type): self
+    {
+        if (!$this->types->contains($type)) {
+            $this->types->add($type);
+            $type->addSectionRestaurant($this); // Ajout de la relation inverse
+        }
+    
+        return $this;
+    }
+    
+    public function removeType(Type $type): self
+    {
+        if ($this->types->removeElement($type)) {
+            $type->removeSectionRestaurant($this); // Suppression de la relation inverse
+        }
+    
+        return $this;
+    }
+    
   
 }

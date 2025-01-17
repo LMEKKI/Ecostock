@@ -4,10 +4,14 @@ namespace App\Form;
 
 use App\Entity\SectionRestaurant;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Entity\Type;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Camping;
+
+
 
 class SectionRestaurantType extends AbstractType
 {
@@ -22,16 +26,16 @@ class SectionRestaurantType extends AbstractType
                 'label' => 'Adresse',
                 'required' => true,
             ])
-            ->add('type', ChoiceType::class, [
-                'label' => 'Type',
-                'choices' => [
-                    'Restaurant' => 'Restaurant',
-                    'Bar' => 'Bar',
-                    'Snack' => 'Snack',
-                ],
+          
+            ->add('types', EntityType::class, [
+                'class' => Type::class,
+                'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true,
+                'required' => true,
             ]);
+          
+            
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -40,4 +44,6 @@ class SectionRestaurantType extends AbstractType
             'data_class' => SectionRestaurant::class,
         ]);
     }
+
+
 }
