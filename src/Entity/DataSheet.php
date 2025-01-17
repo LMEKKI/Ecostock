@@ -28,7 +28,7 @@ class DataSheet
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'datasheets')]
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'datasheets',cascade: ['persist', 'remove'])]
     private Collection $categories;
 
     #[ORM\Column(length: 255)]
