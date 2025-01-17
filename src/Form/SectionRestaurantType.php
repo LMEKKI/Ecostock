@@ -26,7 +26,7 @@ class SectionRestaurantType extends AbstractType
                 'label' => 'Adresse',
                 'required' => true,
             ])
-          
+
             ->add('types', EntityType::class, [
                 'class' => Type::class,
                 'choice_label' => 'name',
@@ -34,8 +34,6 @@ class SectionRestaurantType extends AbstractType
                 'expanded' => true,
                 'required' => true,
             ]);
-          
-            
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -44,6 +42,4 @@ class SectionRestaurantType extends AbstractType
             'data_class' => SectionRestaurant::class,
         ]);
     }
-
-
 }
