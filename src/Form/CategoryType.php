@@ -30,14 +30,8 @@ class CategoryType extends AbstractType
                 'multiple' => true,
                 'expanded' => true, // Affiche les options sous forme de cases à cocher
                 'label' => 'Catégories',
-            ])
-            ->add('datasheets', EntityType::class, [
-                'class' => DataSheet::class,
-                'choice_label' => 'name', // Utilise le champ 'name' pour afficher les options
-                'label' => 'Recettes associées',
-                'required' => false,
-                'multiple' => false, // Si une seule recette doit être associée
             ]);
+           
     }
 
     public function configureOptions(OptionsResolver $resolver): void
