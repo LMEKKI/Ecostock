@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 
 class CategoryCrudController extends AbstractCrudController
