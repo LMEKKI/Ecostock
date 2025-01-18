@@ -33,9 +33,16 @@ class Type
 
     private Collection $sectionRestaurants;
 
+    /**
+     * @var Collection<int, Category>
+     */
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'type')]
+    private Collection $categories;
+
     public function __construct()
     {
         $this->sectionRestaurants = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,6 +91,33 @@ class Type
     {
         if ($this->sectionRestaurants->removeElement($sectionRestaurant)) {
             $sectionRestaurant->removeType($this); // Gestion de la relation inverse
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->addType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeType($this);
         }
 
         return $this;
