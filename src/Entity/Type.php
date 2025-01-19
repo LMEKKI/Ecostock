@@ -29,7 +29,7 @@ class Type
     /**
      * @var Collection<int, SectionRestaurant>
      */
-    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'types')]
+    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'type')]
 
     private Collection $sectionRestaurants;
 
@@ -108,7 +108,6 @@ class Type
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
-            $category->addType($this);
         }
 
         return $this;
@@ -117,7 +116,6 @@ class Type
     public function removeCategory(Category $category): static
     {
         if ($this->categories->removeElement($category)) {
-            $category->removeType($this);
         }
 
         return $this;

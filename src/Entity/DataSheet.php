@@ -127,7 +127,7 @@ class DataSheet
     /**
      * @return Collection<int, Ingredient>
      */
-    public function getIngredients(): Collection
+    public function getIngredient(): Collection
     {
         return $this->ingredient;
     }

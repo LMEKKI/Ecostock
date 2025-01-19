@@ -1,10 +1,10 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\CampingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CampingRepository::class)]
@@ -18,10 +18,10 @@ class Camping
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
-    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'camping', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, mappedBy: 'camping', cascade: ['persist', 'remove'])]
     private Collection $services;
 
     #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'camping')]
@@ -31,11 +31,7 @@ class Camping
     private ?Admin $admin = null;
 
 
-    public function __toString(): string
-    {
-        // Retournez une propriété lisible comme le nom
-        return $this->name ?? 'Camping'; // Par exemple, affiche le nom du camping
-    }
+
 
     public function __construct()
     {
@@ -52,6 +48,10 @@ class Camping
     {
         return $this->name;
     }
+    public function __toString(): string
+    {
+        return $this->name ?? '';
+    }
 
     public function setName(string $name): self
     {
@@ -64,6 +64,9 @@ class Camping
     {
         return $this->adresse;
     }
+
+
+
 
     public function setAdresse(string $adresse): self
     {

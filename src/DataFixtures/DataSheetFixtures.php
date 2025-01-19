@@ -44,11 +44,7 @@ class DataSheetFixtures extends Fixture implements DependentFixtureInterface
                 $dataSheet->addIngredient($ingredients[$index]);
             }
 
-            // Ajouter aléatoirement 1 à 2 catégories
-            $randomCategories = (array) array_rand($categories, rand(1, 2));
-            foreach ($randomCategories as $index) {
-                $dataSheet->addCategory($categories[$index]);
-            }
+
 
             // Persister la fiche
             $manager->persist($dataSheet);
@@ -62,7 +58,6 @@ class DataSheetFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             IngredientFixtures::class,
-            CategoryFixtures::class,
         ];
     }
 }

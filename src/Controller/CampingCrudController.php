@@ -18,10 +18,12 @@ class CampingCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+
             TextField::new('name', 'Nom du Camping'),
             TextField::new('adresse', 'Adresse du Camping'),
-            
+
             CollectionField::new('services', 'Nom de l\'Etablissement')
+
                 ->setEntryType(SectionRestaurantType::class)
                 ->allowAdd() // Permet d'ajouter de nouvelles entrées
                 ->allowDelete() // Permet de supprimer des entrées

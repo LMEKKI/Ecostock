@@ -3,8 +3,9 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
-use App\Entity\Type;
+use App\Entity\DataSheet;
 use App\Entity\SectionRestaurant;
+use App\Entity\Type;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -13,35 +14,41 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        // Récupérer tous les types et services (SectionRestaurant) existants
-        $types = $manager->getRepository(Type::class)->findAll();
+        // Récupérer les données nécessaires pour les relations
+        $dataSheets = $manager->getRepository(DataSheet::class)->findAll();
         $sectionRestaurants = $manager->getRepository(SectionRestaurant::class)->findAll();
+        $types = $manager->getRepository(Type::class)->findAll();
 
-        // Vérifier qu'il y a des données disponibles pour créer les relations
-        if (empty($types)) {
-            throw new \Exception('Aucun type trouvé dans la base de données. Ajoutez des fixtures pour l\'entité Type.');
-        }
-
-        if (empty($sectionRestaurants)) {
-            throw new \Exception('Aucun service trouvé dans la base de données. Ajoutez des fixtures pour l\'entité SectionRestaurant.');
-        }
-
-        // Créer 10 catégories avec des relations aléatoires
-        for ($i = 0; $i < 10; $i++) {
+        // Générer des catégories
+        for ($i = 1; $i <= 10; $i++) {
             $category = new Category();
 
-            // Associer 2 types aléatoires
-            $randomTypes = array_rand($types, min(2, count($types))); // Prend au moins 2 si possible
-            foreach ((array) $randomTypes as $index) {
-                $category->getType()->add($types[$index]);
+            // Associer un nom unique pour chaque catégorie
+            $category->setName('Catégorie ' . $i);
+
+            // Associer un DataSheet aléatoire (s'il existe)
+            if (!empty($dataSheets)) {
+                $randomDataSheet = $dataSheets[array_rand($dataSheets)];
+                $category->setDatasheets($randomDataSheet);
             }
 
-            // Associer 2 services (SectionRestaurant) aléatoires
-            $randomServices = array_rand($sectionRestaurants, min(2, count($sectionRestaurants))); // Prend au moins 2 si possible
-            foreach ((array) $randomServices as $index) {
-                $category->addService($sectionRestaurants[$index]);
+            // Associer des SectionRestaurant aléatoires
+            if (!empty($sectionRestaurants)) {
+                $randomSectionRestaurants = (array) array_rand($sectionRestaurants, min(2, count($sectionRestaurants)));
+                foreach ($randomSectionRestaurants as $index) {
+                    $category->addService($sectionRestaurants[$index]);
+                }
             }
 
+            // Associer des Types aléatoires
+            if (!empty($types)) {
+                $randomTypes = (array) array_rand($types, min(2, count($types)));
+                foreach ($randomTypes as $index) {
+                    $category->getType()->add($types[$index]);
+                }
+            }
+
+            // Persister l'entité
             $manager->persist($category);
         }
 
@@ -51,8 +58,9 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            TypeFixtures::class,              // Assurez-vous que TypeFixtures existe et est correctement configuré
-            SectionRestaurantFixtures::class // Assurez-vous que SectionRestaurantFixtures existe également
+            DataSheetFixtures::class,
+            SectionRestaurantFixtures::class,
+            TypeFixtures::class,
         ];
     }
 }

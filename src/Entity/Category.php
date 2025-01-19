@@ -33,6 +33,9 @@ class Category
     #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'categories')]
     private Collection $type;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
@@ -97,5 +100,22 @@ class Category
     public function getType(): Collection
     {
         return $this->type;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? 'Categorie sans nom';
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
     }
 }

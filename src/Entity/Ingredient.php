@@ -52,6 +52,10 @@ class Ingredient
     {
         return $this->name;
     }
+    public function __toString(): string
+    {
+        return $this->name ?? 'Ingrédient sans nom';
+    }
 
     public function setName(string $name): static
     {

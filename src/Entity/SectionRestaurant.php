@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\SectionRestaurantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,21 +21,19 @@ class SectionRestaurant
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
-   
+
 
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'services')]
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'categories')]
     private Collection $categories;
 
-    /**
-     * @var Collection<int, Camping>
-     */
-    #[ORM\ManyToMany(targetEntity: Camping::class, mappedBy: 'services', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: Camping::class, inversedBy: 'sectionRestaurants', cascade: ['persist', 'remove'])]
+    #[ORM\JoinTable(name: 'section_restaurant_camping')] // Le nom de la table intermédiaire
     private Collection $camping;
 
     /**
@@ -48,10 +45,11 @@ class SectionRestaurant
     /**
      * @var Collection<int, Type>
      */
-    #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'sectionRestaurants')]
+    #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'sectionRestaurants', cascade: ['persist'])]
     #[ORM\JoinTable(name: 'section_restaurant_type')]
-    
-    private Collection $types;
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+
+    private Collection $type;
 
     public function __toString(): string
     {
@@ -63,7 +61,7 @@ class SectionRestaurant
         $this->categories = new ArrayCollection();
         $this->camping = new ArrayCollection();
         $this->userAccounts = new ArrayCollection();
-        $this->types = new ArrayCollection();
+        $this->type = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,7 +100,7 @@ class SectionRestaurant
         return $this;
     }
 
-  
+
 
 
     /**
@@ -162,28 +160,26 @@ class SectionRestaurant
     /**
      * @return Collection<int, Type>
      */
-    public function getTypes(): Collection
+    public function getType(): Collection
     {
-        return $this->types;
+        return $this->type;
     }
     public function addType(Type $type): self
     {
-        if (!$this->types->contains($type)) {
-            $this->types->add($type);
+        if (!$this->type->contains($type)) {
+            $this->type->add($type);
             $type->addSectionRestaurant($this); // Ajout de la relation inverse
         }
-    
+
         return $this;
     }
-    
+
     public function removeType(Type $type): self
     {
-        if ($this->types->removeElement($type)) {
+        if ($this->type->removeElement($type)) {
             $type->removeSectionRestaurant($this); // Suppression de la relation inverse
         }
-    
+
         return $this;
     }
-    
-  
 }
