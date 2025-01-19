@@ -3,72 +3,56 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
-use App\Entity\SectionRestaurant;
 use App\Entity\Type;
+use App\Entity\SectionRestaurant;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class CategoryFixtures extends Fixture
+class CategoryFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        // Rubriques possibles
-        $rubriquesList = [
-            ['Entrées', 'Soupes'],
-            ['Plats principaux', 'Viandes'],
-            ['Desserts', 'Gâteaux'],
-            ['Boissons', 'Cocktails'],
-            ['Snacks', 'Sandwichs'],
-            ['Petit déjeuner', 'Céréales'],
-            ['Végétarien', 'Salades'],
-            ['Fruits de mer', 'Poissons'],
-            ['Pâtes', 'Pizzas'],
-            ['Spécialités régionales', 'Traditionnel'],
-        ];
-
-        // Récupérer tous les Types et SectionRestaurant
+        // Récupérer tous les types et services (SectionRestaurant) existants
         $types = $manager->getRepository(Type::class)->findAll();
-        $sectionsRestaurants = $manager->getRepository(SectionRestaurant::class)->findAll();
+        $sectionRestaurants = $manager->getRepository(SectionRestaurant::class)->findAll();
 
+        // Vérifier qu'il y a des données disponibles pour créer les relations
+        if (empty($types)) {
+            throw new \Exception('Aucun type trouvé dans la base de données. Ajoutez des fixtures pour l\'entité Type.');
+        }
 
+        if (empty($sectionRestaurants)) {
+            throw new \Exception('Aucun service trouvé dans la base de données. Ajoutez des fixtures pour l\'entité SectionRestaurant.');
+        }
 
-        // Créer 10 catégories et les associer à des types et des services
+        // Créer 10 catégories avec des relations aléatoires
         for ($i = 0; $i < 10; $i++) {
             $category = new Category();
-            $category->setRubrique($rubriquesList[$i % count($rubriquesList)]); // Associer une rubrique depuis la liste
 
-            // Associer 2 types au hasard à la catégorie
-            $randomTypes = array_rand($types, 2); // Choisir 2 types au hasard
-            if (is_array($randomTypes)) {
-                foreach ($randomTypes as $index) {
-                    $category->addType($types[$index]);
-                }
-            } else {
-                $category->addType($types[$randomTypes]);
+            // Associer 2 types aléatoires
+            $randomTypes = array_rand($types, min(2, count($types))); // Prend au moins 2 si possible
+            foreach ((array) $randomTypes as $index) {
+                $category->getType()->add($types[$index]);
             }
 
-            // Associer 2 services (SectionRestaurant) à la catégorie
-            $randomServices = array_rand($sectionsRestaurants, 2); // Choisir 2 services au hasard
-            if (is_array($randomServices)) {
-                foreach ($randomServices as $index) {
-                    $category->addService($sectionsRestaurants[$index]);
-                }
-            } else {
-                $category->addService($sectionsRestaurants[$randomServices]);
+            // Associer 2 services (SectionRestaurant) aléatoires
+            $randomServices = array_rand($sectionRestaurants, min(2, count($sectionRestaurants))); // Prend au moins 2 si possible
+            foreach ((array) $randomServices as $index) {
+                $category->addService($sectionRestaurants[$index]);
             }
 
             $manager->persist($category);
         }
 
-        // Enregistrer les catégories dans la base de données
         $manager->flush();
     }
 
     public function getDependencies(): array
     {
         return [
-            TypeFixtures::class,  // Dépend de TypeFixtures pour charger les types
-            SectionRestaurantFixtures::class, // Dépend de SectionRestaurantFixtures pour charger les services
+            TypeFixtures::class,              // Assurez-vous que TypeFixtures existe et est correctement configuré
+            SectionRestaurantFixtures::class // Assurez-vous que SectionRestaurantFixtures existe également
         ];
     }
 }

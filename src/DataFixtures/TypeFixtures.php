@@ -38,4 +38,11 @@ class TypeFixtures extends Fixture
 
         $manager->flush();
     }
+    public function getDependencies(): array
+    {
+        return [
+            TypeFixtures::class,  // Dépend de TypeFixtures pour charger les types
+            SectionRestaurantFixtures::class, // Dépend de SectionRestaurantFixtures pour charger les services
+        ];
+    }
 }
