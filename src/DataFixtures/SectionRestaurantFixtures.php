@@ -5,6 +5,7 @@ use App\Entity\SectionRestaurant;
 use App\Entity\Type;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\Category;
 
 class SectionRestaurantFixtures extends Fixture
 {
