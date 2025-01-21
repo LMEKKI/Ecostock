@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\SectionRestaurant;
 use App\Entity\Type;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

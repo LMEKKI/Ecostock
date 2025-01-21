@@ -29,7 +29,7 @@ class Type
     /**
      * @var Collection<int, SectionRestaurant>
      */
-    #[ORM\ManyToMany(targetEntity: Section::class, inversedBy: 'type')]
+    #[ORM\ManyToMany(targetEntity: Section::class, inversedBy: 'type', cascade: ['persist'])]
 
     private Collection $section;
 

@@ -42,7 +42,7 @@ class TypeFixtures extends Fixture
     {
         return [
             TypeFixtures::class,  // Dépend de TypeFixtures pour charger les types
-            SectionRestaurantFixtures::class, // Dépend de SectionRestaurantFixtures pour charger les services
+            SectionFixtures::class, // Dépend de SectionRestaurantFixtures pour charger les services
         ];
     }
 }

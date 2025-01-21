@@ -4,7 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\DataSheet;
-use App\Entity\SectionRestaurant;
+use App\Entity\Section;
 use App\Entity\Type;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -16,7 +16,7 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
     {
         // Récupérer les données nécessaires pour les relations
         $dataSheets = $manager->getRepository(DataSheet::class)->findAll();
-        $sectionRestaurants = $manager->getRepository(SectionRestaurant::class)->findAll();
+        $section = $manager->getRepository(Section::class)->findAll();
         $types = $manager->getRepository(Type::class)->findAll();
 
         // Générer des catégories
@@ -33,10 +33,10 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
             }
 
             // Associer des SectionRestaurant aléatoires
-            if (!empty($sectionRestaurants)) {
-                $randomSectionRestaurants = (array) array_rand($sectionRestaurants, min(2, count($sectionRestaurants)));
-                foreach ($randomSectionRestaurants as $index) {
-                    $category->addService($sectionRestaurants[$index]);
+            if (!empty($section)) {
+                $randomsection = (array) array_rand($section, min(2, count($section)));
+                foreach ($randomsection as $index) {
+                    $category->addSection($section[$index]);
                 }
             }
 
@@ -59,7 +59,7 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             DataSheetFixtures::class,
-            SectionRestaurantFixtures::class,
+            SectionFixtures::class,
             TypeFixtures::class,
         ];
     }

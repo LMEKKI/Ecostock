@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Camping
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]  // Cette option permet à Doctrine de générer automatiquement l'ID
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -21,8 +21,8 @@ class Camping
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
-    #[ORM\OneToMany(mappedBy: 'camping', targetEntity: Section::class, cascade: ['persist', 'remove'])]
-    private Collection $sections;
+    #[ORM\OneToMany(mappedBy: 'camping', targetEntity: Section::class, cascade: ['persist'])]
+    private $sections;
 
     #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'camping')]
     private Collection $userAccounts;

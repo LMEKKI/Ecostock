@@ -31,9 +31,15 @@ class Section
     #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'categories')]
     private Collection $categories;
 
-    #[ORM\ManyToOne(targetEntity: Camping::class, inversedBy: 'section', cascade: ['persist', 'remove'])]
-    #[ORM\JoinTable(name: 'section_camping')] // Le nom de la table intermédiaire qui relie les deux entite en bdd 
-    private Collection $camping;
+
+
+
+
+    #[ORM\ManyToOne(targetEntity: Camping::class, inversedBy: 'sections', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)] // Si la relation est obligatoire
+    private ?Camping $camping = null;
+
+
 
     /**
      * @var Collection<int, UserAccount>
@@ -44,7 +50,7 @@ class Section
     /**
      * @var Collection<int, Type>
      */
-    #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'sectionRestaurants', cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'section', cascade: ['persist'])]
     #[ORM\JoinTable(name: 'section_restaurant_type')]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
 
@@ -58,7 +64,6 @@ class Section
     public function __construct()
     {
         $this->categories = new ArrayCollection();
-        $this->camping = new ArrayCollection();
         $this->userAccounts = new ArrayCollection();
         $this->type = new ArrayCollection();
     }
@@ -129,32 +134,20 @@ class Section
         return $this;
     }
 
-    /**
-     * @return Collection<int, Camping>
-     */
-    public function getCamping(): Collection
+
+    public function getCamping(): ?Camping
     {
         return $this->camping;
     }
 
-    public function addCamping(Camping $camping): static
+    public function setCamping(?Camping $camping): self
     {
-        if (!$this->camping->contains($camping)) {
-            $this->camping->add($camping);
-            $camping->addSection($this);
-        }
+        $this->camping = $camping;
 
         return $this;
     }
 
-    public function removeCamping(Camping $camping): static
-    {
-        if ($this->camping->removeElement($camping)) {
-            $camping->removesection($this);
-        }
 
-        return $this;
-    }
 
     /**
      * @return Collection<int, Type>
