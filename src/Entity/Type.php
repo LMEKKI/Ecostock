@@ -29,9 +29,9 @@ class Type
     /**
      * @var Collection<int, SectionRestaurant>
      */
-    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'type')]
+    #[ORM\ManyToMany(targetEntity: Section::class, inversedBy: 'type')]
 
-    private Collection $sectionRestaurants;
+    private Collection $section;
 
     /**
      * @var Collection<int, Category>
@@ -41,7 +41,7 @@ class Type
 
     public function __construct()
     {
-        $this->sectionRestaurants = new ArrayCollection();
+        $this->section = new ArrayCollection();
         $this->categories = new ArrayCollection();
     }
 
@@ -72,25 +72,25 @@ class Type
     /**
      * @return Collection<int, SectionRestaurant>
      */
-    public function getSectionRestaurants(): Collection
+    public function getsection(): Collection
     {
-        return $this->sectionRestaurants;
+        return $this->section;
     }
 
-    public function addSectionRestaurant(SectionRestaurant $sectionRestaurant): static
+    public function addSection(Section $section): static
     {
-        if (!$this->sectionRestaurants->contains($sectionRestaurant)) {
-            $this->sectionRestaurants->add($sectionRestaurant);
-            $sectionRestaurant->addType($this); // Gestion de la relation inverse
+        if (!$this->section->contains($section)) {
+            $this->section->add($section);
+            $section->addType($this); // Gestion de la relation inverse
         }
 
         return $this;
     }
 
-    public function removeSectionRestaurant(SectionRestaurant $sectionRestaurant): static
+    public function removeSection(Section $section): static
     {
-        if ($this->sectionRestaurants->removeElement($sectionRestaurant)) {
-            $sectionRestaurant->removeType($this); // Gestion de la relation inverse
+        if ($this->section->removeElement($section)) {
+            $section->removeType($this); // Gestion de la relation inverse
         }
 
         return $this;

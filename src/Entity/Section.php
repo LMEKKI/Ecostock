@@ -2,16 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\SectionRestaurantRepository;
+use App\Repository\SectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 
 
-#[ORM\Entity(repositoryClass: SectionRestaurantRepository::class)]
-class SectionRestaurant
+#[ORM\Entity(repositoryClass: SectionRepository::class)]
+class Section
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -32,8 +31,8 @@ class SectionRestaurant
     #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'categories')]
     private Collection $categories;
 
-    #[ORM\ManyToMany(targetEntity: Camping::class, inversedBy: 'sectionRestaurants', cascade: ['persist', 'remove'])]
-    #[ORM\JoinTable(name: 'section_restaurant_camping')] // Le nom de la table intermédiaire
+    #[ORM\ManyToOne(targetEntity: Camping::class, inversedBy: 'section', cascade: ['persist', 'remove'])]
+    #[ORM\JoinTable(name: 'section_camping')] // Le nom de la table intermédiaire qui relie les deux entite en bdd 
     private Collection $camping;
 
     /**
@@ -115,7 +114,7 @@ class SectionRestaurant
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
-            $category->addService($this);
+            $category->addSection($this);
         }
 
         return $this;
@@ -124,7 +123,7 @@ class SectionRestaurant
     public function removeCategory(Category $category): static
     {
         if ($this->categories->removeElement($category)) {
-            $category->removeService($this);
+            $category->removeSection($this);
         }
 
         return $this;
@@ -142,7 +141,7 @@ class SectionRestaurant
     {
         if (!$this->camping->contains($camping)) {
             $this->camping->add($camping);
-            $camping->addService($this);
+            $camping->addSection($this);
         }
 
         return $this;
@@ -151,7 +150,7 @@ class SectionRestaurant
     public function removeCamping(Camping $camping): static
     {
         if ($this->camping->removeElement($camping)) {
-            $camping->removeService($this);
+            $camping->removesection($this);
         }
 
         return $this;
@@ -168,7 +167,7 @@ class SectionRestaurant
     {
         if (!$this->type->contains($type)) {
             $this->type->add($type);
-            $type->addSectionRestaurant($this); // Ajout de la relation inverse
+            $type->addSection($this); // Ajout de la relation inverse
         }
 
         return $this;
@@ -177,7 +176,7 @@ class SectionRestaurant
     public function removeType(Type $type): self
     {
         if ($this->type->removeElement($type)) {
-            $type->removeSectionRestaurant($this); // Suppression de la relation inverse
+            $type->removeSection($this); // Suppression de la relation inverse
         }
 
         return $this;

@@ -23,8 +23,8 @@ class Category
     /**
      * @var Collection<int, SectionRestaurant>
      */
-    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'categories')]
-    private Collection $services;
+    #[ORM\ManyToMany(targetEntity: Section::class, inversedBy: 'categories')]
+    private Collection $sections;
 
 
     /**
@@ -38,7 +38,7 @@ class Category
 
     public function __construct()
     {
-        $this->services = new ArrayCollection();
+        $this->sections = new ArrayCollection();
         $this->type = new ArrayCollection();
     }
 
@@ -72,23 +72,23 @@ class Category
     /**
      * @return Collection<int, SectionRestaurant>
      */
-    public function getServices(): Collection
+    public function getSection(): Collection
     {
-        return $this->services;
+        return $this->sections;
     }
 
-    public function addService(SectionRestaurant $service): static
+    public function addSection(Section $section): static
     {
-        if (!$this->services->contains($service)) {
-            $this->services->add($service);
+        if (!$this->sections->contains($section)) {
+            $this->sections->add($section);
         }
 
         return $this;
     }
 
-    public function removeService(SectionRestaurant $service): static
+    public function removeSection(Section $section): static
     {
-        $this->services->removeElement($service);
+        $this->sections->removeElement($section);
 
         return $this;
     }

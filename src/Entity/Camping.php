@@ -21,8 +21,8 @@ class Camping
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
-    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, mappedBy: 'camping', cascade: ['persist', 'remove'])]
-    private Collection $services;
+    #[ORM\OneToMany(mappedBy: 'camping', targetEntity: Section::class, cascade: ['persist', 'remove'])]
+    private Collection $sections;
 
     #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'camping')]
     private Collection $userAccounts;
@@ -35,7 +35,7 @@ class Camping
 
     public function __construct()
     {
-        $this->services = new ArrayCollection();
+        $this->sections = new ArrayCollection();
         $this->userAccounts = new ArrayCollection();
     }
 
@@ -75,23 +75,23 @@ class Camping
         return $this;
     }
 
-    public function getServices(): Collection
+    public function getSection(): Collection
     {
-        return $this->services;
+        return $this->sections;
     }
 
-    public function addService(SectionRestaurant $service): self
+    public function addSection(Section $section): self
     {
-        if (!$this->services->contains($service)) {
-            $this->services->add($service);
+        if (!$this->sections->contains($section)) {
+            $this->sections->add($section);
         }
 
         return $this;
     }
 
-    public function removeService(SectionRestaurant $service): self
+    public function removesection(Section $section): self
     {
-        $this->services->removeElement($service);
+        $this->sections->removeElement($section);
 
         return $this;
     }
