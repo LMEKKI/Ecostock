@@ -24,11 +24,13 @@ class DataSheetFixtures extends Fixture implements DependentFixtureInterface
             'Informations sur les ingrédients d\'une recette spéciale.',
             'Détails nutritionnels et instructions pour une préparation rapide.',
         ];
+
         $images = [
             'image1.jpg',
             'image2.jpg',
             'image3.jpg',
             'image4.jpg',
+
         ];
 
         // Création de 30 fiches
