@@ -18,16 +18,18 @@ class Ingredient
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    
+
     /**
      * @var Collection<int, DataSheet>
      */
-    #[ORM\ManyToMany(targetEntity: DataSheet::class, inversedBy: 'ingredients')]
+    #[ORM\ManyToMany(targetEntity: DataSheet::class, inversedBy: 'ingredient')]
     private Collection $datasheet;
 
     /**
      * @var Collection<int, Unit>
      */
-    #[ORM\ManyToMany(targetEntity: Unit::class, inversedBy: 'ingredients')]
+    #[ORM\ManyToMany(targetEntity: Unit::class, inversedBy: 'ingredient')]
     private Collection $unit;
 
     /**

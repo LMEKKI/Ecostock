@@ -2,15 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
 use App\Entity\DataSheet;
-use App\Form\CategoryType;
+use App\Form\IngredientType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 
 class DataSheetCrudController extends AbstractCrudController
 {
@@ -22,24 +20,22 @@ class DataSheetCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('Name', 'Nom')
+            TextField::new('name', 'Nom')
                 ->setFormTypeOptions(['required' => true]),
-            TextField::new('description'),
-            ArrayField::new('ingredient', 'Ingrédients'),
-            CollectionField::new('categories', 'Catégories')
-                ->setEntryType(CategoryType::class)
-                ->allowAdd() // Permet d'ajouter de nouvelles entrées
-                ->allowDelete() // Permet de supprimer des entrées
-                ->setFormTypeOptions([
-                    'by_reference' => false, // Important pour les relations ManyToMany
-                ]),
+            TextField::new('description', 'Description'),
+            CollectionField::new('ingredient', 'Ingrédients')
+            ->setEntryType(IngredientType::class)
+            ->allowAdd()
+            ->allowDelete()
+            ->setFormTypeOptions([
+                'by_reference' => false, // Important pour permettre les modifications sur les collections
+            ]),
             ImageField::new('image', 'Visuel')
-                ->setBasePath('/uploads/images') // URL de base pour l'affichage de l'image
-                ->setUploadDir('public/uploads/images') // Répertoire de téléchargement
-                ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]'), // Modèle pour le nom du fichier
-
-
-
+                ->setBasePath('/uploads/images')
+                ->setUploadDir('public/uploads/images')
+                ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]'),
+            FormField::addPanel('Ingrédients'),
+           
         ];
     }
 }
