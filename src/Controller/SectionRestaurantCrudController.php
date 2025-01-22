@@ -2,41 +2,37 @@
 
 namespace App\Controller;
 
-use App\Entity\SectionRestaurant;
+use App\Entity\Section;
+use App\Form\CampingType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use App\Form\CampingType;
-
+use App\Form\TypeType;
+use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 class SectionRestaurantCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return SectionRestaurant::class;
+        return Section::class;
     }
 
-    
     public function configureFields(string $pageName): iterable
     {
         return [
             TextField::new('name'),
-            TextField::new('adresse'), 
-            
-            CollectionField::new('camping', 'Camping associé')
-            ->setEntryType(CampingType::class)
-            ->setFormTypeOptions([
-                'by_reference' => false, // Important pour les relations ManyToMany
-            ]),
+            TextField::new('adresse'),
+            AssociationField::new('camping')
+                ->setFormTypeOptions([
+                    'choice_label' => 'name',
+                ]),
+            AssociationField::new('type', 'Type associés')
 
-            AssociationField::new('types', 'Types associés')
-            ->setFormTypeOptions(['expanded' => true, 'multiple' => true, 'required' => true]) // Afficher en cases à cocher
-            ->setHelp('Sélectionnez les types associés à cette section'),
-
+                ->setFormTypeOptions([
+                    'by_reference' => false,
+                ]),
         ];
     }
-
-    
-    
 }

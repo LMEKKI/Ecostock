@@ -2,17 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\SectionRestaurantRepository;
+use App\Repository\SectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 
 
-#[ORM\Entity(repositoryClass: SectionRestaurantRepository::class)]
-class SectionRestaurant
+#[ORM\Entity(repositoryClass: SectionRepository::class)]
+class Section
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,22 +20,22 @@ class SectionRestaurant
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
-   
+
 
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'services')]
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'categories')]
     private Collection $categories;
 
-    /**
-     * @var Collection<int, Camping>
-     */
-    #[ORM\ManyToMany(targetEntity: Camping::class, mappedBy: 'services', cascade: ['persist', 'remove'])]
-    private Collection $camping;
+
+
+
+
+
 
     /**
      * @var Collection<int, UserAccount>
@@ -48,10 +46,14 @@ class SectionRestaurant
     /**
      * @var Collection<int, Type>
      */
-    #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'sectionRestaurants')]
+    #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'section', cascade: ['persist'])]
     #[ORM\JoinTable(name: 'section_restaurant_type')]
-    
-    private Collection $types;
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+
+    private Collection $type;
+
+    #[ORM\ManyToOne(inversedBy: 'section')]
+    private ?Camping $camping = null;
 
     public function __toString(): string
     {
@@ -61,9 +63,8 @@ class SectionRestaurant
     public function __construct()
     {
         $this->categories = new ArrayCollection();
-        $this->camping = new ArrayCollection();
         $this->userAccounts = new ArrayCollection();
-        $this->types = new ArrayCollection();
+        $this->type = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,7 +103,7 @@ class SectionRestaurant
         return $this;
     }
 
-  
+
 
 
     /**
@@ -117,7 +118,7 @@ class SectionRestaurant
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
-            $category->addService($this);
+            $category->addSection($this);
         }
 
         return $this;
@@ -126,64 +127,51 @@ class SectionRestaurant
     public function removeCategory(Category $category): static
     {
         if ($this->categories->removeElement($category)) {
-            $category->removeService($this);
+            $category->removeSection($this);
         }
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Camping>
-     */
-    public function getCamping(): Collection
-    {
-        return $this->camping;
-    }
 
-    public function addCamping(Camping $camping): static
-    {
-        if (!$this->camping->contains($camping)) {
-            $this->camping->add($camping);
-            $camping->addService($this);
-        }
 
-        return $this;
-    }
 
-    public function removeCamping(Camping $camping): static
-    {
-        if ($this->camping->removeElement($camping)) {
-            $camping->removeService($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Type>
      */
-    public function getTypes(): Collection
+    public function getType(): Collection
     {
-        return $this->types;
+        return $this->type;
     }
     public function addType(Type $type): self
     {
-        if (!$this->types->contains($type)) {
-            $this->types->add($type);
-            $type->addSectionRestaurant($this); // Ajout de la relation inverse
+        if (!$this->type->contains($type)) {
+            $this->type->add($type);
+            $type->addSection($this); // Ajout de la relation inverse
         }
-    
+
         return $this;
     }
-    
+
     public function removeType(Type $type): self
     {
-        if ($this->types->removeElement($type)) {
-            $type->removeSectionRestaurant($this); // Suppression de la relation inverse
+        if ($this->type->removeElement($type)) {
+            $type->removeSection($this); // Suppression de la relation inverse
         }
-    
+
         return $this;
     }
-    
-  
+
+    public function getCamping(): ?Camping
+    {
+        return $this->camping;
+    }
+
+    public function setCamping(?Camping $camping): static
+    {
+        $this->camping = $camping;
+
+        return $this;
+    }
 }

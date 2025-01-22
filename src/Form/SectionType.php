@@ -2,18 +2,15 @@
 
 namespace App\Form;
 
-use App\Entity\SectionRestaurant;
+use App\Entity\Section;
+use App\Entity\Type;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\Type;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Entity\Camping;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-
-
-class SectionRestaurantType extends AbstractType
+class SectionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -26,20 +23,19 @@ class SectionRestaurantType extends AbstractType
                 'label' => 'Adresse',
                 'required' => true,
             ])
-
-            ->add('types', EntityType::class, [
+            ->add('type', EntityType::class, [
                 'class' => Type::class,
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true,
                 'required' => true,
-            ]);
+            ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => SectionRestaurant::class,
+            'data_class' => Section::class,
         ]);
     }
 }

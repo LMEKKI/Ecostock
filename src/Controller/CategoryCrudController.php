@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CategoryCrudController extends AbstractCrudController
 
@@ -18,22 +18,16 @@ class CategoryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            ChoiceField::new('rubrique', 'Rubriques')
-                ->setChoices([
-                    'Pizza' => 'pizza',
-                    'Burger' => 'burger',
-                    'Salade' => 'salade',
-                    'Dessert' => 'dessert',
-                    'Boissons soft' => 'boissons soft',
-                    'Boissons alcoolisées' => 'boissons alcoolisées',
-                    'Entrées' => 'entrees',
-                    'Boissons chaudes' => 'boissons chaudes',
-                ])
-                ->allowMultipleChoices(true) // Permet de sélectionner plusieurs rubriques
-                ->renderExpanded(true), // Affiche sous forme de cases à cocher
+            TextField::new('name', 'Nom de la Catégorie'),
 
-              
+            // CollectionField::new('services', 'Nom de l\'Etablissement')
+            //     ->setEntryType(SectionRestaurantType::class)
+            //     ->allowAdd() // Permet d'ajouter de nouvelles entrées
+            //     ->allowDelete() // Permet de supprimer des entrées
+            //     ->setFormTypeOptions([
+            //         'by_reference' => false, // Important pour les relations ManyToMany
+            //     ]),
+
         ];
     }
-  
 }

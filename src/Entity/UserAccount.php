@@ -36,18 +36,18 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'userAccounts')]
     private ?Camping $camping = null;
 
-    #[ORM\ManyToOne( inversedBy: 'userAccount')] 
+    #[ORM\ManyToOne(inversedBy: 'userAccount')]
     //Il fallait assurer que la propriété sectionrestaurant existe dans l'entité
-    private ?SectionRestaurant $sectionrestaurant = null;
+    private ?Section $sections = null;
 
-    public function getSectionrestaurant(): ?SectionRestaurant
+    public function getSection(): ?Section
     {
-        return $this->sectionrestaurant;
+        return $this->sections;
     }
 
-    public function setSectionrestaurant(?SectionRestaurant $sectionrestaurant): static
+    public function setSection(?Section $section): static
     {
-        $this->sectionrestaurant = $sectionrestaurant;
+        $this->sections = $section;
 
         return $this;
     }
@@ -193,5 +193,4 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // Vous pouvez nettoyer des données sensibles ici, par exemple des tokens.
     }
-
 }

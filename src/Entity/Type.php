@@ -29,13 +29,20 @@ class Type
     /**
      * @var Collection<int, SectionRestaurant>
      */
-    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'types')]
+    #[ORM\ManyToMany(targetEntity: Section::class, inversedBy: 'type', cascade: ['persist'])]
 
-    private Collection $sectionRestaurants;
+    private Collection $section;
+
+    /**
+     * @var Collection<int, Category>
+     */
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'type')]
+    private Collection $categories;
 
     public function __construct()
     {
-        $this->sectionRestaurants = new ArrayCollection();
+        $this->section = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,25 +72,50 @@ class Type
     /**
      * @return Collection<int, SectionRestaurant>
      */
-    public function getSectionRestaurants(): Collection
+    public function getsection(): Collection
     {
-        return $this->sectionRestaurants;
+        return $this->section;
     }
 
-    public function addSectionRestaurant(SectionRestaurant $sectionRestaurant): static
+    public function addSection(Section $section): static
     {
-        if (!$this->sectionRestaurants->contains($sectionRestaurant)) {
-            $this->sectionRestaurants->add($sectionRestaurant);
-            $sectionRestaurant->addType($this); // Gestion de la relation inverse
+        if (!$this->section->contains($section)) {
+            $this->section->add($section);
+            $section->addType($this); // Gestion de la relation inverse
         }
 
         return $this;
     }
 
-    public function removeSectionRestaurant(SectionRestaurant $sectionRestaurant): static
+    public function removeSection(Section $section): static
     {
-        if ($this->sectionRestaurants->removeElement($sectionRestaurant)) {
-            $sectionRestaurant->removeType($this); // Gestion de la relation inverse
+        if ($this->section->removeElement($section)) {
+            $section->removeType($this); // Gestion de la relation inverse
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->removeElement($category)) {
         }
 
         return $this;
