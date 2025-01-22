@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\DataSheet;
 use App\Form\CategoryType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -21,15 +22,10 @@ class DataSheetCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('Name', 'Nom'),
+            TextField::new('Name', 'Nom')
+                ->setFormTypeOptions(['required' => true]),
             TextField::new('description'),
             ArrayField::new('ingredient', 'Ingrédients'),
-            ImageField::new('image', 'Visuel')
-                ->setBasePath('/uploads/images') // URL de base pour l'affichage de l'image
-                ->setUploadDir('public/uploads/images') // Répertoire de téléchargement
-                ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]'), // Modèle pour le nom du fichier
-            
-
             CollectionField::new('categories', 'Catégories')
                 ->setEntryType(CategoryType::class)
                 ->allowAdd() // Permet d'ajouter de nouvelles entrées
@@ -37,6 +33,13 @@ class DataSheetCrudController extends AbstractCrudController
                 ->setFormTypeOptions([
                     'by_reference' => false, // Important pour les relations ManyToMany
                 ]),
+            ImageField::new('image', 'Visuel')
+                ->setBasePath('/uploads/images') // URL de base pour l'affichage de l'image
+                ->setUploadDir('public/uploads/images') // Répertoire de téléchargement
+                ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]'), // Modèle pour le nom du fichier
+
+
+
         ];
     }
 }
