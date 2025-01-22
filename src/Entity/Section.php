@@ -35,10 +35,6 @@ class Section
 
 
 
-    #[ORM\ManyToOne(targetEntity: Camping::class, inversedBy: 'sections', cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)] // Si la relation est obligatoire
-    private ?Camping $camping = null;
-
 
 
     /**
@@ -55,6 +51,9 @@ class Section
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
 
     private Collection $type;
+
+    #[ORM\ManyToOne(inversedBy: 'section')]
+    private ?Camping $camping = null;
 
     public function __toString(): string
     {
@@ -135,17 +134,6 @@ class Section
     }
 
 
-    public function getCamping(): ?Camping
-    {
-        return $this->camping;
-    }
-
-    public function setCamping(?Camping $camping): self
-    {
-        $this->camping = $camping;
-
-        return $this;
-    }
 
 
 
@@ -171,6 +159,18 @@ class Section
         if ($this->type->removeElement($type)) {
             $type->removeSection($this); // Suppression de la relation inverse
         }
+
+        return $this;
+    }
+
+    public function getCamping(): ?Camping
+    {
+        return $this->camping;
+    }
+
+    public function setCamping(?Camping $camping): static
+    {
+        $this->camping = $camping;
 
         return $this;
     }

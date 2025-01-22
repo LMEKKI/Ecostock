@@ -21,8 +21,6 @@ class Camping
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
-    #[ORM\OneToMany(mappedBy: 'camping', targetEntity: Section::class, cascade: ['persist'])]
-    private $sections;
 
     #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'camping')]
     private Collection $userAccounts;
@@ -30,13 +28,19 @@ class Camping
     #[ORM\ManyToOne(targetEntity: Admin::class, inversedBy: 'campings')]
     private ?Admin $admin = null;
 
+    /**
+     * @var Collection<int, Section>
+     */
+    #[ORM\OneToMany(targetEntity: Section::class, mappedBy: 'camping')]
+    private Collection $section;
+
 
 
 
     public function __construct()
     {
-        $this->sections = new ArrayCollection();
         $this->userAccounts = new ArrayCollection();
+        $this->section = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,26 +79,7 @@ class Camping
         return $this;
     }
 
-    public function getSection(): Collection
-    {
-        return $this->sections;
-    }
 
-    public function addSection(Section $section): self
-    {
-        if (!$this->sections->contains($section)) {
-            $this->sections->add($section);
-        }
-
-        return $this;
-    }
-
-    public function removesection(Section $section): self
-    {
-        $this->sections->removeElement($section);
-
-        return $this;
-    }
 
     public function getUserAccounts(): Collection
     {
@@ -130,6 +115,36 @@ class Camping
     public function setAdmin(?Admin $admin): self
     {
         $this->admin = $admin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Section>
+     */
+    public function getSection(): Collection
+    {
+        return $this->section;
+    }
+
+    public function addSection(Section $section): static
+    {
+        if (!$this->section->contains($section)) {
+            $this->section->add($section);
+            $section->setCamping($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSection(Section $section): static
+    {
+        if ($this->section->removeElement($section)) {
+            // set the owning side to null (unless already changed)
+            if ($section->getCamping() === $this) {
+                $section->setCamping(null);
+            }
+        }
 
         return $this;
     }
