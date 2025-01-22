@@ -15,18 +15,18 @@ class Weight
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $weight = null;
+    #[ORM\Column(type: 'float')]
+    private ?float $weight = null;
 
     /**
      * @var Collection<int, Ingredient>
      */
     #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'weight')]
-    private Collection $datasheet;
+    private Collection $ingredients;
 
     public function __construct()
     {
-        $this->datasheet = new ArrayCollection();
+        $this->ingredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -34,12 +34,12 @@ class Weight
         return $this->id;
     }
 
-    public function getWeight(): ?int
+    public function getWeight(): ?float
     {
         return $this->weight;
     }
 
-    public function setWeight(int $weight): static
+    public function setWeight(float $weight): static
     {
         $this->weight = $weight;
 
@@ -56,25 +56,25 @@ class Weight
     /**
      * @return Collection<int, Ingredient>
      */
-    public function getDatasheet(): Collection
+    public function getIngredients(): Collection
     {
-        return $this->datasheet;
+        return $this->ingredients;
     }
 
-    public function addDatasheet(Ingredient $datasheet): static
+    public function addIngredient(Ingredient $ingredient): static
     {
-        if (!$this->datasheet->contains($datasheet)) {
-            $this->datasheet->add($datasheet);
-            $datasheet->addWeight($this);
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients->add($ingredient);
+            $ingredient->addWeight($this);
         }
 
         return $this;
     }
 
-    public function removeDatasheet(Ingredient $datasheet): static
+    public function removeIngredient(Ingredient $ingredient): static
     {
-        if ($this->datasheet->removeElement($datasheet)) {
-            $datasheet->removeWeight($this);
+        if ($this->ingredients->removeElement($ingredient)) {
+            $ingredient->removeWeight($this);
         }
 
         return $this;
