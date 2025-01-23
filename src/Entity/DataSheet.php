@@ -16,51 +16,37 @@ class DataSheet
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $ingredient = [];
-
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'datasheets')]
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'datasheet', cascade: ['persist', 'remove'])]
     private Collection $categories;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    /**
+     * @var Collection<int, Ingredient>
+     */
+    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'dataSheet')]
+    private Collection $ingredient;
+
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->ingredient = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    public function getIngredient(): array
-    {
-        return $this->ingredient;
-    }
-
-    public function setIngredient(array $ingredient): static
-    {
-        $this->ingredient = $ingredient;
-
-        return $this;
     }
 
     public function getDescription(): ?string
@@ -87,6 +73,18 @@ class DataSheet
         return $this;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Category>
      */
@@ -99,7 +97,6 @@ class DataSheet
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
-            $category->setDatasheets($this);
         }
 
         return $this;
@@ -108,24 +105,44 @@ class DataSheet
     public function removeCategory(Category $category): static
     {
         if ($this->categories->removeElement($category)) {
-            // set the owning side to null (unless already changed)
-            if ($category->getDatasheets() === $this) {
-                $category->setDatasheets(null);
+            // Si la catégorie était liée à cette fiche, on enlève le lien
+            if ($category->getDatasheet() === $this) {
+                $category->setDatasheet(null);
             }
         }
 
         return $this;
     }
 
-    public function getName(): ?string
+    /**
+     * @return Collection<int, Ingredient>
+     */
+    public function getIngredient(): Collection
     {
-        return $this->name;
+        return $this->ingredient;
     }
 
-    public function setName(string $name): static
+    public function addIngredient(Ingredient $ingredient): static
     {
-        $this->name = $name;
+        if (!$this->ingredient->contains($ingredient)) {
+            $this->ingredient->add($ingredient);
+            $ingredient->setDataSheet($this);
+        }
 
         return $this;
     }
+
+    public function removeIngredient(Ingredient $ingredient): static
+    {
+        if ($this->ingredient->removeElement($ingredient)) {
+            // set the owning side to null (unless already changed)
+            if ($ingredient->getDataSheet() === $this) {
+                $ingredient->setDataSheet(null);
+            }
+        }
+
+        return $this;
+    }
+
+ 
 }

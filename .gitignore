@@ -1,13 +1,15 @@
 
 ###> symfony/framework-bundle ###
-/.env.local
-/.env
-/.env.local.php
-/.env.*.local
+.env
+.env.local
+.env.local.php
+.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
 /vendor/
+/node_modules/
+/migrations/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
@@ -24,3 +26,13 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+ 16-create-fixture-category
+
+
+
+
+*.env
+*.env.example
+*.env.local
+*.env.staging
+ dev
