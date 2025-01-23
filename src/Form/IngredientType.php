@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Form;
 
 use App\Entity\Ingredient;
@@ -15,12 +14,15 @@ class IngredientType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            // Sélection de l'ingrédient pour la DataSheet
             ->add('ingredient', EntityType::class, [
                 'class' => Ingredient::class,
-                'choice_label' => 'ingredient',
+                'choice_label' => 'name',  // Affiche le nom de l'ingrédient
                 'label' => 'Ingrédient',
                 'placeholder' => 'Recherchez un ingrédient',
+                'required' => true,
             ])
+            // Spécification du poids de l'ingrédient
             ->add('weight', NumberType::class, [
                 'label' => 'Poids',
                 'required' => true,
@@ -28,9 +30,10 @@ class IngredientType extends AbstractType
                     'placeholder' => 'Entrez le poids (ex: 100)',
                 ],
             ])
+            // Choix de l'unité pour le poids de l'ingrédient
             ->add('unit', EntityType::class, [
                 'class' => Unit::class,
-                'choice_label' => 'name',
+                'choice_label' => 'name',  // Affiche le nom de l'unité
                 'label' => 'Unité',
                 'placeholder' => 'Sélectionnez une unité',
                 'required' => true,
@@ -39,8 +42,9 @@ class IngredientType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+        // Assure-toi de travailler avec la bonne classe de données ici
         $resolver->setDefaults([
-            'data_class' => null, // Par défaut, on n'associe pas ce formulaire à une entité spécifique
+            'data_class' => Ingredient::class,  // Si tu modifies un ingrédient directement
         ]);
     }
-} 
+}

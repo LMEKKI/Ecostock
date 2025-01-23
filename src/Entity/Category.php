@@ -56,12 +56,12 @@ class Category
 
 
 
-    public function getDatasheets(): ?DataSheet
+    public function getDatasheet(): ?DataSheet
     {
         return $this->datasheets;
     }
 
-    public function setDatasheets(?DataSheet $datasheets): static
+    public function setDatasheet(?DataSheet $datasheets): static
     {
         $this->datasheets = $datasheets;
 

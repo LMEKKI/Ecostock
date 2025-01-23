@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\IngredientRepository;
@@ -18,31 +17,19 @@ class Ingredient
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\ManyToOne(inversedBy: 'ingredient')]
+    private ?DataSheet $dataSheet = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Unit $unit = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Weight $weight = null;
+
     
-
-    /**
-     * @var Collection<int, DataSheet>
-     */
-    #[ORM\ManyToMany(targetEntity: DataSheet::class, inversedBy: 'ingredient')]
-    private Collection $datasheet;
-
-    /**
-     * @var Collection<int, Unit>
-     */
-    #[ORM\ManyToMany(targetEntity: Unit::class, inversedBy: 'ingredient')]
-    private Collection $unit;
-
-    /**
-     * @var Collection<int, Weight>
-     */
-    #[ORM\ManyToMany(targetEntity: Weight::class, inversedBy: 'datasheet')]
-    private Collection $weight;
-
     public function __construct()
     {
-        $this->datasheet = new ArrayCollection();
-        $this->unit = new ArrayCollection();
-        $this->weight = new ArrayCollection();
+   
     }
 
     public function getId(): ?int
@@ -54,10 +41,6 @@ class Ingredient
     {
         return $this->name;
     }
-    public function __toString(): string
-    {
-        return $this->name ?? 'Ingrédient sans nom';
-    }
 
     public function setName(string $name): static
     {
@@ -66,75 +49,41 @@ class Ingredient
         return $this;
     }
 
-    /**
-     * @return Collection<int, DataSheet>
-     */
-    public function getDatasheet(): Collection
+    public function getDataSheet(): ?DataSheet
     {
-        return $this->datasheet;
+        return $this->dataSheet;
     }
 
-    public function addDatasheet(DataSheet $datasheet): static
+    public function setDataSheet(?DataSheet $dataSheet): static
     {
-        if (!$this->datasheet->contains($datasheet)) {
-            $this->datasheet->add($datasheet);
-        }
+        $this->dataSheet = $dataSheet;
 
         return $this;
     }
 
-    public function removeDatasheet(DataSheet $datasheet): static
-    {
-        $this->datasheet->removeElement($datasheet);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Unit>
-     */
-    public function getUnit(): Collection
+    public function getUnit(): ?Unit
     {
         return $this->unit;
     }
 
-    public function addUnit(Unit $unit): static
+    public function setUnit(?Unit $unit): static
     {
-        if (!$this->unit->contains($unit)) {
-            $this->unit->add($unit);
-        }
+        $this->unit = $unit;
 
         return $this;
     }
 
-    public function removeUnit(Unit $unit): static
-    {
-        $this->unit->removeElement($unit);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Weight>
-     */
-    public function getWeight(): Collection
+    public function getWeight(): ?Weight
     {
         return $this->weight;
     }
 
-    public function addWeight(Weight $weight): static
+    public function setWeight(?Weight $weight): static
     {
-        if (!$this->weight->contains($weight)) {
-            $this->weight->add($weight);
-        }
+        $this->weight = $weight;
 
         return $this;
     }
 
-    public function removeWeight(Weight $weight): static
-    {
-        $this->weight->removeElement($weight);
-
-        return $this;
-    }
+   
 }

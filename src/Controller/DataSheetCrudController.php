@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\DataSheet;
+use App\Entity\Ingredient;
 use App\Form\IngredientType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
@@ -22,20 +23,26 @@ class DataSheetCrudController extends AbstractCrudController
         return [
             TextField::new('name', 'Nom')
                 ->setFormTypeOptions(['required' => true]),
+            
             TextField::new('description', 'Description'),
-            CollectionField::new('ingredient', 'Ingrédients')
-            ->setEntryType(IngredientType::class)
-            ->allowAdd()
-            ->allowDelete()
-            ->setFormTypeOptions([
-                'by_reference' => false, // Important pour permettre les modifications sur les collections
-            ]),
+
+            // Correction ici : 'ingredients' au lieu de 'ingredient'
+            CollectionField::new('ingredients', 'Ingrédients')
+                ->setEntryType(IngredientType::class) 
+                ->allowAdd() 
+                ->allowDelete()
+                ->setFormTypeOptions([
+                    'by_reference' => false, // Important pour gérer correctement les objets liés
+                ]),
+
+            // Image du DataSheet
             ImageField::new('image', 'Visuel')
                 ->setBasePath('/uploads/images')
                 ->setUploadDir('public/uploads/images')
                 ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]'),
+
+            // Panel pour les Ingrédients
             FormField::addPanel('Ingrédients'),
-           
         ];
     }
 }

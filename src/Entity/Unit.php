@@ -18,15 +18,10 @@ class Unit
     #[ORM\Column(length: 75)]
     private ?string $name = null;
 
-    /**
-     * @var Collection<int, Ingredient>
-     */
-    #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'unit')]
-    private Collection $ingredients;
+   
 
     public function __construct()
     {
-        $this->ingredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -46,30 +41,5 @@ class Unit
         return $this;
     }
 
-    /**
-     * @return Collection<int, Ingredient>
-     */
-    public function getIngredients(): Collection
-    {
-        return $this->ingredients;
-    }
-
-    public function addIngredient(Ingredient $ingredient): static
-    {
-        if (!$this->ingredients->contains($ingredient)) {
-            $this->ingredients->add($ingredient);
-            $ingredient->addUnit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIngredient(Ingredient $ingredient): static
-    {
-        if ($this->ingredients->removeElement($ingredient)) {
-            $ingredient->removeUnit($this);
-        }
-
-        return $this;
-    }
+   
 }

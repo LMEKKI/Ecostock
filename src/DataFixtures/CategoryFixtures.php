@@ -29,7 +29,7 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
             // Associer un DataSheet aléatoire (s'il existe)
             if (!empty($dataSheets)) {
                 $randomDataSheet = $dataSheets[array_rand($dataSheets)];
-                $category->setDatasheets($randomDataSheet);
+                $category->setDatasheet($randomDataSheet);
             }
 
             // Associer des SectionRestaurant aléatoires

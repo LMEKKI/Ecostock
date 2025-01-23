@@ -15,18 +15,13 @@ class Weight
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $weight = null;
+    #[ORM\Column(type: 'float')]
+    private ?float $weight = null;
 
-    /**
-     * @var Collection<int, Ingredient>
-     */
-    #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'weight')]
-    private Collection $datasheet;
+   
 
     public function __construct()
     {
-        $this->datasheet = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -34,49 +29,17 @@ class Weight
         return $this->id;
     }
 
-    public function getWeight(): ?int
+    public function getWeight(): ?float
     {
         return $this->weight;
     }
 
-    public function setWeight(int $weight): static
+    public function setWeight(float $weight): static
     {
         $this->weight = $weight;
 
         return $this;
     }
 
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Ingredient>
-     */
-    public function getDatasheet(): Collection
-    {
-        return $this->datasheet;
-    }
-
-    public function addDatasheet(Ingredient $datasheet): static
-    {
-        if (!$this->datasheet->contains($datasheet)) {
-            $this->datasheet->add($datasheet);
-            $datasheet->addWeight($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDatasheet(Ingredient $datasheet): static
-    {
-        if ($this->datasheet->removeElement($datasheet)) {
-            $datasheet->removeWeight($this);
-        }
-
-        return $this;
-    }
+   
 }
