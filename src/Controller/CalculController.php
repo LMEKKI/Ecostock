@@ -34,10 +34,8 @@ class CalculController extends AbstractController
     $orderDetails = array();
     foreach ($ordering as $key => $value) {
       $recipeName = $dataSheetRepository->findOneById($value["id"])->getName();
-      // $recipeIngredients = $dataSheetRepository->findOneById($value["id"]);
       array_push($orderDetails, array("nombre" => $value["quantity"], "nom" => $recipeName, "ingredients" => $ingredientRepository->findByAllIngredientDetails($value["id"]) ));
     };
-    // dd($orderDetails);
 
     //envoi du tableau au service pour calculer les quantités
     $orderIngredients = $calcul->sortOrder($orderDetails, $calcul);

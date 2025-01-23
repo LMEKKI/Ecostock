@@ -15,7 +15,9 @@ class IngredientRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Ingredient::class);
     }
-
+    /**
+    * gets an array with Ingredient name, it's quantity and what unit it uses
+    */
     public function findByAllIngredientDetails($id)
     {
         return $this->createQueryBuilder('i')
