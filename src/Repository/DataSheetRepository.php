@@ -16,6 +16,14 @@ class DataSheetRepository extends ServiceEntityRepository
         parent::__construct($registry, DataSheet::class);
     }
 
+    public function getIngredientsFromDatasheet($value):array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.ingredient = :val')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     //    /**
     //     * @return DataSheet[] Returns an array of DataSheet objects
     //     */
