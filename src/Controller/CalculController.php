@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\DataSheetRepository;
+use App\Repository\IngredientRepository;
 use App\Repository\OrderFormRepository;
 use App\Service\Calcul;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +24,7 @@ class CalculController extends AbstractController
   }
 
   #[Route('/commande_{id}', name: 'app_calcul_{id}')]
-  public function commande(int $id, OrderFormRepository $orderFormRepository, DataSheetRepository $dataSheetRepository, Calcul $calcul): Response
+  public function commande(int $id, OrderFormRepository $orderFormRepository, DataSheetRepository $dataSheetRepository,IngredientRepository $ingredientRepository, Calcul $calcul): Response
   {
     
     // réception du contenu de la commande
@@ -33,9 +34,10 @@ class CalculController extends AbstractController
     $orderDetails = array();
     foreach ($ordering as $key => $value) {
       $recipeName = $dataSheetRepository->findOneById($value["id"])->getName();
-      $recipeIngredients = $dataSheetRepository->findOneById($value["id"])->getIngredient();
-      array_push($orderDetails, array("nombre" => $value["quantity"], "nom" => $recipeName, "ingredients" => $recipeIngredients));
+      // $recipeIngredients = $dataSheetRepository->findOneById($value["id"]);
+      array_push($orderDetails, array("nombre" => $value["quantity"], "nom" => $recipeName, "ingredients" => $ingredientRepository->findByAllIngredientDetails($value["id"]) ));
     };
+    // dd($orderDetails);
 
     //envoi du tableau au service pour calculer les quantités
     $orderIngredients = $calcul->sortOrder($orderDetails, $calcul);

@@ -16,6 +16,18 @@ class IngredientRepository extends ServiceEntityRepository
         parent::__construct($registry, Ingredient::class);
     }
 
+    public function findByAllIngredientDetails($id)
+    {
+        return $this->createQueryBuilder('i')
+            ->select( 'i.name AS name','w.weight AS quantity', 'u.name AS unit')
+            ->leftJoin('i.unit', 'u')
+            ->leftJoin('i.weight', 'w')
+            ->where('i.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getArrayResult(); // Retourne un tableau avec uniquement les valeurs nécessaires
+    }
+
 //    /**
 //     * @return Ingredient[] Returns an array of Ingredient objects
 //     */

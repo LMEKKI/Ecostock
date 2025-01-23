@@ -26,7 +26,7 @@
                 <tr>
                     <td>{{item.name | capitalize}}</td>
                     <td>{{item.quantity}}</td>
-                    <td>{{item.mesure | replace({"unité": "", "gr":"grammes", "cl":"centilitres"}) | capitalize}}</td>
+                    <td>{{item.unit | capitalize}}</td>
                 </tr> 
             {% endfor %}
         </tbody>
