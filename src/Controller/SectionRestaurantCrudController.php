@@ -2,40 +2,37 @@
 
 namespace App\Controller;
 
-use App\Entity\SectionRestaurant;
+use App\Entity\Section;
+use App\Form\CampingType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use App\Form\TypeType;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use Symfony\Component\Validator\Constraints\Choice;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 class SectionRestaurantCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return SectionRestaurant::class;
+        return Section::class;
     }
 
-    
     public function configureFields(string $pageName): iterable
     {
         return [
             TextField::new('name'),
-            TextField::new('adresse'), 
-            ChoiceField::new('type', 'Type')->setChoices([
-                'Restaurant' => 'Restaurant',
-                'Bar' => 'Bar',
-                'Snack' => 'Snack',
-            ])
-            ->allowMultipleChoices(true)
-            ->renderExpanded(true),
-            AssociationField::new('camping', 'Camping associé')->setHelp('Sélectionnez un Camping pour cette section'),
+            TextField::new('adresse'),
+            AssociationField::new('camping')
+                ->setFormTypeOptions([
+                    'choice_label' => 'name',
+                ]),
+            AssociationField::new('type', 'Type associés')
+
+                ->setFormTypeOptions([
+                    'by_reference' => false,
+                ]),
         ];
     }
-
-    
-    
 }

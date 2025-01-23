@@ -26,8 +26,12 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+ 16-create-fixture-category
+
+
+
+
 *.env
 *.env.example
 *.env.local
 *.env.staging
-stage eco.code-workspace
