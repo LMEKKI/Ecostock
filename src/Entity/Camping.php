@@ -1,28 +1,26 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\CampingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CampingRepository::class)]
 class Camping
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]  // Cette option permet à Doctrine de générer automatiquement l'ID
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
-    #[ORM\ManyToMany(targetEntity: SectionRestaurant::class, inversedBy: 'camping', cascade: ['persist', 'remove'])]
-    private Collection $services;
 
     #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'camping')]
     private Collection $userAccounts;
@@ -30,17 +28,19 @@ class Camping
     #[ORM\ManyToOne(targetEntity: Admin::class, inversedBy: 'campings')]
     private ?Admin $admin = null;
 
+    /**
+     * @var Collection<int, Section>
+     */
+    #[ORM\OneToMany(targetEntity: Section::class, mappedBy: 'camping')]
+    private Collection $section;
 
-    public function __toString(): string
-    {
-        // Retournez une propriété lisible comme le nom
-        return $this->name ?? 'Camping'; // Par exemple, affiche le nom du camping
-    }
+
+
 
     public function __construct()
     {
-        $this->services = new ArrayCollection();
         $this->userAccounts = new ArrayCollection();
+        $this->section = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -51,6 +51,10 @@ class Camping
     public function getName(): ?string
     {
         return $this->name;
+    }
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 
     public function setName(string $name): self
@@ -65,6 +69,9 @@ class Camping
         return $this->adresse;
     }
 
+
+
+
     public function setAdresse(string $adresse): self
     {
         $this->adresse = $adresse;
@@ -72,26 +79,7 @@ class Camping
         return $this;
     }
 
-    public function getServices(): Collection
-    {
-        return $this->services;
-    }
 
-    public function addService(SectionRestaurant $service): self
-    {
-        if (!$this->services->contains($service)) {
-            $this->services->add($service);
-        }
-
-        return $this;
-    }
-
-    public function removeService(SectionRestaurant $service): self
-    {
-        $this->services->removeElement($service);
-
-        return $this;
-    }
 
     public function getUserAccounts(): Collection
     {
@@ -127,6 +115,36 @@ class Camping
     public function setAdmin(?Admin $admin): self
     {
         $this->admin = $admin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Section>
+     */
+    public function getSection(): Collection
+    {
+        return $this->section;
+    }
+
+    public function addSection(Section $section): static
+    {
+        if (!$this->section->contains($section)) {
+            $this->section->add($section);
+            $section->setCamping($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSection(Section $section): static
+    {
+        if ($this->section->removeElement($section)) {
+            // set the owning side to null (unless already changed)
+            if ($section->getCamping() === $this) {
+                $section->setCamping(null);
+            }
+        }
 
         return $this;
     }

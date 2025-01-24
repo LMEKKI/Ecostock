@@ -3,12 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Camping;
+use App\Entity\Section;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
-
 
 class CampingType extends AbstractType
 {
@@ -25,8 +24,6 @@ class CampingType extends AbstractType
                     'label' => 'Nom du Camping',
                     'required' => true,
                 ]
-
-                
             );
     }
 

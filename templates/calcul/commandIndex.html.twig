@@ -7,22 +7,20 @@
     <thead>
         <tr>
             <th>id</th>
-            <th>nom du resto</th>
-            <th>date</th>
-            <th>adresse</th>
-            <th>aperçu</th>
+            <th>Date de la Commande</th>
+            <th>Nom du Restaurant</th>
+            <th>Adresse de livraison</th>
         </tr>
     </thead>
-    {% set var = orders_placeholder|decode_json %}
+    
     <tbody>
-        {% for item in var %}
-        <tr>
-            <td></td>
-            <td><a href="commande_{{item.id}}">nom resto</a></td>
-            <td>{{item.date | date("d/m/Y")}}</td>
-            <td>address</td>
-            <td>pizza : {{item.pizza}}, burger : {{item.burger}}, salades : {{item.salades}}</td>
-        </tr>
+        {% for item in orders %}
+            <tr>
+                <td>{{item.id}}</td>
+                <td>{{item.createdAt | date("d/m/Y")}}</td>
+                <td><a href="commande_{{item.id}}">{{item.createdBy}}</a></td>
+                <td>address</td>
+            </tr>
         {% endfor %}
     </tbody>
 </table>

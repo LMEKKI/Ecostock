@@ -35,4 +35,4 @@
 *.env.example
 *.env.local
 *.env.staging
- dev
+stage eco.code-workspace

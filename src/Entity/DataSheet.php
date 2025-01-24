@@ -16,8 +16,6 @@ class DataSheet
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $ingredient = [];
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
@@ -28,7 +26,7 @@ class DataSheet
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'datasheets',cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'datasheets', cascade: ['persist', 'remove'])]
     private Collection $categories;
 
     #[ORM\Column(length: 255)]
@@ -38,12 +36,12 @@ class DataSheet
      * @var Collection<int, Ingredient>
      */
     #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'datasheet')]
-    private Collection $ingredients;
+    private Collection $ingredient;
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
-        $this->ingredients = new ArrayCollection();
+        $this->ingredient = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,17 +56,7 @@ class DataSheet
         return $this;
     }
 
-    public function getIngredient(): array
-    {
-        return $this->ingredient;
-    }
 
-    public function setIngredient(array $ingredient): static
-    {
-        $this->ingredient = $ingredient;
-
-        return $this;
-    }
 
     public function getDescription(): ?string
     {
@@ -139,15 +127,15 @@ class DataSheet
     /**
      * @return Collection<int, Ingredient>
      */
-    public function getIngredients(): Collection
+    public function getIngredient(): Collection
     {
-        return $this->ingredients;
+        return $this->ingredient;
     }
 
     public function addIngredient(Ingredient $ingredient): static
     {
-        if (!$this->ingredients->contains($ingredient)) {
-            $this->ingredients->add($ingredient);
+        if (!$this->ingredient->contains($ingredient)) {
+            $this->ingredient->add($ingredient);
             $ingredient->addDatasheet($this);
         }
 
@@ -156,7 +144,7 @@ class DataSheet
 
     public function removeIngredient(Ingredient $ingredient): static
     {
-        if ($this->ingredients->removeElement($ingredient)) {
+        if ($this->ingredient->removeElement($ingredient)) {
             $ingredient->removeDatasheet($this);
         }
 
