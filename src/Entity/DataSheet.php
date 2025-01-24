@@ -20,8 +20,8 @@ class DataSheet
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $image = null;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $image;
 
     /**
      * @var Collection<int, Category>

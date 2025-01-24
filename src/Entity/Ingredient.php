@@ -27,7 +27,7 @@ class Ingredient
     #[ORM\ManyToOne(inversedBy: 'ingredient')]
     private ?Unit $unit = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ingredient')]
+    #[ORM\ManyToOne(inversedBy: 'ingredient', cascade: ['persist'])]
     private ?Weight $weight = null;
 
     private ?float $weightValue = null; // Champ temporaire pour le formulaire

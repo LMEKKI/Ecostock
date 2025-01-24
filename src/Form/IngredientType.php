@@ -25,7 +25,7 @@ class IngredientType extends AbstractType
       ->add('weightValue', NumberType::class, [
         'label' => 'Poids (en kg)',
         'required' => true,
-        'mapped' => false, // Ce champ n'est pas directement lié à l'entité
+        'mapped' => true, // Ce champ n'est pas directement lié à l'entité
       ])
       // Choix de l'unité pour le poids de l'ingrédient
       ->add('unit', EntityType::class, [

@@ -2,11 +2,11 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Category;
 use App\Entity\DataSheet;
 use App\Entity\Ingredient;
 use App\Entity\Unit;
 use App\Entity\Weight;
+use App\Entity\Category;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -14,213 +14,155 @@ class AppFixtures extends Fixture
 {
   public function load(ObjectManager $manager): void
   {
-    // Création des Unités
-    $unitGrammes = new Unit();
-    $unitGrammes->setName("grammes");
-    $manager->persist($unitGrammes);
+    // Création des unités
+    $grams = new Unit();
+    $grams->setName('grams');
+    $manager->persist($grams);
 
-    $unitKilogrammes = new Unit();
-    $unitKilogrammes->setName("kilogrammes");
-    $manager->persist($unitKilogrammes);
+    $liters = new Unit();
+    $liters->setName('liters');
+    $manager->persist($liters);
 
-    $unitCentilitres = new Unit();
-    $unitCentilitres->setName("centilitres");
-    $manager->persist($unitCentilitres);
+    $pieces = new Unit();
+    $pieces->setName('pieces');
+    $manager->persist($pieces);
 
-    $unitMillilitres = new Unit();
-    $unitMillilitres->setName("millilitres");
-    $manager->persist($unitMillilitres);
+    // Création des ingrédients
+    $flour = new Ingredient();
+    $flour->setName('Flour')->setUnit($grams)->setWeight((new Weight())->setValue(500));
+    $manager->persist($flour);
 
-    // Création des Poids
-    $weight100g = new Weight();
-    $weight100g->setWeight(100);
-    $manager->persist($weight100g);
+    $sugar = new Ingredient();
+    $sugar->setName('Sugar')->setUnit($grams)->setWeight((new Weight())->setValue(200));
+    $manager->persist($sugar);
 
-    $weight500g = new Weight();
-    $weight500g->setWeight(500);
-    $manager->persist($weight500g);
+    $milk = new Ingredient();
+    $milk->setName('Milk')->setUnit($liters)->setWeight((new Weight())->setValue(1));
+    $manager->persist($milk);
 
-    $weight1kg = new Weight();
-    $weight1kg->setWeight(1000);
-    $manager->persist($weight1kg);
+    $eggs = new Ingredient();
+    $eggs->setName('Eggs')->setUnit($pieces)->setWeight((new Weight())->setValue(4));
+    $manager->persist($eggs);
 
-    $weight200g = new Weight();
-    $weight200g->setWeight(200);
-    $manager->persist($weight200g);
+    $butter = new Ingredient();
+    $butter->setName('Butter')->setUnit($grams)->setWeight((new Weight())->setValue(250));
+    $manager->persist($butter);
 
-    $weight300g = new Weight();
-    $weight300g->setWeight(300);
-    $manager->persist($weight300g);
-    $weight50g = new Weight();
-    $weight50g->setWeight(50);
-    $manager->persist($weight50g);
+    $chocolate = new Ingredient();
+    $chocolate->setName('Chocolate')->setUnit($grams)->setWeight((new Weight())->setValue(300));
+    $manager->persist($chocolate);
 
-    // Création des Catégories
-    $categoryPlatsPrincipaux = new Category();
-    $categoryPlatsPrincipaux->setName("Plats principaux");
-    $manager->persist($categoryPlatsPrincipaux);
+    $banana = new Ingredient();
+    $banana->setName('Banana')->setUnit($pieces)->setWeight((new Weight())->setValue(3));
+    $manager->persist($banana);
 
-    $categoryDesserts = new Category();
-    $categoryDesserts->setName("Desserts");
-    $manager->persist($categoryDesserts);
+    $cream = new Ingredient();
+    $cream->setName('Cream')->setUnit($liters)->setWeight((new Weight())->setValue(0.5));
+    $manager->persist($cream);
 
-    $categoryEntrees = new Category();
-    $categoryEntrees->setName("Entrées");
-    $manager->persist($categoryEntrees);
+    $cheese = new Ingredient();
+    $cheese->setName('Cheese')->setUnit($grams)->setWeight((new Weight())->setValue(200));
+    $manager->persist($cheese);
 
-    // Création des Recettes (DataSheets)
-    $recipeSpaghettiBolognese = new DataSheet();
-    $recipeSpaghettiBolognese->setName("Spaghetti à la Bolognese");
-    $recipeSpaghettiBolognese->setDescription("Des pâtes avec une sauce bolognaise à base de viande hachée et de tomates.");
-    $recipeSpaghettiBolognese->setImage("");  // Ajouter l'image manuellement
-    $manager->persist($recipeSpaghettiBolognese);
+    $spinach = new Ingredient();
+    $spinach->setName('Spinach')->setUnit($grams)->setWeight((new Weight())->setValue(300));
+    $manager->persist($spinach);
 
-    $recipePouletRoti = new DataSheet();
-    $recipePouletRoti->setName("Poulet rôti");
-    $recipePouletRoti->setDescription("Un poulet rôti accompagné de légumes.");
-    $recipePouletRoti->setImage("");  // Ajouter l'image manuellement
-    $manager->persist($recipePouletRoti);
+    $chicken = new Ingredient();
+    $chicken->setName('Chicken')->setUnit($grams)->setWeight((new Weight())->setValue(500));
+    $manager->persist($chicken);
 
-    $recipeSaladeCesar = new DataSheet();
-    $recipeSaladeCesar->setName("Salade César");
-    $recipeSaladeCesar->setDescription("Une salade composée de laitue, poulet, croûtons et sauce César.");
-    $recipeSaladeCesar->setImage("");  // Ajouter l'image manuellement
-    $manager->persist($recipeSaladeCesar);
+    $rice = new Ingredient();
+    $rice->setName('Rice')->setUnit($grams)->setWeight((new Weight())->setValue(200));
+    $manager->persist($rice);
 
-    $recipeRatatouille = new DataSheet();
-    $recipeRatatouille->setName("Ratatouille");
-    $recipeRatatouille->setDescription("Un mélange de légumes méditerranéens mijotés.");
-    $recipeRatatouille->setImage("");  // Ajouter l'image manuellement
-    $manager->persist($recipeRatatouille);
+    $tomato = new Ingredient();
+    $tomato->setName('Tomato')->setUnit($pieces)->setWeight((new Weight())->setValue(5));
+    $manager->persist($tomato);
 
-    $recipeTacos = new DataSheet();
-    $recipeTacos->setName("Tacos");
-    $recipeTacos->setDescription("Des tortillas garnies de viande hachée, légumes et sauce épicée.");
-    $recipeTacos->setImage("");  // Ajouter l'image manuellement
-    $manager->persist($recipeTacos);
+    $onion = new Ingredient();
+    $onion->setName('Onion')->setUnit($pieces)->setWeight((new Weight())->setValue(2));
+    $manager->persist($onion);
 
-    $recipeCrepes = new DataSheet();
-    $recipeCrepes->setName("Crêpes");
-    $recipeCrepes->setDescription("Des crêpes légères et sucrées.");
-    $recipeCrepes->setImage("");  // Ajouter l'image manuellement
-    $manager->persist($recipeCrepes);
+    $oil = new Ingredient();
+    $oil->setName('Oil')->setUnit($liters)->setWeight((new Weight())->setValue(0.1));
+    $manager->persist($oil);
 
-    $recipePizzaMargherita = new DataSheet();
-    $recipePizzaMargherita->setName("Pizza Margherita");
-    $recipePizzaMargherita->setDescription("Pizza traditionnelle avec sauce tomate, mozzarella et basilic.");
-    $recipePizzaMargherita->setImage("");  // Ajouter l'image manuellement
-    $manager->persist($recipePizzaMargherita);
+    $potato = new Ingredient();
+    $potato->setName('Potato')->setUnit($pieces)->setWeight((new Weight())->setValue(4));
+    $manager->persist($potato);
 
-    $recipeSoupeOignon = new DataSheet();
-    $recipeSoupeOignon->setName("Soupe à l'oignon");
-    $recipeSoupeOignon->setDescription("Une soupe à base d'oignons caramélisés et de bouillon de viande.");
-    $recipeSoupeOignon->setImage("");  // Ajouter l'image manuellement
-    $manager->persist($recipeSoupeOignon);
+    // Création des catégories
+    $dessertCategory = new Category();
+    $dessertCategory->setName('Dessert');
+    $manager->persist($dessertCategory);
 
-    $recipeLasagne = new DataSheet();
-    $recipeLasagne->setName("Lasagne");
-    $recipeLasagne->setDescription("Des couches de pâtes, sauce bolognaise, béchamel et fromage.");
-    $recipeLasagne->setImage("");  // Ajouter l'image manuellement
-    $manager->persist($recipeLasagne);
+    $breakfastCategory = new Category();
+    $breakfastCategory->setName('Breakfast');
+    $manager->persist($breakfastCategory);
 
-    $recipeGateauChocolat = new DataSheet();
-    $recipeGateauChocolat->setName("Gâteau au chocolat");
-    $recipeGateauChocolat->setDescription("Un gâteau fondant au chocolat.");
-    $recipeGateauChocolat->setImage("");  // Ajouter l'image manuellement
-    $manager->persist($recipeGateauChocolat);
+    $mainDishCategory = new Category();
+    $mainDishCategory->setName('Main Dish');
+    $manager->persist($mainDishCategory);
 
-    // Création des Ingrédients
-    $ingredientViandeHachee = new Ingredient();
-    $ingredientViandeHachee->setName("Viande hachée");
-    $ingredientViandeHachee->addUnit($unitKilogrammes);
-    $ingredientViandeHachee->addWeight($weight500g);
-    $manager->persist($ingredientViandeHachee);
+    $snackCategory = new Category();
+    $snackCategory->setName('Snack');
+    $manager->persist($snackCategory);
 
-    $ingredientPoulet = new Ingredient();
-    $ingredientPoulet->setName("Poulet");
-    $ingredientPoulet->addUnit($unitKilogrammes);
-    $ingredientPoulet->addWeight($weight1kg);
-    $manager->persist($ingredientPoulet);
+    // Création des recettes
+    $recipes = [
+      [
+        'name' => 'Chocolate Cake',
+        'description' => 'Rich and moist chocolate cake.',
+        'image' => 'chocolate_cake.jpg',
+        'ingredients' => [$flour, $sugar, $butter, $eggs, $chocolate],
+        'categories' => [$dessertCategory],
+      ],
+      [
+        'name' => 'Banana Smoothie',
+        'description' => 'Healthy and creamy banana smoothie.',
+        'image' => 'banana_smoothie.jpg',
+        'ingredients' => [$banana, $milk],
+        'categories' => [$breakfastCategory],
+      ],
+      [
+        'name' => 'Creamy Spinach Pasta',
+        'description' => 'Delicious pasta with spinach and cream sauce.',
+        'image' => 'spinach_pasta.jpg',
+        'ingredients' => [$spinach, $cream, $cheese],
+        'categories' => [$mainDishCategory],
+      ],
+      [
+        'name' => 'Chicken Curry',
+        'description' => 'Spicy and flavorful chicken curry.',
+        'image' => 'chicken_curry.jpg',
+        'ingredients' => [$chicken, $tomato, $onion, $oil],
+        'categories' => [$mainDishCategory],
+      ],
+      [
+        'name' => 'Potato Chips',
+        'description' => 'Crispy homemade potato chips.',
+        'image' => 'potato_chips.jpg',
+        'ingredients' => [$potato, $oil],
+        'categories' => [$snackCategory],
+      ],
+      // 10 autres recettes (similaire, ajuster ingrédients, images, catégories)
+    ];
 
-    $ingredientTomates = new Ingredient();
-    $ingredientTomates->setName("Tomates");
-    $ingredientTomates->addUnit($unitGrammes);
-    $ingredientTomates->addWeight($weight500g);
-    $manager->persist($ingredientTomates);
+    foreach ($recipes as $data) {
+      $recipe = new DataSheet();
+      $recipe->setName($data['name'])
+        ->setDescription($data['description'])
+        ->setImage($data['image']);
+      foreach ($data['ingredients'] as $ingredient) {
+        $recipe->addIngredient($ingredient);
+      }
+      foreach ($data['categories'] as $category) {
+        $recipe->addCategory($category);
+      }
+      $manager->persist($recipe);
+    }
 
-    $ingredientSalade = new Ingredient();
-    $ingredientSalade->setName("Laitue");
-    $ingredientSalade->addUnit($unitGrammes);
-    $ingredientSalade->addWeight($weight300g);
-    $manager->persist($ingredientSalade);
-
-    $ingredientCheddar = new Ingredient();
-    $ingredientCheddar->setName("Cheddar");
-    $ingredientCheddar->addUnit($unitGrammes);
-    $ingredientCheddar->addWeight($weight200g);
-    $manager->persist($ingredientCheddar);
-
-    $ingredientFarine = new Ingredient();
-    $ingredientFarine->setName("Farine");
-    $ingredientFarine->addUnit($unitKilogrammes);
-    $ingredientFarine->addWeight($weight1kg);
-    $manager->persist($ingredientFarine);
-
-    $ingredientOignons = new Ingredient();
-    $ingredientOignons->setName("Oignons");
-    $ingredientOignons->addUnit($unitGrammes);
-    $ingredientOignons->addWeight($weight200g);
-    $manager->persist($ingredientOignons);
-
-    $ingredientBasilic = new Ingredient();
-    $ingredientBasilic->setName("Basilic");
-    $ingredientBasilic->addUnit($unitGrammes);
-    $ingredientBasilic->addWeight($weight50g);
-    $manager->persist($ingredientBasilic);
-
-    $ingredientMozzarella = new Ingredient();
-    $ingredientMozzarella->setName("Mozzarella");
-    $ingredientMozzarella->addUnit($unitGrammes);
-    $ingredientMozzarella->addWeight($weight300g);
-    $manager->persist($ingredientMozzarella);
-
-    $ingredientChocolat = new Ingredient();
-    $ingredientChocolat->setName("Chocolat");
-    $ingredientChocolat->addUnit($unitGrammes);
-    $ingredientChocolat->addWeight($weight200g);
-    $manager->persist($ingredientChocolat);
-
-    // Relier les Ingrédients aux Recettes
-    $recipeSpaghettiBolognese->addIngredient($ingredientViandeHachee);
-    $recipeSpaghettiBolognese->addIngredient($ingredientTomates);
-
-    $recipePouletRoti->addIngredient($ingredientPoulet);
-    $recipePouletRoti->addIngredient($ingredientOignons);
-
-    $recipeSaladeCesar->addIngredient($ingredientSalade);
-    $recipeSaladeCesar->addIngredient($ingredientCheddar);
-
-    $recipeRatatouille->addIngredient($ingredientTomates);
-    $recipeRatatouille->addIngredient($ingredientOignons);
-
-    $recipeTacos->addIngredient($ingredientViandeHachee);
-    $recipeTacos->addIngredient($ingredientTomates);
-
-    $recipeCrepes->addIngredient($ingredientFarine);
-    $recipeCrepes->addIngredient($ingredientOignons);
-
-    $recipePizzaMargherita->addIngredient($ingredientMozzarella);
-    $recipePizzaMargherita->addIngredient($ingredientBasilic);
-
-    $recipeSoupeOignon->addIngredient($ingredientOignons);
-    $recipeSoupeOignon->addIngredient($ingredientBasilic);
-
-    $recipeLasagne->addIngredient($ingredientViandeHachee);
-    $recipeLasagne->addIngredient($ingredientMozzarella);
-
-    $recipeGateauChocolat->addIngredient($ingredientChocolat);
-
-    // On persiste les recettes et ingrédients dans la base
     $manager->flush();
   }
 }

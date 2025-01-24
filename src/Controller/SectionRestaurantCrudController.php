@@ -27,6 +27,7 @@ class SectionRestaurantCrudController extends AbstractCrudController
             AssociationField::new('camping')
                 ->setFormTypeOptions([
                     'choice_label' => 'name',
+
                 ]),
             AssociationField::new('type', 'Type associés')
 
