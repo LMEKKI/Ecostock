@@ -19,6 +19,7 @@ class Weight
     #[ORM\Column(type: 'float')]
     private float $value;
 
+
     /**
      * @var Collection<int, Ingredient>
      */
@@ -28,6 +29,7 @@ class Weight
     public function __construct()
     {
         $this->ingredient = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -36,11 +38,13 @@ class Weight
     }
 
     public function getValue(): float
+
     {
         return $this->value;
     }
 
     public function setValue(float $value): self
+
     {
         $this->value = $value;
         return $this;
@@ -52,6 +56,7 @@ class Weight
     public function getIngredient(): Collection
     {
         return $this->ingredient;
+
     }
 
     public function addIngredient(Ingredient $ingredient): static
@@ -59,6 +64,7 @@ class Weight
         if (!$this->ingredient->contains($ingredient)) {
             $this->ingredient->add($ingredient);
             $ingredient->setWeight($this);  // Associe l'ingrédient au poids
+
         }
 
         return $this;
@@ -71,6 +77,7 @@ class Weight
             if ($ingredient->getWeight() === $this) {
                 $ingredient->setWeight(null);
             }
+
         }
 
         return $this;
