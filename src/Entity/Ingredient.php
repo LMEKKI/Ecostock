@@ -24,23 +24,17 @@ class Ingredient
     #[ORM\ManyToMany(targetEntity: DataSheet::class, inversedBy: 'ingredients')]
     private Collection $datasheet;
 
-    /**
-     * @var Collection<int, Unit>
-     */
-    #[ORM\ManyToMany(targetEntity: Unit::class, inversedBy: 'ingredients')]
-    private Collection $unit;
+    #[ORM\ManyToOne(inversedBy: 'ingredient')]
+    private ?Unit $unit = null;
 
-    /**
-     * @var Collection<int, Weight>
-     */
-    #[ORM\ManyToMany(targetEntity: Weight::class, inversedBy: 'datasheet')]
-    private Collection $weight;
+    #[ORM\ManyToOne(inversedBy: 'ingredient')]
+    private ?Weight $weight = null;
+
+    private ?float $weightValue = null; // Champ temporaire pour le formulaire
 
     public function __construct()
     {
         $this->datasheet = new ArrayCollection();
-        $this->unit = new ArrayCollection();
-        $this->weight = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -52,6 +46,7 @@ class Ingredient
     {
         return $this->name;
     }
+
     public function __toString(): string
     {
         return $this->name ?? 'Ingrédient sans nom';
@@ -60,7 +55,6 @@ class Ingredient
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -84,55 +78,40 @@ class Ingredient
     public function removeDatasheet(DataSheet $datasheet): static
     {
         $this->datasheet->removeElement($datasheet);
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Unit>
-     */
-    public function getUnit(): Collection
+    public function getUnit(): ?Unit
     {
         return $this->unit;
     }
 
-    public function addUnit(Unit $unit): static
+    public function setUnit(?Unit $unit): static
     {
-        if (!$this->unit->contains($unit)) {
-            $this->unit->add($unit);
-        }
-
+        $this->unit = $unit;
         return $this;
     }
 
-    public function removeUnit(Unit $unit): static
-    {
-        $this->unit->removeElement($unit);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Weight>
-     */
-    public function getWeight(): Collection
+    public function getWeight(): ?Weight
     {
         return $this->weight;
     }
 
-    public function addWeight(Weight $weight): static
+    public function setWeight(?Weight $weight): static
     {
-        if (!$this->weight->contains($weight)) {
-            $this->weight->add($weight);
-        }
-
+        $this->weight = $weight;
         return $this;
     }
 
-    public function removeWeight(Weight $weight): static
+    public function getWeightValue(): ?float
     {
-        $this->weight->removeElement($weight);
+        // Si un poids existe, retourner sa valeur ; sinon retourner la valeur temporaire
+        return $this->weight ? $this->weight->getValue() : $this->weightValue;
+    }
 
+    public function setWeightValue(?float $weightValue): self
+    {
+        $this->weightValue = $weightValue;
         return $this;
     }
 }

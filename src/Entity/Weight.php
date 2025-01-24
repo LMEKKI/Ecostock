@@ -15,18 +15,19 @@ class Weight
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $weight = null;
+    // Suppression de la propriété redondante $weight
+    #[ORM\Column(type: 'float')]
+    private float $value;
 
     /**
      * @var Collection<int, Ingredient>
      */
-    #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'weight')]
-    private Collection $datasheet;
+    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'weight')]
+    private Collection $ingredient;
 
     public function __construct()
     {
-        $this->datasheet = new ArrayCollection();
+        $this->ingredient = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -34,47 +35,42 @@ class Weight
         return $this->id;
     }
 
-    public function getWeight(): ?int
+    public function getValue(): float
     {
-        return $this->weight;
+        return $this->value;
     }
 
-    public function setWeight(int $weight): static
+    public function setValue(float $value): self
     {
-        $this->weight = $weight;
-
-        return $this;
-    }
-
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
+        $this->value = $value;
         return $this;
     }
 
     /**
      * @return Collection<int, Ingredient>
      */
-    public function getDatasheet(): Collection
+    public function getIngredient(): Collection
     {
-        return $this->datasheet;
+        return $this->ingredient;
     }
 
-    public function addDatasheet(Ingredient $datasheet): static
+    public function addIngredient(Ingredient $ingredient): static
     {
-        if (!$this->datasheet->contains($datasheet)) {
-            $this->datasheet->add($datasheet);
-            $datasheet->addWeight($this);
+        if (!$this->ingredient->contains($ingredient)) {
+            $this->ingredient->add($ingredient);
+            $ingredient->setWeight($this);  // Associe l'ingrédient au poids
         }
 
         return $this;
     }
 
-    public function removeDatasheet(Ingredient $datasheet): static
+    public function removeIngredient(Ingredient $ingredient): static
     {
-        if ($this->datasheet->removeElement($datasheet)) {
-            $datasheet->removeWeight($this);
+        if ($this->ingredient->removeElement($ingredient)) {
+            // Lors de la suppression, on désassocie l'ingrédient de ce poids
+            if ($ingredient->getWeight() === $this) {
+                $ingredient->setWeight(null);
+            }
         }
 
         return $this;
