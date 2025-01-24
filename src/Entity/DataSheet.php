@@ -35,7 +35,7 @@ class DataSheet
     /**
      * @var Collection<int, Ingredient>
      */
-    #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'datasheet')]
+    #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'datasheet', cascade: ['persist'])]
     private Collection $ingredient;
 
     public function __construct()
