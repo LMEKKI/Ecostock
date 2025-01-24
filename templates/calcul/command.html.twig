@@ -3,16 +3,14 @@
 {% block title %}Hello CalculController!{% endblock %}
 
 {% block body %}
-   
-    <p>commande numéro {{order.id}} :</p>
+    <h2>commande numéro {{order.id}} :</h2>
     <p>fait le {{order.createdAt | date("d/m/Y")}} par {{order.createdBy | capitalize}}.</p>
-     <p>Adresse de livraison : {# {{order.userAccount.address}} #}</p>
-    
+    <p>Adresse de livraison : {# {{order.userAccount.address}} #}</p>  
     <p>
         Contenu de la commande : 
         {% for item in orderDetails %}{% if loop.index > 1 %},{% endif %} {{item.nombre}} {{item.nom | capitalize}}s{% endfor %}.
     </p>
-
+    <h2>détail :</h2>
     <table>
         <thead>
             <tr>

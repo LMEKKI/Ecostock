@@ -13,10 +13,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class CalculController extends AbstractController
 {
   #[Route('/commandes', name: 'app_calcul')]
-  public function index(OrderFormRepository $orderFormRepository): Response
+  public function index(OrderFormRepository $orderFormRepo): Response
   {
-
-    $orders = $orderFormRepository->findAll();
+    $orders = $orderFormRepo->findAll();
 
     return $this->render('calcul/commandIndex.html.twig', [
       'orders' => $orders,
@@ -24,24 +23,15 @@ class CalculController extends AbstractController
   }
 
   #[Route('/commande_{id}', name: 'app_calcul_{id}')]
-  public function commande(int $id, OrderFormRepository $orderFormRepository, DataSheetRepository $dataSheetRepository,IngredientRepository $ingredientRepository, Calcul $calcul): Response
+  public function commande(int $id, OrderFormRepository $orderFormRepo, DataSheetRepository $dataSheetRepo,IngredientRepository $ingredientRepo, Calcul $calcul): Response
   {
-    
-    // réception du contenu de la commande
-    $ordering = $orderFormRepository->findOneById($id)->getContent();
-
-    //création du tableau des ingrédients, pour la fonction de calcul
-    $orderDetails = array();
-    foreach ($ordering as $key => $value) {
-      $recipeName = $dataSheetRepository->findOneById($value["id"])->getName();
-      array_push($orderDetails, array("nombre" => $value["quantity"], "nom" => $recipeName, "ingredients" => $ingredientRepository->findByAllIngredientDetails($value["id"]) ));
-    };
+    $orderDetails = $calcul->getOrderInformations($id, $orderFormRepo, $dataSheetRepo, $ingredientRepo);
 
     //envoi du tableau au service pour calculer les quantités
     $orderIngredients = $calcul->sortOrder($orderDetails, $calcul);
 
     return $this->render('calcul/command.html.twig', [
-      'order' => $orderFormRepository->findOneById($id),
+      'order' => $orderFormRepo->findOneById($id),
       'sortedOrder' => $orderIngredients,
       'orderDetails' => $orderDetails,
     ]);

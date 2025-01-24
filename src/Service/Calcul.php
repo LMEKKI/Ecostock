@@ -5,16 +5,30 @@ namespace App\Service;
 
 class Calcul
 {
+    public function getOrderInformations($orderId, $orderFormRepository, $dataSheetRepository, $ingredientRepository)
+    {
+        // réception du contenu de la commande
+        $ordering = $orderFormRepository->findOneById($orderId)->getContent();
+
+        //création du tableau des ingrédients, pour la fonction de calcul
+        $orderDetails = array();
+        foreach ($ordering as $key => $value) {
+            $recipeName = $dataSheetRepository->findOneById($value["id"])->getName();
+            array_push($orderDetails, array("nombre" => $value["quantity"], "nom" => $recipeName, "ingredients" => $ingredientRepository->findByAllIngredientDetails($value["id"])));
+        };
+
+        return $orderDetails;
+    }
     /** 
-    * takes an order array
-    *   returns an array of all ingredients arrays (name, quantity, units)
-    *   for each amount of said recipe
-    */
+     * takes an order array
+     *   returns an array of all ingredients arrays (name, quantity, units)
+     *   for each amount of said recipe
+     */
     public function getOrderIngredients(array $order)
     {
         $orderIngredients = [];
         foreach ((array) $order as &$orderItem) {
-            for ($i= 0; $i < $orderItem["nombre"] ; $i++) { 
+            for ($i = 0; $i < $orderItem["nombre"]; $i++) {
                 foreach ((array) $orderItem["ingredients"] as $key => $value) {
                     array_push($orderIngredients, $value);
                 }
@@ -29,7 +43,8 @@ class Calcul
      * @param array $order the order array to sort
      * @return array
      */
-    public function sortOrder(array $order, Calcul $calcul){
+    public function sortOrder(array $order, Calcul $calcul)
+    {
         $orderIngredients = $calcul->getOrderIngredients($order);
         $sortedOrder = $calcul->cleanArray($orderIngredients, "name");
         return $sortedOrder;
@@ -37,36 +52,32 @@ class Calcul
 
     /**
      * function to fuse duplicates and their quantities
-     * does not work
-     * @return array
      */
-    function cleanArray(array $ingredientsArray) {
+    function cleanArray(array $ingredientsArray)
+    {
 
         $temp_array = array();
         $i = 0;
         $name_array = array();
-    
-        foreach($ingredientsArray as $key => $val) {
-            
+
+        foreach ($ingredientsArray as $key => $val) {
+
             if (!in_array($val["name"], $name_array)) {
                 $name_array[$key] = $val["name"];
-                
+
                 $temp_array[$i] = $val;
                 $i++;
             } elseif (in_array($val["name"], $name_array)) {
                 $curName = $val["name"];
 
                 $found_key = array_search($curName, array_column($temp_array, "name"));
-                
-                $temp_array[$found_key]["quantity"] = $temp_array[$found_key]["quantity"] + $val["quantity"];
 
+                $temp_array[$found_key]["quantity"] = $temp_array[$found_key]["quantity"] + $val["quantity"];
             }
             unset($val);
-                  
         }
 
-    
+
         return $temp_array;
-    
     }
 }
