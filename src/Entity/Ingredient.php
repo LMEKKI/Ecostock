@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\IngredientRepository;
@@ -17,19 +18,23 @@ class Ingredient
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ingredient')]
-    private ?DataSheet $dataSheet = null;
+    /**
+     * @var Collection<int, DataSheet>
+     */
+    #[ORM\ManyToMany(targetEntity: DataSheet::class, inversedBy: 'ingredients')]
+    private Collection $datasheet;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'ingredient')]
     private ?Unit $unit = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'ingredient', cascade: ['persist'])]
     private ?Weight $weight = null;
 
-    
+    private ?float $weightValue = null; // Champ temporaire pour le formulaire
+
     public function __construct()
     {
-   
+        $this->datasheet = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -42,10 +47,14 @@ class Ingredient
         return $this->name;
     }
 
+    public function __toString(): string
+    {
+        return $this->name ?? 'Ingrédient sans nom';
+    }
+
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -61,14 +70,26 @@ class Ingredient
         return $this;
     }
 
-    public function getUnit(): ?Unit
+    public function removeDatasheet(DataSheet $datasheet): static
+    {
+        $this->datasheet->removeElement($datasheet);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Unit>
+     */
+    public function getUnit(): Collection
     {
         return $this->unit;
     }
 
     public function setUnit(?Unit $unit): static
     {
-        $this->unit = $unit;
+        if (!$this->unit->contains($unit)) {
+            $this->unit->add($unit);
+        }
 
         return $this;
     }
@@ -80,10 +101,17 @@ class Ingredient
 
     public function setWeight(?Weight $weight): static
     {
-        $this->weight = $weight;
+        if (!$this->weight->contains($weight)) {
+            $this->weight->add($weight);
+        }
 
         return $this;
     }
 
-   
+    public function removeWeight(Weight $weight): static
+    {
+        $this->weight->removeElement($weight);
+
+        return $this;
+    }
 }

@@ -18,6 +18,7 @@ class Category
 
 
     #[ORM\ManyToOne(inversedBy: 'categories')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?DataSheet $datasheets = null;
 
     /**

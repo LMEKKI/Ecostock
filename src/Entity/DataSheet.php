@@ -19,8 +19,8 @@ class DataSheet
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $image = null;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $image;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -34,7 +34,7 @@ class DataSheet
     /**
      * @var Collection<int, Ingredient>
      */
-    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'dataSheet')]
+    #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'datasheet', cascade: ['persist'])]
     private Collection $ingredient;
 
 
@@ -143,6 +143,4 @@ class DataSheet
 
         return $this;
     }
-
- 
 }

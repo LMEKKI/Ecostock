@@ -15,13 +15,20 @@ class Weight
     #[ORM\Column]
     private ?int $id = null;
 
+    // Suppression de la propriété redondante $weight
     #[ORM\Column(type: 'float')]
-    private ?float $weight = null;
+    private float $value;
 
-   
+
+    /**
+     * @var Collection<int, Ingredient>
+     */
+    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'weight')]
+    private Collection $ingredient;
 
     public function __construct()
     {
+        $this->ingredient = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -29,17 +36,47 @@ class Weight
         return $this->id;
     }
 
-    public function getWeight(): ?float
+    public function getValue(): float
+
     {
-        return $this->weight;
+        return $this->value;
     }
 
-    public function setWeight(float $weight): static
+    public function setValue(float $value): self
+
     {
-        $this->weight = $weight;
+        $this->value = $value;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ingredient>
+     */
+    public function getIngredient(): Collection
+    {
+        return $this->ingredient;
+    }
+
+    public function addIngredient(Ingredient $ingredient): static
+    {
+        if (!$this->ingredient->contains($ingredient)) {
+            $this->ingredient->add($ingredient);
+            $ingredient->setWeight($this);  // Associe l'ingrédient au poids
+
+        }
 
         return $this;
     }
 
-   
+    public function removeIngredient(Ingredient $ingredient): static
+    {
+        if ($this->ingredient->removeElement($ingredient)) {
+            // Lors de la suppression, on désassocie l'ingrédient de ce poids
+            if ($ingredient->getWeight() === $this) {
+                $ingredient->setWeight(null);
+            }
+        }
+
+        return $this;
+    }
 }

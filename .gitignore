@@ -2,6 +2,7 @@
 ###> symfony/framework-bundle ###
 .env
 .env.local
+.env.dev
 .env.local.php
 .env.*.local
 /config/secrets/prod/prod.decrypt.private.php
@@ -35,4 +36,4 @@
 *.env.example
 *.env.local
 *.env.staging
- dev
+stage eco.code-workspace

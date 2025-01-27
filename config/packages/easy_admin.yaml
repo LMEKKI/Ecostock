@@ -1,0 +1,14 @@
+easy_admin:
+    entities:
+        DataSheet:
+            class: App\Entity\DataSheet
+            form:
+                fields:
+                    - {
+                          property: "image",
+                          type: "ImageField",
+                          required: false,
+                          nullable: true,
+                      }
+                    - { property: "description" }
+                    - { property: "name" }
