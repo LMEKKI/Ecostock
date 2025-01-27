@@ -29,7 +29,6 @@ class Weight
     public function __construct()
     {
         $this->ingredient = new ArrayCollection();
-
     }
 
     public function getId(): ?int
@@ -56,7 +55,6 @@ class Weight
     public function getIngredient(): Collection
     {
         return $this->ingredient;
-
     }
 
     public function addIngredient(Ingredient $ingredient): static
@@ -77,7 +75,6 @@ class Weight
             if ($ingredient->getWeight() === $this) {
                 $ingredient->setWeight(null);
             }
-
         }
 
         return $this;

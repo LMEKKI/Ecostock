@@ -3,13 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Section;
-use App\Form\CampingType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use App\Form\TypeType;
-use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 class SectionRestaurantCrudController extends AbstractCrudController

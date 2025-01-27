@@ -6,6 +6,7 @@ use App\Entity\Section;
 use App\Entity\Type;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\Category;
 
 class SectionFixtures extends Fixture
 {

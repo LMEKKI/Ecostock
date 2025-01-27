@@ -3,14 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Camping;
-use App\Entity\Section;
-use App\Form\SectionRestaurantType;
 use App\Form\SectionType;
-use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CampingCrudController extends AbstractCrudController
 {

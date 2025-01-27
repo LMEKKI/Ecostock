@@ -58,19 +58,14 @@ class Ingredient
         return $this;
     }
 
-    /**
-     * @return Collection<int, DataSheet>
-     */
-    public function getDatasheet(): Collection
+    public function getDataSheet(): ?DataSheet
     {
-        return $this->datasheet;
+        return $this->dataSheet;
     }
 
-    public function addDatasheet(DataSheet $datasheet): static
+    public function setDataSheet(?DataSheet $dataSheet): static
     {
-        if (!$this->datasheet->contains($datasheet)) {
-            $this->datasheet->add($datasheet);
-        }
+        $this->dataSheet = $dataSheet;
 
         return $this;
     }
@@ -78,17 +73,24 @@ class Ingredient
     public function removeDatasheet(DataSheet $datasheet): static
     {
         $this->datasheet->removeElement($datasheet);
+
         return $this;
     }
 
-    public function getUnit(): ?Unit
+    /**
+     * @return Collection<int, Unit>
+     */
+    public function getUnit(): Collection
     {
         return $this->unit;
     }
 
     public function setUnit(?Unit $unit): static
     {
-        $this->unit = $unit;
+        if (!$this->unit->contains($unit)) {
+            $this->unit->add($unit);
+        }
+
         return $this;
     }
 
@@ -99,19 +101,17 @@ class Ingredient
 
     public function setWeight(?Weight $weight): static
     {
-        $this->weight = $weight;
+        if (!$this->weight->contains($weight)) {
+            $this->weight->add($weight);
+        }
+
         return $this;
     }
 
-    public function getWeightValue(): ?float
+    public function removeWeight(Weight $weight): static
     {
-        // Si un poids existe, retourner sa valeur ; sinon retourner la valeur temporaire
-        return $this->weight ? $this->weight->getValue() : $this->weightValue;
-    }
+        $this->weight->removeElement($weight);
 
-    public function setWeightValue(?float $weightValue): self
-    {
-        $this->weightValue = $weightValue;
         return $this;
     }
 }
