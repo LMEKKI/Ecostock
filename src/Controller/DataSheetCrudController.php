@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Category as EntityCategory;
 use App\Entity\DataSheet;
 use App\Entity\Ingredient;
 use App\Entity\Weight;
 use App\Form\Category;
+use App\Form\CategoryType;
 use App\Form\IngredientType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -41,8 +43,16 @@ class DataSheetCrudController extends AbstractCrudController
                     'by_reference' => false, // Important pour gérer correctement les objets liés
                 ]),
 
+            AssociationField::new('category')->autocomplete()
+                ->setFormTypeOptions([
+                    'choice_label' => 'name',
+                    'field' => 'name',
+                    'by_reference' => false,
+                ]),
 
-            ArrayField::new('categories', 'Catégories'),
+
+
+
 
             ImageField::new('image', 'Visuel')
                 ->setBasePath('/uploads/images')
@@ -93,6 +103,8 @@ class DataSheetCrudController extends AbstractCrudController
                 }
             }
         }
+
+
 
         // Persister la fiche technique (DataSheet)
         $entityManager->persist($entityInstance);

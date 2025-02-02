@@ -37,12 +37,12 @@ class Type
      * @var Collection<int, Category>
      */
     #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'type')]
-    private Collection $categories;
+    private Collection $category;
 
     public function __construct()
     {
         $this->section = new ArrayCollection();
-        $this->categories = new ArrayCollection();
+        $this->category = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,15 +99,15 @@ class Type
     /**
      * @return Collection<int, Category>
      */
-    public function getCategories(): Collection
+    public function getCategory(): Collection
     {
-        return $this->categories;
+        return $this->category;
     }
 
     public function addCategory(Category $category): static
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
+        if (!$this->category->contains($category)) {
+            $this->category->add($category);
         }
 
         return $this;
@@ -115,7 +115,7 @@ class Type
 
     public function removeCategory(Category $category): static
     {
-        if ($this->categories->removeElement($category)) {
+        if ($this->category->removeElement($category)) {
         }
 
         return $this;

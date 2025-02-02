@@ -28,8 +28,8 @@ class Section
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'categories')]
-    private Collection $categories;
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'category')]
+    private Collection $category;
 
 
 
@@ -62,7 +62,7 @@ class Section
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
+        $this->category = new ArrayCollection();
         $this->userAccounts = new ArrayCollection();
         $this->type = new ArrayCollection();
     }
@@ -109,15 +109,15 @@ class Section
     /**
      * @return Collection<int, Category>
      */
-    public function getCategories(): Collection
+    public function getcategory(): Collection
     {
-        return $this->categories;
+        return $this->category;
     }
 
     public function addCategory(Category $category): static
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
+        if (!$this->category->contains($category)) {
+            $this->category->add($category);
             $category->addSection($this);
         }
 
@@ -126,7 +126,7 @@ class Section
 
     public function removeCategory(Category $category): static
     {
-        if ($this->categories->removeElement($category)) {
+        if ($this->category->removeElement($category)) {
             $category->removeSection($this);
         }
 

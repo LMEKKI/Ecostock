@@ -29,19 +29,19 @@ class DataSheet
      * @var Collection<int, Category>
      */
     #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'datasheet', cascade: ['persist', 'remove'])]
-    private Collection $categories;
+    private Collection $category;
 
     /**
      * @var Collection<int, Ingredient>
      */
-    #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'datasheet', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'datasheet', cascade: ['persist', 'remove'])]
     private Collection $ingredient;
 
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
         $this->ingredient = new ArrayCollection();
+        $this->category = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,15 +88,16 @@ class DataSheet
     /**
      * @return Collection<int, Category>
      */
-    public function getCategories(): Collection
+    public function getCategory(): Collection
     {
-        return $this->categories;
+        return $this->category;
     }
 
     public function addCategory(Category $category): static
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
+        if (!$this->category->contains($category)) {
+            $this->category->add($category);
+            $category->setDatasheet($this);
         }
 
         return $this;
@@ -104,8 +105,7 @@ class DataSheet
 
     public function removeCategory(Category $category): static
     {
-        if ($this->categories->removeElement($category)) {
-            // Si la catégorie était liée à cette fiche, on enlève le lien
+        if ($this->category->removeElement($category)) {
             if ($category->getDatasheet() === $this) {
                 $category->setDatasheet(null);
             }
@@ -126,7 +126,7 @@ class DataSheet
     {
         if (!$this->ingredient->contains($ingredient)) {
             $this->ingredient->add($ingredient);
-            $ingredient->setDataSheet($this);
+            $ingredient->setDatasheet($this);
         }
 
         return $this;
@@ -136,8 +136,8 @@ class DataSheet
     {
         if ($this->ingredient->removeElement($ingredient)) {
             // set the owning side to null (unless already changed)
-            if ($ingredient->getDataSheet() === $this) {
-                $ingredient->setDataSheet(null);
+            if ($ingredient->getDatasheet() === $this) {
+                $ingredient->setDatasheet(null);
             }
         }
 

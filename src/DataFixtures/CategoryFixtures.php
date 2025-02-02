@@ -58,9 +58,7 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            DataSheetFixtures::class,
             SectionFixtures::class,
-            TypeFixtures::class,
         ];
     }
 }

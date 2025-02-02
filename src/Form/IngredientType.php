@@ -16,18 +16,15 @@ class IngredientType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
-      // Sélection de l'ingrédient pour la DataSheet
       ->add('name', TextType::class, [
         'label' => 'Nom de l\'ingrédient',
         'required' => true,
       ])
-      // Spécification du poids de l'ingrédient
       ->add('weightValue', NumberType::class, [
-        'label' => 'Poids (en kg)',
+        'label' => 'Poids',
         'required' => true,
-        'mapped' => true, // Ce champ n'est pas directement lié à l'entité
+        'scale' => 2,
       ])
-      // Choix de l'unité pour le poids de l'ingrédient
       ->add('unit', EntityType::class, [
         'class' => Unit::class,
         'choice_label' => 'name',  // Affiche le nom de l'unité

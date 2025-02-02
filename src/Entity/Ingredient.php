@@ -6,6 +6,7 @@ use App\Repository\IngredientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Notifier\Message\NullMessage;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
 class Ingredient
@@ -21,8 +22,8 @@ class Ingredient
     /**
      * @var Collection<int, DataSheet>
      */
-    #[ORM\ManyToMany(targetEntity: DataSheet::class, inversedBy: 'ingredients')]
-    private Collection $datasheet;
+    #[ORM\ManyToOne(targetEntity: DataSheet::class, inversedBy: 'ingredients')]
+    private ?DataSheet $datasheet = null;
 
     #[ORM\ManyToOne(inversedBy: 'ingredient')]
     private ?Unit $unit = null;
@@ -32,10 +33,7 @@ class Ingredient
 
     private ?float $weightValue = null; // Champ temporaire pour le formulaire
 
-    public function __construct()
-    {
-        $this->datasheet = new ArrayCollection();
-    }
+    public function __construct() {}
 
     public function getId(): ?int
     {
@@ -58,14 +56,14 @@ class Ingredient
         return $this;
     }
 
-    public function getDataSheet(): ?DataSheet
+    public function getDataSheet(): Collection
     {
-        return $this->dataSheet;
+        return $this->datasheet;
     }
 
-    public function setDataSheet(?DataSheet $dataSheet): static
+    public function setDataSheet(?DataSheet $datasheet): static
     {
-        $this->dataSheet = $dataSheet;
+        $this->datasheet = $datasheet;
 
         return $this;
     }
@@ -77,22 +75,20 @@ class Ingredient
         return $this;
     }
 
-    /**
-     * @return Collection<int, Unit>
-     */
-    public function getUnit(): Collection
+
+    public function getUnit(): ?Unit
     {
         return $this->unit;
     }
 
     public function setUnit(?Unit $unit): static
     {
-        if (!$this->unit->contains($unit)) {
-            $this->unit->add($unit);
-        }
+        $this->unit = $unit;
 
         return $this;
     }
+
+
 
     public function getWeight(): ?Weight
     {
@@ -101,16 +97,42 @@ class Ingredient
 
     public function setWeight(?Weight $weight): static
     {
-        if (!$this->weight->contains($weight)) {
-            $this->weight->add($weight);
-        }
+        $this->weight = $weight;
+
+        return $this;
 
         return $this;
     }
 
     public function removeWeight(Weight $weight): static
     {
-        $this->weight->removeElement($weight);
+        if ($this->weight === $weight) {
+            $this->weight = null;
+        }
+
+
+        return $this;
+    }
+
+
+
+    public function getWeightValue(): ?float
+    {
+        return $this->weightValue;
+    }
+
+    public function setWeightValue(?float $weightValue): static
+    {
+        $this->weightValue = $weightValue;
+
+        // Convertir la valeur flottante en une instance de Weight
+        if ($weightValue !== null) {
+            $weight = new Weight();
+            $weight->setValue($weightValue);
+            $this->setWeight($weight);
+        } else {
+            $this->setWeight(null);
+        }
 
         return $this;
     }

@@ -17,21 +17,21 @@ class Category
 
 
 
-    #[ORM\ManyToOne(inversedBy: 'categories')]
+    #[ORM\ManyToOne(inversedBy: 'category')]
     #[ORM\JoinColumn(nullable: true)]
-    private ?DataSheet $datasheets = null;
+    private ?DataSheet $datasheet;
 
     /**
      * @var Collection<int, SectionRestaurant>
      */
-    #[ORM\ManyToMany(targetEntity: Section::class, inversedBy: 'categories')]
+    #[ORM\ManyToMany(targetEntity: Section::class, inversedBy: 'category')]
     private Collection $sections;
 
 
     /**
      * @var Collection<int, Type>
      */
-    #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'categories')]
+    #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'category')]
     private Collection $type;
 
     #[ORM\Column(length: 255)]
@@ -59,12 +59,12 @@ class Category
 
     public function getDatasheet(): ?DataSheet
     {
-        return $this->datasheets;
+        return $this->datasheet;
     }
 
-    public function setDatasheet(?DataSheet $datasheets): static
+    public function setDatasheet(?DataSheet $datasheet): static
     {
-        $this->datasheets = $datasheets;
+        $this->datasheet = $datasheet;
 
         return $this;
     }
