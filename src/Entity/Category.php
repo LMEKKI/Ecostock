@@ -2,24 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ORM\Entity]
 class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-
-
-    #[ORM\ManyToOne(inversedBy: 'category')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?DataSheet $datasheet;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
     /**
      * @var Collection<int, SectionRestaurant>
@@ -27,19 +23,21 @@ class Category
     #[ORM\ManyToMany(targetEntity: Section::class, inversedBy: 'category')]
     private Collection $sections;
 
-
     /**
      * @var Collection<int, Type>
      */
     #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'category')]
     private Collection $type;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    /**
+     * @var Collection<int, DataSheet>
+     */
+    #[ORM\ManyToMany(targetEntity: DataSheet::class, mappedBy: 'category')]
+    private Collection $datasheet;
 
     public function __construct()
     {
-        $this->sections = new ArrayCollection();
+        $this->datasheet = new ArrayCollection();
         $this->type = new ArrayCollection();
     }
 
@@ -48,25 +46,38 @@ class Category
         return $this->id;
     }
 
-    public function setId(int $id): static
+    public function getName(): ?string
     {
-        $this->id = $id;
+        return $this->name;
+    }
 
+    public function setName(string $name): static
+    {
+        $this->name = $name;
         return $this;
     }
 
-
-
-    public function getDatasheet(): ?DataSheet
+    public function getDatasheet(): Collection
     {
         return $this->datasheet;
     }
 
-    public function setDatasheet(?DataSheet $datasheet): static
+    public function addDatasheet(DataSheet $datasheet): static
     {
-        $this->datasheet = $datasheet;
-
+        if (!$this->datasheet->contains($datasheet)) {
+            $this->datasheet->add($datasheet);
+        }
         return $this;
+    }
+
+    public function removeDatasheet(DataSheet $datasheet): static
+    {
+        $this->datasheet->removeElement($datasheet);
+        return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 
 
@@ -103,20 +114,17 @@ class Category
         return $this->type;
     }
 
-    public function getName(): ?string
+    public function addType(Type $type): static
     {
-        return $this->name;
+        if (!$this->type->contains($type)) {
+            $this->type->add($type);
+        }
+        return $this;
     }
 
-    public function __toString(): string
+    public function removeType(Type $type): static
     {
-        return $this->name ?? 'Categorie sans nom';
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
+        $this->type->removeElement($type);
         return $this;
     }
 }

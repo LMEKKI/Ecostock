@@ -2,23 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\Category as EntityCategory;
 use App\Entity\DataSheet;
-use App\Entity\Ingredient;
-use App\Entity\Weight;
-use App\Form\Category;
-use App\Form\CategoryType;
 use App\Form\IngredientType;
+use App\Form\CategoryType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use phpDocumentor\Reflection\Types\Nullable;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class DataSheetCrudController extends AbstractCrudController
 {
@@ -35,7 +28,7 @@ class DataSheetCrudController extends AbstractCrudController
 
             TextField::new('description', 'Description'),
 
-            CollectionField::new('ingredient', 'Ingrédients')
+            CollectionField::new('ingredients', 'Ingrédients')
                 ->setEntryType(IngredientType::class)
                 ->allowAdd()
                 ->allowDelete()
@@ -43,71 +36,24 @@ class DataSheetCrudController extends AbstractCrudController
                     'by_reference' => false, // Important pour gérer correctement les objets liés
                 ]),
 
-            AssociationField::new('category')->autocomplete()
+            ArrayField::new('category', 'category'),
+
+            AssociationField::new('category', 'Catégories')
                 ->setFormTypeOptions([
-                    'choice_label' => 'name',
-                    'field' => 'name',
-                    'by_reference' => false,
+                    'by_reference' => false, // Important pour gérer correctement les objets liés
+                ])
+                ->hideOnIndex()
+                ->setRequired(false)
+                ->setFormTypeOptions([
+                    'multiple' => true, // Permet de sélectionner plusieurs catégories
+
                 ]),
-
-
-
-
 
             ImageField::new('image', 'Visuel')
                 ->setBasePath('/uploads/images')
                 ->setUploadDir('public/uploads/images')
                 ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]')
                 ->setRequired(false),
-            FormField::addPanel('Ingrédients'),
-
-
         ];
-    }
-    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        if ($entityInstance instanceof DataSheet) {
-            $ingredientNames = [];  // Liste des ingrédients déjà ajoutés à cette DataSheet
-
-            foreach ($entityInstance->getIngredient() as $ingredient) {
-                // Vérifier si l'ingrédient a déjà été ajouté à la DataSheet
-                if (in_array($ingredient->getName(), $ingredientNames)) {
-                    // L'ingrédient est en doublon dans la DataSheet, on lève une exception ou on ignore
-                    throw new \Exception('L\'ingrédient "' . $ingredient->getName() . '" a déjà été ajouté à cette fiche.');
-                }
-
-                // Ajouter le nom de l'ingrédient à la liste pour la DataSheet
-                $ingredientNames[] = $ingredient->getName();
-
-                // Vérification si l'ingrédient existe déjà en base de données
-                $existingIngredient = $entityManager->getRepository(Ingredient::class)
-                    ->findOneBy(['name' => $ingredient->getName()]);
-
-                if ($existingIngredient) {
-                    // Si l'ingrédient existe déjà, on associe l'ingrédient existant à cette DataSheet
-                    $ingredient = $existingIngredient;
-                } else {
-                    // Si l'ingrédient n'existe pas, on le persiste normalement
-                    $entityManager->persist($ingredient);
-                }
-
-                // Gestion du poids de l'ingrédient
-                $weightValue = $ingredient->getWeightValue();
-                if ($weightValue) {
-                    $weight = new Weight();
-                    $weight->setValue($weightValue);
-                    $ingredient->setWeight($weight);
-
-                    // Persister le poids
-                    $entityManager->persist($weight);
-                }
-            }
-        }
-
-
-
-        // Persister la fiche technique (DataSheet)
-        $entityManager->persist($entityInstance);
-        $entityManager->flush();
     }
 }
