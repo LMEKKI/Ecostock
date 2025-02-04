@@ -63,9 +63,9 @@ class DataSheet
         return $this->image;
     }
 
-    public function setImage(string $image): static
+    public function setImage(?string $image): static
     {
-        $this->image = $image;
+        $this->image = $image ?? 'https://placehold.co/600x400?text=Aucune+image';
         return $this;
     }
 
