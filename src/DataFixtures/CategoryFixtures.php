@@ -8,15 +8,17 @@ use App\Entity\Section;
 use App\Entity\Type;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Faker\Factory;
 
-class CategoryFixtures extends Fixture implements DependentFixtureInterface
+class CategoryFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // Récupérer les données nécessaires pour les relations
+        $faker = Factory::create();
+
+        // Récupérer les DataSheets, Sections et Types existants
         $dataSheets = $manager->getRepository(DataSheet::class)->findAll();
-        $section = $manager->getRepository(Section::class)->findAll();
+        $sections = $manager->getRepository(Section::class)->findAll();
         $types = $manager->getRepository(Type::class)->findAll();
 
         // Générer des catégories
@@ -26,25 +28,27 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
             // Associer un nom unique pour chaque catégorie
             $category->setName('Catégorie ' . $i);
 
-            // Associer un DataSheet aléatoire (s'il existe)
+            // Associer des DataSheets aléatoires
             if (!empty($dataSheets)) {
-                $randomDataSheet = $dataSheets[array_rand($dataSheets)];
-                $category->setDatasheet($randomDataSheet);
+                $randomDataSheets = $faker->randomElements($dataSheets, $faker->numberBetween(1, 3));
+                foreach ($randomDataSheets as $dataSheet) {
+                    $category->addDatasheet($dataSheet);
+                }
             }
 
             // Associer des SectionRestaurant aléatoires
-            if (!empty($section)) {
-                $randomsection = (array) array_rand($section, min(2, count($section)));
-                foreach ($randomsection as $index) {
-                    $category->addSection($section[$index]);
+            if (!empty($sections)) {
+                $randomSections = $faker->randomElements($sections, $faker->numberBetween(1, 2));
+                foreach ($randomSections as $section) {
+                    $category->addSection($section);
                 }
             }
 
             // Associer des Types aléatoires
             if (!empty($types)) {
-                $randomTypes = (array) array_rand($types, min(2, count($types)));
-                foreach ($randomTypes as $index) {
-                    $category->getType()->add($types[$index]);
+                $randomTypes = $faker->randomElements($types, $faker->numberBetween(1, 2));
+                foreach ($randomTypes as $type) {
+                    $category->getType($type);
                 }
             }
 
