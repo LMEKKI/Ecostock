@@ -23,13 +23,12 @@ class CalculController extends AbstractController
   }
 
   #[Route('/commande_{id}', name: 'app_calcul_{id}')]
-  public function commande(int $id, OrderFormRepository $orderFormRepo, DataSheetRepository $dataSheetRepo,IngredientRepository $ingredientRepo, Calcul $calcul): Response
+  public function commande(int $id, OrderFormRepository $orderFormRepo, DataSheetRepository $dataSheetRepo, IngredientRepository $ingredientRepo, Calcul $calcul): Response
   {
-    $orderDetails = $calcul->getOrderInformations($id, $orderFormRepo, $dataSheetRepo, $ingredientRepo);
+    $orderDetails = $calcul->getOrderDetails($id, $orderFormRepo, $dataSheetRepo, $ingredientRepo);
 
     //envoi du tableau au service pour calculer les quantités
-    $orderIngredients = $calcul->sortOrder($orderDetails, $calcul);
-
+    $orderIngredients = $calcul->sortIngredients($orderDetails, $calcul);
     return $this->render('calcul/command.html.twig', [
       'order' => $orderFormRepo->findOneById($id),
       'sortedOrder' => $orderIngredients,

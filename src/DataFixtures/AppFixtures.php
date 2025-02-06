@@ -28,32 +28,92 @@ class AppFixtures extends Fixture
 
     // Création des catégories
     $categories = [];
-    for ($i = 0; $i < 10; $i++) {
+    $categoryNames = ['Entrée', 'Plat principal', 'Dessert', 'Boisson'];
+    foreach ($categoryNames as $categoryName) {
       $category = new Category();
-      $category->setName($faker->word);
+      $category->setName($categoryName);
       $manager->persist($category);
       $categories[] = $category;
     }
 
-    // Création des fiches techniques
-    for ($i = 0; $i < 10; $i++) {
+    // Création des fiches techniques (recettes)
+    $recipes = [
+      [
+        'name' => 'Salade César',
+        'description' => 'Une salade composée de laitue romaine, de croûtons et de parmesan, assaisonnée de vinaigrette César.',
+        'image' => 'https://example.com/images/salade-cesar.jpg',
+        'categories' => ['Entrée'],
+        'ingredients' => [
+          ['name' => 'Laitue romaine', 'quantity' => 200, 'unit' => 'g'],
+          ['name' => 'Croûtons', 'quantity' => 50, 'unit' => 'g'],
+          ['name' => 'Parmesan', 'quantity' => 30, 'unit' => 'g'],
+          ['name' => 'Vinaigrette César', 'quantity' => 50, 'unit' => 'ml'],
+        ],
+      ],
+      [
+        'name' => 'Spaghetti Bolognese',
+        'description' => 'Un plat de pâtes italien classique avec une sauce à la viande.',
+        'image' => 'https://example.com/images/spaghetti-bolognese.jpg',
+        'categories' => ['Plat principal'],
+        'ingredients' => [
+          ['name' => 'Spaghetti', 'quantity' => 200, 'unit' => 'g'],
+          ['name' => 'Viande hachée', 'quantity' => 300, 'unit' => 'g'],
+          ['name' => 'Tomates', 'quantity' => 400, 'unit' => 'g'],
+          ['name' => 'Oignon', 'quantity' => 1, 'unit' => 'g'],
+          ['name' => 'Ail', 'quantity' => 2, 'unit' => 'g'],
+        ],
+      ],
+      [
+        'name' => 'Tiramisu',
+        'description' => 'Un dessert italien classique à base de mascarpone, de café et de cacao.',
+        'image' => 'https://example.com/images/tiramisu.jpg',
+        'categories' => ['Dessert'],
+        'ingredients' => [
+          ['name' => 'Mascarpone', 'quantity' => 250, 'unit' => 'g'],
+          ['name' => 'Café', 'quantity' => 100, 'unit' => 'ml'],
+          ['name' => 'Cacao', 'quantity' => 20, 'unit' => 'g'],
+          ['name' => 'Biscuits à la cuillère', 'quantity' => 200, 'unit' => 'g'],
+        ],
+      ],
+      [
+        'name' => 'Smoothie aux fruits',
+        'description' => 'Une boisson rafraîchissante à base de fruits mélangés.',
+        'image' => 'https://example.com/images/smoothie.jpg',
+        'categories' => ['Boisson'],
+        'ingredients' => [
+          ['name' => 'Banane', 'quantity' => 1, 'unit' => 'g'],
+          ['name' => 'Fraises', 'quantity' => 150, 'unit' => 'g'],
+          ['name' => 'Yaourt', 'quantity' => 200, 'unit' => 'ml'],
+          ['name' => 'Miel', 'quantity' => 20, 'unit' => 'g'],
+        ],
+      ],
+    ];
+
+    foreach ($recipes as $recipeData) {
       $dataSheet = new DataSheet();
-      $dataSheet->setName($faker->sentence(3));
-      $dataSheet->setDescription($faker->paragraph);
-      $dataSheet->setImage($faker->imageUrl(640, 480, 'food', true));
+      $dataSheet->setName($recipeData['name']);
+      $dataSheet->setDescription($recipeData['description']);
+      $dataSheet->setImage($recipeData['image']);
 
       // Ajout de catégories à la fiche technique
-      $assignedCategories = $faker->randomElements($categories, $faker->numberBetween(1, 3));
-      foreach ($assignedCategories as $category) {
-        $dataSheet->addCategory($category);
+      foreach ($recipeData['categories'] as $categoryName) {
+        $filteredCategories = array_values(array_filter($categories, fn($cat) => $cat->getName() === $categoryName));
+        if (!empty($filteredCategories)) {
+          $category = $filteredCategories[0];
+          $dataSheet->addCategory($category);
+        }
       }
 
       // Création des ingrédients
-      for ($j = 0; $j < 5; $j++) {
+      foreach ($recipeData['ingredients'] as $ingredientData) {
         $ingredient = new Ingredient();
-        $ingredient->setName($faker->word);
-        $ingredient->setWeightValue($faker->randomFloat(2, 0.1, 10));
-        $ingredient->setUnit($faker->randomElement($units));
+        $ingredient->setName($ingredientData['name']);
+        $ingredient->setWeightValue($ingredientData['quantity']);
+        $filteredUnits = array_values(array_filter($units, fn($u) => $u->getName() === $ingredientData['unit']));
+        if (!empty($filteredUnits)) {
+          $unit = $filteredUnits[0];
+          $ingredient->setUnit($unit);
+        }
         $ingredient->setDatasheet($dataSheet);
         $manager->persist($ingredient);
       }

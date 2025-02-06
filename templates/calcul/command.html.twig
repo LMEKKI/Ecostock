@@ -8,7 +8,7 @@
     <p>Adresse de livraison : {# {{order.userAccount.address}} #}</p>  
     <p>
         Contenu de la commande : 
-        {% for item in orderDetails %}{% if loop.index > 1 %},{% endif %} {{item.nombre}} {{item.nom | capitalize}}s{% endfor %}.
+        {% for item in orderDetails %}{% if loop.index > 1 %},{% endif %} {{item.quantity}} {{item.name | capitalize}}s{% endfor %}.
     </p>
     <h2>détail :</h2>
     <table>
