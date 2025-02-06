@@ -2,82 +2,98 @@
 
 namespace App\Service;
 
+use App\Repository\OrderFormRepository;
+use App\Repository\DataSheetRepository;
+use App\Repository\IngredientRepository;
 
 class Calcul
 {
-    public function getOrderInformations($orderId, $orderFormRepository, $dataSheetRepository, $ingredientRepository)
-    {
-        // réception du contenu de la commande
-        $ordering = $orderFormRepository->findOneById($orderId)->getContent();
+    private $orderFormRepository;
+    private $dataSheetRepository;
+    private $ingredientRepository;
 
-        //création du tableau des ingrédients, pour la fonction de calcul
-        $orderDetails = array();
-        foreach ($ordering as $key => $value) {
-            $recipeName = $dataSheetRepository->findOneById($value["id"])->getName();
-            array_push($orderDetails, array("nombre" => $value["quantity"], "nom" => $recipeName, "ingredients" => $ingredientRepository->findByAllIngredientDetails($value["id"])));
-        };
+    public function __construct(OrderFormRepository $orderFormRepository, DataSheetRepository $dataSheetRepository, IngredientRepository $ingredientRepository)
+    {
+        $this->orderFormRepository = $orderFormRepository;
+        $this->dataSheetRepository = $dataSheetRepository;
+        $this->ingredientRepository = $ingredientRepository;
+    }
+
+    /**
+     
+     * @param int 
+     * @return array renvoi un tableau des détails de la commande
+     */
+    public function getOrderDetails(int $orderId): array
+    {
+
+        $orderContent = $this->orderFormRepository->findOneById($orderId)->getContent();
+
+        $orderDetails = [];
+
+        foreach ($orderContent as $item) {
+            $recipeName = $this->dataSheetRepository->findOneById($item["id"])->getName();
+            $ingredients = $this->ingredientRepository->findByDatasheetId($item["id"]);
+            $orderDetails[] = [
+                "quantity" => $item["quantity"],
+                "name" => $recipeName,
+                "ingredients" => $ingredients
+            ];
+        }
 
         return $orderDetails;
     }
-    /** 
-     * takes an order array
-     *   returns an array of all ingredients arrays (name, quantity, units)
-     *   for each amount of said recipe
+
+    /**
+     *  @param array tableau de commande 
      */
-    public function getOrderIngredients(array $order)
+    public function extractOrderIngredients(array $order): array
     {
         $orderIngredients = [];
-        foreach ((array) $order as &$orderItem) {
-            for ($i = 0; $i < $orderItem["nombre"]; $i++) {
-                foreach ((array) $orderItem["ingredients"] as $key => $value) {
-                    array_push($orderIngredients, $value);
+
+        foreach ($order as $orderItem) {
+            for ($i = 0; $i < $orderItem["quantity"]; $i++) {
+                foreach ($orderItem["ingredients"] as $ingredient) {
+                    $orderIngredients[] = $ingredient;
                 }
             }
         }
-        unset($orderItem);
+
         return $orderIngredients;
     }
 
     /**
-     * function that sort the ingredients from the order, and gets the total quantity
-     * @param array $order the order array to sort
+     
+     * @param array trie les ingredients d chaque recette que contient mon tableau de commande
      * @return array
      */
-    public function sortOrder(array $order, Calcul $calcul)
+    public function sortIngredients(array $order): array
     {
-        $orderIngredients = $calcul->getOrderIngredients($order);
-        $sortedOrder = $calcul->cleanArray($orderIngredients, "name");
-        return $sortedOrder;
+        $orderIngredients = $this->extractOrderIngredients($order);
+        $sortedIngredients = $this->mergeDuplicateIngredients($orderIngredients);
+        return $sortedIngredients;
     }
 
     /**
-     * function to fuse duplicates and their quantities
+     * je fusion mes tableau afin d'eviter d'avoir plusieur ingrédient du même noms
+     * @param array tableau d'ingredient
+     * @return array tableu trie par nom  + quantité et unité pour chaque ingredient du même nom
      */
-    function cleanArray(array $ingredientsArray)
+    public function mergeDuplicateIngredients(array $ingredientsArray): array
     {
+        $mergedIngredients = [];
+        $ingredientNames = [];
 
-        $temp_array = array();
-        $i = 0;
-        $name_array = array();
-
-        foreach ($ingredientsArray as $key => $val) {
-
-            if (!in_array($val["name"], $name_array)) {
-                $name_array[$key] = $val["name"];
-
-                $temp_array[$i] = $val;
-                $i++;
-            } elseif (in_array($val["name"], $name_array)) {
-                $curName = $val["name"];
-
-                $found_key = array_search($curName, array_column($temp_array, "name"));
-
-                $temp_array[$found_key]["quantity"] = $temp_array[$found_key]["quantity"] + $val["quantity"];
+        foreach ($ingredientsArray as $ingredient) {
+            if (!in_array($ingredient["name"], $ingredientNames)) {
+                $ingredientNames[] = $ingredient["name"];
+                $mergedIngredients[] = $ingredient;
+            } else {
+                $index = array_search($ingredient["name"], array_column($mergedIngredients, "name"));
+                $mergedIngredients[$index]["quantity"] += $ingredient["quantity"];
             }
-            unset($val);
         }
 
-
-        return $temp_array;
+        return $mergedIngredients;
     }
 }
