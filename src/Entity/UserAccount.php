@@ -9,10 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert; //pour sécuriser les champs comme username et password.
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[ORM\Entity(repositoryClass: UserAccountRepository::class)]
+#[UniqueEntity(fields: ['username'], message: 'Ce nom d\'utilisateur est déjà utilisé.')]
 class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -100,9 +101,9 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Définit le mot de passe de l'utilisateur.
      */
-    public function setPassword(string $password): static
+    public function setPassword(string $plainPassword, UserPasswordHasherInterface $passwordHasher): self
     {
-        $this->password = $password;
+        $this->password = $passwordHasher->hashPassword($this, $plainPassword);
         return $this;
     }
 

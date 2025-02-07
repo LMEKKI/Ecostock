@@ -19,10 +19,11 @@ class Order
   {
     $this->entityManager = $entityManager;
   }
-  function createOrder($cart): Response
+  function createOrder($cart, $userName, $userId): Response
   {
     $order = new OrderForm();
-    $order->setcreatedBy('lmekki');
+    $order->setcreatedBy($userName);
+    $order->setUserAccount($userId);
     $order->setContent($cart);
     $order->setCreatedAt(new \DateTimeImmutable());
 
