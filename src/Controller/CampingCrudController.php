@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Camping;
 use App\Form\SectionType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 
@@ -22,6 +23,7 @@ class CampingCrudController extends AbstractCrudController
 
             TextField::new('name', 'Nom du Camping'),
             TextField::new('adresse', 'Adresse du Camping'),
+            ArrayField::new('userAccounts', 'les Compte associé'),
             CollectionField::new('section', 'Nom de l\'Etablissement')
                 ->setEntryType(SectionType::class)
                 ->allowAdd() // Permet d'ajouter de nouvelles entrées

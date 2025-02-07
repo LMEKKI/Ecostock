@@ -190,4 +190,9 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this->username   ?? '';
     }
+
+    public function __toString(): string
+    {
+        return $this->username ?? '';
+    }
 }
