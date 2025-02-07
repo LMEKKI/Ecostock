@@ -40,7 +40,7 @@ class Section
     /**
      * @var Collection<int, UserAccount>
      */
-    #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'SectionRestaurant')]
+    #[ORM\OneToMany(targetEntity: UserAccount::class, mappedBy: 'section')]
     private Collection $userAccounts;
 
     /**
@@ -99,6 +99,32 @@ class Section
     public function setAdresse(string $adresse): static
     {
         $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getUserAccounts(): Collection
+    {
+        return $this->userAccounts;
+    }
+
+    public function addUserAccount(UserAccount $userAccounts): self
+    {
+        if (!$this->userAccounts->contains($userAccounts)) {
+            $this->userAccounts->add($userAccounts);
+            $userAccounts->setSection($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserAccount(UserAccount $userAccount): self
+    {
+        if ($this->userAccounts->removeElement($userAccount)) {
+            if ($userAccount->getSection() === $this) {
+                $userAccount->setSection(null);
+            }
+        }
 
         return $this;
     }
