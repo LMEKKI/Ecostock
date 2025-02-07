@@ -38,16 +38,16 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'userAccount')]
     //Il fallait assurer que la propriété sectionrestaurant existe dans l'entité
-    private ?Section $sections = null;
+    private ?Section $section = null;
 
     public function getSection(): ?Section
     {
-        return $this->sections;
+        return $this->section;
     }
 
     public function setSection(?Section $section): static
     {
-        $this->sections = $section;
+        $this->section = $section;
 
         return $this;
     }
@@ -70,15 +70,6 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    /**
-     * Récupère le nom d'utilisateur.
-     * (Déprécié : Utilisez getUserIdentifier() à la place)
-     */
-    public function getUsername(): ?string
-    {
-        trigger_deprecation('App\Entity\UserAccount', 'v1.0', 'Use getUserIdentifier() instead.');
-        return $this->username;
-    }
 
     /**
      * Récupère l'identifiant principal de l'utilisateur.
@@ -192,5 +183,11 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // Vous pouvez nettoyer des données sensibles ici, par exemple des tokens.
+    }
+
+    public function getUsername()
+    {
+
+        return $this->username   ?? '';
     }
 }
