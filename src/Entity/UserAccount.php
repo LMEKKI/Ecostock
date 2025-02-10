@@ -30,15 +30,16 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
     #[Assert\Length(min: 8)]
     private ?string $password = null;
+
+    private ?string $plainPassword = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'userAccounts')]
     private ?Camping $camping = null;
 
     #[ORM\ManyToOne(inversedBy: 'userAccount')]
-    //Il fallait assurer que la propriété sectionrestaurant existe dans l'entité
     private ?Section $section = null;
 
     public function getSection(): ?Section
@@ -59,83 +60,86 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        // Initialise les collections pour les relations OneToMany
         $this->orderForms = new ArrayCollection();
+        $this->roles = ['ROLE_USER', 'ROLE_ADMIN']; // Initialisation par défaut
+
     }
 
-    /**
-     * Récupère l'identifiant unique de l'utilisateur.
-     */
+    #[ORM\PrePersist]
+    public function assignDefaultRole(): void
+    {
+        if (empty($this->roles)) {
+            $this->roles[] = 'ROLE_USER'; // Attribue le rôle par défaut
+        }
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
 
-    /**
-     * Récupère l'identifiant principal de l'utilisateur.
-     * Utilisé par Symfony pour l'authentification.
-     */
     public function getUserIdentifier(): string
     {
         return $this->username ?? '';
     }
 
-    /**
-     * Définit le nom d'utilisateur.
-     */
+
     public function setUsername(string $username): static
     {
         $this->username = $username;
         return $this;
     }
 
-    /**
-     * Récupère le mot de passe de l'utilisateur.
-     */
+
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * Définit le mot de passe de l'utilisateur.
-     */
-    public function setPassword(string $password, UserPasswordHasherInterface $passwordHasher): self
+
+    public function setPassword(string $password): self
     {
-        $this->password = $passwordHasher->hashPassword($this, $password);
+        $this->password = $password;
         return $this;
     }
 
-    /**
-     * Récupère Camping associé à l'utilisateur.
-     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+
+
+
+
     public function getCamping(): ?Camping
     {
         return $this->camping;
     }
 
-    /**
-     * Associe un Camping à l'utilisateur.
-     */
+
     public function setCamping(?Camping $camping): static
     {
         $this->camping = $camping;
         return $this;
     }
 
-    /**
-     * Récupère les commandes (OrderForms) associées à l'utilisateur.
-     */
+
     public function getOrderForms(): Collection
     {
         return $this->orderForms;
     }
 
-    /**
-     * Ajoute une commande à l'utilisateur.
-     * Met également à jour la relation inverse.
-     */
+
     public function addOrderForm(OrderForm $orderForm): static
     {
         if (!$this->orderForms->contains($orderForm)) {
@@ -145,10 +149,7 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * Supprime une commande de l'utilisateur.
-     * Met également à jour la relation inverse.
-     */
+
     public function removeOrderForm(OrderForm $orderForm): static
     {
         if ($this->orderForms->removeElement($orderForm)) {
@@ -159,32 +160,23 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * Récupère les rôles de l'utilisateur.
-     * Par défaut, tous les utilisateurs ont au moins le rôle "ROLE_USER".
-     */
+
     public function getRoles(): array
     {
-        return array_unique(array_merge($this->roles, ['ROLE_USER']));
+        return array_unique($this->roles);
     }
 
-    /**
-     * Définit les rôles de l'utilisateur.
-     */
+
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
         return $this;
     }
 
-    /**
-     * Efface les données sensibles stockées dans l'entité (si nécessaire).
-     * Appelée par Symfony après l'authentification.
-     */
-    public function eraseCredentials(): void
-    {
-        // Vous pouvez nettoyer des données sensibles ici, par exemple des tokens.
-    }
+
+
+
+    public function eraseCredentials(): void {}
 
     public function getUsername()
     {
