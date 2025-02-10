@@ -47,6 +47,15 @@
             "ref": "b131e6cbfe1b898a508987851963fff485986285"
         }
     },
+    "pentatrion/vite-bundle": {
+        "version": "7.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "6.5",
+            "ref": "3a6673f248f8fc1dd364dadfef4c5b381d1efab6"
+        }
+    },
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {
@@ -323,9 +332,6 @@
             "./config/packages/web_profiler.yaml",
             "./config/routes/web_profiler.yaml"
         ]
-    },
-    "symfonycasts/tailwind-bundle": {
-        "version": "v0.6.1"
     },
     "twig/extra-bundle": {
         "version": "v3.15.0"
