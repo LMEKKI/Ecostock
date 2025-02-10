@@ -101,9 +101,9 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Définit le mot de passe de l'utilisateur.
      */
-    public function setPassword(string $plainPassword, UserPasswordHasherInterface $passwordHasher): self
+    public function setPassword(string $password, UserPasswordHasherInterface $passwordHasher): self
     {
-        $this->password = $passwordHasher->hashPassword($this, $plainPassword);
+        $this->password = $passwordHasher->hashPassword($this, $password);
         return $this;
     }
 

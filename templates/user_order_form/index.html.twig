@@ -3,22 +3,16 @@
 {% block title %}Order{% endblock %}
 
 {% block body %}
-<style>
-    .recipe-btn button {
-        background: #74992e;
-        padding: 2px 4px;
-        border: solid 1px red;
-    }
-</style>
 
-<div class="main">
+
+<div class=' flex  h-full px-4 items-center flex-wrap gap-4'>
     {% for recipe in dataSheets %}
         <div class="recipe-container">
             <div class="recipe-img">
                 <img src="{{ asset(recipe.image) }}" alt="image de la recette">
             </div>
             <div class="recipe-title">
-                <h4>{{ recipe.name }}</h4>
+                <h4 classe = "">{{ recipe.name }}</h4>
             </div>
             <div class="recipe-description">
                 <p>{{ recipe.description }}</p>
