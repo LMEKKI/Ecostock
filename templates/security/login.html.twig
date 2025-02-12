@@ -3,52 +3,71 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-    <form method="post" >
+<body class="overflow-hidden bg-gray-100 flex flex-col justify-center items-center min-h-screen ">
+    
+<div class ="  flex  flex-col-reverse justify-center items-center p-4">
+
+
+<div class="flex max-h-dvh mx-auto shadow-md rounded-md flex-col-reverse justify-center items-center  bg-white ">
+
+
+    <form method="post" class=" my-1 mx-4 max-h-screen max-w-xs sm:w-full   p-4 gap-4  bg-white   ">
         {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            <div class="alert alert-danger mb-4 p-4 bg-red-100 text-red-700 rounded">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
         {% endif %}
 
         {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+            <div class="mb-4 text-center">
+                You are logged in as {{ app.user.userIdentifier }},
+                <a href="{{ path('app_logout') }}" class="text-blue-500 hover:underline">Logout</a>
             </div>
         {% endif %}
 
-     <div class="relative flex min-h-screen text-gray-800 antialiased flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12">
-    <div class="relative py-3 sm:w-96 w-full mx-auto text-center">
-        <span class="text-2xl font-light">Connexion au compte</span>
-        <div class="mt-4 bg-white shadow-md rounded-lg text-left">
-            <div class="h-2 bg-purple-400 rounded-t-md"></div>
-            <div class="px-8 py-6">
-                <label class="block font-semibold" for="username">Nom d'utilisateur</label>
-                <input type="text" value="{{ last_username }}" name="_username" id="username" placeholder="Entrez votre nom d'utilisateur" autocomplete="username" required autofocus class="border w-full h-12 px-3 py-2 mt-2 hover:outline-none focus:outline-none focus:ring-indigo-500 focus:ring-1 rounded-md">
-                
-                <label class="block mt-3 font-semibold" for="password">Mot de passe</label>
-                <input type="password" name="_password" id="password" placeholder="Entrez votre mot de passe" autocomplete="current-password" required class="border w-full h-12 px-3 py-2 mt-2 hover:outline-none focus:outline-none focus:ring-indigo-500 focus:ring-1 rounded-md">
+        <div class="mb-6 text-center">
+            <h1 class="text-2xl font-bold   text-blue-700">Connectez-vous</h1>
+            <p class="text-gray-700">à votre compte Ecostock</p>
+        </div>
 
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                
-                <div class="flex justify-between items-baseline mt-4">
-                    <button type="submit" class="bg-purple-500 text-white py-2 px-6 rounded-md hover:bg-purple-600">Se connecter</button>
-                    <a href="{{ path('app_reset_password') }}" class="text-sm text-blue-500 hover:underline">Mot de passe oublié ?</a>
-                </div>
+        <div class="mb-4 w-full">
+            <input  classe="w-full" type="text" value="{{ last_username }}" name="_username" id="username" placeholder="Entrez votre nom d'utilisateur" autocomplete="username" required autofocus class="border w-full px-3 py-2 mt-1 rounded-md focus:outline-none focus:ring-indigo-500 focus:ring-1">
+        </div>
+
+        <div class="mb-2">
+            <input type="password" name="_password" id="password" placeholder="Entrez votre mot de passe" autocomplete="current-password" required class="border w-full px-3 py-2 mt-1 rounded-md focus:outline-none focus:ring-indigo-500 focus:ring-1">
+        </div>
+
+        
+        <div class="flex items-center justify-between mb-6 mx-auto text-center">
+            <div class="flex items-center">
+                <input type="checkbox" name="_remember_me" id="_remember_me" class="text-blue-700 border-gray-300 rounded focus:ring-indigo-500">
+                <label for="_remember_me" class="ml-2 block text-sm text-gray-900">Remember me</label>
             </div>
         </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <button type="submit" class="w-full bg-blue-700 text-white py-2 px-4 rounded-md  hover:bg-blue-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300">
+            Se connecter
+        </button>
+
+    </form>
+    
+    <div class="login_img rounded-md   flex items-center justify-center  flex-col    max-w-xs  sm:max-w-xl">
+    <img class="hidden sm:block  bg-center" src="{{ asset('images/sm-login.svg') }}" alt="illustation d'une personne qui ouvre une porte ">
+    <img class="block  sm:hidden  size-64 object-center max-w-full rounded-lg " src="{{ asset('images/login.svg') }}" alt="illustation d'une personne qui ouvre une porte ">
+    
     </div>
 </div>
 
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
 
-            <div class="checkbox mb-3">
-                <input type="checkbox" name="_remember_me" id="_remember_me">
-                <label for="_remember_me">Remember me</label>
-            </div>
-        #}
+</div>
 
+</body>
 
-    </form>
+    
 
+   
 
 {% endblock %}
