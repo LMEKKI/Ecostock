@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ShoopingCart extends AbstractController
 {
-    #[Route('/shooping', name: 'app_shooping_cart', methods: ['GET', 'POST'])]
+    #[Route('/order', name: 'app_shooping_cart', methods: ['GET', 'POST'])]
     public function updateCart(DataSheetRepository $dataSheetRepository, Request $request, Cart $cart, Order $order, UserAccountRepository $userAccountRepository): Response
     {
         // Si la requête est POST, traiter l'ajout au panier
@@ -47,7 +47,7 @@ class ShoopingCart extends AbstractController
         $cartItems = $cart->getCart();
 
 
-        return $this->render('user_order_form/index.html.twig', [
+        return $this->render('order/index.html.twig', [
             'dataSheets' => $dataSheetRepository->findAll(),
             'cartItems' => $cartItems,
         ]);

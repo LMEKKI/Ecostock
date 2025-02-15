@@ -52,7 +52,7 @@ class DataSheetCrudController extends AbstractCrudController
             ImageField::new('image', 'Visuel')
                 ->setBasePath('/uploads/images')
                 ->setUploadDir('public/uploads/images')
-                ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]')
+                ->setUploadedFileNamePattern('[randomhash].[extension]')
                 ->setRequired(false),
         ];
     }
